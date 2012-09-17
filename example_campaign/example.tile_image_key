@@ -1,0 +1,7 @@
+Number of Tile Image Strings:
+2
+Tile Image Strings:
+.a=images/tile_sand.png
+.b=images/tile_rock.png
+Comments:
+This file must be sorted alphabetically.

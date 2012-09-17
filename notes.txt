@@ -1,0 +1,73 @@
+****How to stat creature types, breakable types, projectile types, collectible types?
+
+Creature types need AI_type, max health, projectile type, move speed, fire delay(, team?), creature_media_set.
+
+Only relevant breakable type stats are toughness, breakable_media_set.
+
+Projectile types need damage, move speed, projectile_media_set.
+
+Collectible types need collectible_media_set.
+
+***How to stat creatures, breakables, projectiles, collectibles?
+
+Creatures need current health, location, move_orientation, current_move_speed, aim_orientation, fire cycle state, AI state, team.
+
+Breakables need only location(, animation cycle state?).
+
+Projectiles need current damage, location, orientation, animation cycle state, team.
+
+Collectible types need location, animation cycle state.
+
+***How to stat media_sets for:
+
+Creatures:
+	animations for:  stand, walk, walk_and_fire, fire, stun
+	sounds for:  stand, walk, walk_and_fire, fire, stun
+
+Breakables:
+	animations for:  stand, break
+	sounds for:  break
+
+Projectiles:
+	animations for:  fly, impact
+	sounds for:  impact
+
+Collectibles:
+	animations for:  stand
+	sounds for:  pickup
+
+***How to stat AI types:
+
+Move Orientation goal:  dodge, flee, close, wander, patrol_ns, patrol_ew       /* remain not listed; leave speed 0 */
+Aim Orientation goal:  face, spin, lag_face, lead_face, as_vel
+Fire goal:  spam, sight_first, spurt
+
+***How to stat campaign:
+
+Need links to object key, tile image key, starting world tile, static list.
+
+Need num players.
+Need player spawn row/col(s), player type file(s).
+
+***Programming notes:
+
+Since projectiles and creatures will need position records (in both cell and traditional coords), create a struct for that with row(), col(), x(), y() getters.
+
+Animation cycle states may be implicit in sprite_animation.
+
+Use cairo to rotate projectiles and creatures to desired orientation.
+
+If music file doesn't change between tiles, don't reset playback.
+
+All maps are 16x11, with 64x64 tiles.  The bottom row of 1024x768 res is for stat bar.
+
+AI directives are given from the same place as player directives; they should have access to all the information the user does.
+
+To handle multiplayer world_tile moves, have function (bool creature_is_requesting_move(player,direction)) and check that they all agree before moving.
+
+use maze, but don't generate.
+
+Preload all world tiles (should be easy with tile system, and we're already preloading all graphics/sounds for clean separation of game and gui).  This should also simplify static objects and creatures.
+
+
+Should AI have args for lag_face and spurt?

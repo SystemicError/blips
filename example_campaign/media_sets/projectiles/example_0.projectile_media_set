@@ -1,0 +1,15 @@
+Number of FLY animation frames:
+2
+FLY animation frames:
+animations/projectiles/example_0/fly_0.png
+animations/projectiles/example_0/fly_1.png
+Number of IMPACT animation frames:
+2
+IMPACT animation frames:
+animations/projectiles/example_0/impact_0.png
+animations/projectiles/example_0/impact_1.png
+IMPACT sound:
+none
+Comments:
+
+A simple projectile media set.

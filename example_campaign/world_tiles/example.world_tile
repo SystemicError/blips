@@ -1,0 +1,82 @@
+Object map:
+.,.aaaa,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.00,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+Creature barrier map:
+|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,##.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
+|______________________________|
+Projectile barrier map:
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,##.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,
+Image map:
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.b.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
+Background image:
+none
+North Tile:
+none
+East Tile:
+none
+South Tile:
+none
+West Tile:
+none
+Music:
+music/example.ogg
+Comments:
+
+Nothing after the "Comments:" line is parsed!
+
+
+two character codes for objects
+ignore "." and ","
+
+background image optional (specify "none")
+tile images also optional
+
+Barriers are always two-way, i.e. cannot cross from either direction.
+Key to 1-dimensional barriers:
+~~  .|  __  |.
+~|  ==  |~
+_|  ||
+|_
+=>  /\  <=  \/
+##
+Theoretically, ## could have a creature placed in it, but it'd be pretty ineffectual unless the barrier permitted projectiles across it.
+
+Breakables always take up entire tile (as barrier ##) and block both projectiles and creatures.

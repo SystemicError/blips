@@ -1,0 +1,4 @@
++Finish animation image placeholders.
++Do the same for sounds.
++Write keys, campaign file.
+-Start coding?

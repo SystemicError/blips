@@ -1,0 +1,33 @@
+Number of STAND animation frames:
+1
+STAND animation frames:
+animations/creatures/example_1/stand_0.png
+Number of WALK animation frames:
+1
+WALK animation frames:
+animations/creatures/example_1/walk_0.png
+Number of WALK_AND_FIRE animation frames:
+1
+WALK_AND_FIRE animation frames:
+animations/creatures/example_1/walk_and_fire_0.png
+Number of FIRE animation frames:
+1
+FIRE animation frames:
+animations/creatures/example_1/fire_0.png
+Number of STUN animation frames:
+1
+STUN animation frames:
+animations/creatures/example_1/stun_0.png
+STAND sound:
+none
+WALK sound:
+none
+WALK_AND_FIRE sound:
+none
+FIRE sound:
+none
+STUN sound:
+none
+Comments:
+
+A simple creature media set.

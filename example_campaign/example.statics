@@ -1,0 +1,25 @@
+Number of Static Creatures:
+0
+Static Creatures:
+Number of Static Objects:
+1
+Static Objects:
+world_tile/example.world_tile
+	8
+	1
+	+h
+	1
+Comments:
+
+
+Creatures:
+world_tile
+	row
+	col
+	type
+Collectibles:
+world_tile
+	row
+	col
+	type
+	drops_after_cleared
