@@ -4,6 +4,14 @@
 #ifndef _PROJECTILE_TYPE_H
 #define _PROJECTILE_TYPE_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 typedef struct projectile_type
 {
 	int damage;

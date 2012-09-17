@@ -4,6 +4,14 @@
 #ifndef _CREATURE_TYPE_H
 #define _CREATURE_TYPE_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 typedef struct creature_type
 {
 	int max_health;

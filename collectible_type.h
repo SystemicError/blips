@@ -4,6 +4,14 @@
 #ifndef _COLLECTIBLE_TYPE_H
 #define _COLLECTIBLE_TYPE_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 typedef struct collectible_type
 {
 	char *co_set_path;

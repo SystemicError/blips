@@ -4,6 +4,14 @@
 #ifndef _BREAKABLE_TYPE_H
 #define _BREAKABLE_TYPE_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 typedef struct breakable_type
 {
 	int toughness;
