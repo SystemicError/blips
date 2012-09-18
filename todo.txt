@@ -2,3 +2,7 @@
 +Do the same for sounds.
 +Write keys, campaign file.
 -Start coding?
+
+-Finish media_set definitions.
+-Finish campaign definition.
+-Finish game definition.
