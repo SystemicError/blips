@@ -5,6 +5,7 @@
 
 blips_campaign *blips_campaign_new(char *path)
 {
+	FILE *fp;
 	blips_campaign *bc;
 	char buffer[1024];
 	char full_path[1024];
@@ -30,8 +31,8 @@ blips_campaign *blips_campaign_new(char *path)
 
 	fscanf(fp,"%s\n",buffer);  /* comment line */
 	fscanf(fp,"%s\n",buffer);
-	bc->tile_key_path=(char*)malloc(sizeof(char)*strlen(buffer));
-	strcpy(bc->tile_key_path,buffer);
+	bc->tile_image_key_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	strcpy(bc->tile_image_key_path,buffer);
 
 	fscanf(fp,"%s\n",buffer);  /* comment line */
 	fscanf(fp,"%s\n",buffer);
@@ -76,7 +77,7 @@ void blips_campaign_destroy(blips_campaign *bc)
 		exit(1);
 	}
 	free(bc->object_key_path);
-	free(bc->tile_key_path);
+	free(bc->tile_image_key_path);
 	free(bc->starting_world_tile_path);
 	free(bc->statics_list_path);
 	for(i=0;i<bc->num_players;i++)

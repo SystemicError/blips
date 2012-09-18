@@ -28,6 +28,10 @@
 #include<stdlib.h>
 #endif
 
+#ifndef _STRING_H
+#include<string.h>
+#endif
+
 #ifndef _TIME_H
 #include<time.h>
 #endif

@@ -22,7 +22,7 @@ breakable_type* breakable_type_new(char *path)
 
 	fscanf(fp,"%s\n",buffer);
 	br_type->br_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
-	strcpy(br_set->br_type_path,buffer);
+	strcpy(br_type->br_type_path,buffer);
 
 	br_type->br_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(br_type->br_type_path,buffer);

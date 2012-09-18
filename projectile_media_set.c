@@ -11,7 +11,7 @@ projectile_media_set* projectile_media_set_new(char *path)
 	int i,count;
 
 	pr_set=(projectile_media_set*)malloc(sizeof(projectile_media_set));
-	if(!(file=fopen(path,"r")))
+	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open projectile_media_set:  %s.\n",path);
 		exit(1);
@@ -68,8 +68,6 @@ void projectile_media_set_destroy(projectile_media_set *pr_set)
 	}
 	sprite_animation_destroy(pr_set->fly_animation);
 	sprite_animation_destroy(pr_set->impact_animation);
-	if(pr_set->fly_sound)
-		Mix_FreeChunk(pr_set->fly_sound);
 	if(pr_set->impact_sound)
 		Mix_FreeChunk(pr_set->impact_sound);
 	free(pr_set);

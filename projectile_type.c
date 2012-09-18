@@ -8,7 +8,7 @@
 	char *pr_set_path;
 	char *pr_type_path;
 
-projectile_type* projectile_type_new(char *path);
+projectile_type* projectile_type_new(char *path)
 {
 	FILE *fp;
 	projectile_type *pr_type;
@@ -39,7 +39,7 @@ projectile_type* projectile_type_new(char *path);
 	return pr_type;
 }
 
-void projectile_type_destroy(projectile_type *pr_type);
+void projectile_type_destroy(projectile_type *pr_type)
 {
 	if(!pr_type)
 	{

@@ -74,7 +74,7 @@ typedef struct blips_game
 blips_game* blips_game_create(void);
 void blips_game_destroy(blips_game *bgame);
 
-/**/
+/* externally called requests */
 
 world_tile* blips_game_active_world_tile(blips_game *bgame);
 

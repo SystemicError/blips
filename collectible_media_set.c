@@ -11,7 +11,7 @@ collectible_media_set* collectible_media_set_new(char *path)
 	int i,count;
 
 	co_set=(collectible_media_set*)malloc(sizeof(collectible_media_set));
-	if(!(file=fopen(path,"r")))
+	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open collectible_media_set:  %s.\n",path);
 		exit(1);

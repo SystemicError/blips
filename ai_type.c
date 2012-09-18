@@ -79,5 +79,3 @@ void ai_type_destroy(ai_type *ait)
 	return;
 }
 
-#endif
-

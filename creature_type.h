@@ -12,6 +12,10 @@
 #include<stdlib.h>
 #endif
 
+#ifndef _STRING_H
+#include<string.h>
+#endif
+
 typedef struct creature_type
 {
 	int max_health;

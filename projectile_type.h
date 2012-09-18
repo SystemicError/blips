@@ -12,6 +12,10 @@
 #include<stdlib.h>
 #endif
 
+#ifndef _STRING_H
+#include<string.h>
+#endif
+
 typedef struct projectile_type
 {
 	int damage;

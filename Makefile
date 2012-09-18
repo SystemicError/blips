@@ -11,13 +11,13 @@ creature_type.o : creature_type.h creature_type.c
 projectile_type.o : projectile_type.h projectile_type.c
 	gcc -c projectile_type.c
 breakable_media_set.o : breakable_media_set.h breakable_media_set.c
-	gcc -c breakable_media_set.c
+	gcc -c breakable_media_set.c `sdl-config --cflags` `pkg-config --cflags cairo`
 collectible_media_set.o : collectible_media_set.h collectible_media_set.c
-	gcc -c collectible_media_set.c
+	gcc -c collectible_media_set.c `sdl-config --cflags` `pkg-config --cflags cairo`
 creature_media_set.o : creature_media_set.h creature_media_set.c
-	gcc -c creature_media_set.c
+	gcc -c creature_media_set.c `sdl-config --cflags` `pkg-config --cflags cairo`
 projectile_media_set.o : projectile_media_set.h projectile_media_set.c
-	gcc -c projectile_media_set.c
+	gcc -c projectile_media_set.c `sdl-config --cflags` `pkg-config --cflags cairo`
 world_tile.o : world_tile.h world_tile.c maze.h
 	gcc -c world_tile.c
 maze.o : maze.h maze.c

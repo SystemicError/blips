@@ -12,6 +12,10 @@
 #include<stdlib.h>
 #endif
 
+#ifndef _STRING_H
+#include<string.h>
+#endif
+
 #ifndef _BREAKABLE_TYPE_H
 #include"breakable_type.h"
 #endif

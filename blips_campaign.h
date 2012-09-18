@@ -4,6 +4,18 @@
 #ifndef _BLIPS_CAMPAIGN_H
 #define _BLIPS_CAMPAIGN_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
+#ifndef _STRING_H
+#include<string.h>
+#endif
+
 typedef struct blips_campaign
 {
 	char *object_key_path;

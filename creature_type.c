@@ -3,7 +3,7 @@
 
 #include"creature_type.h"
 
-creature_type* creature_type_new(char *path);
+creature_type* creature_type_new(char *path)
 {
 	FILE *fp;
 	creature_type *cr_type;
@@ -55,8 +55,8 @@ void creature_type_destroy(creature_type *cr_type)
 		exit(1);
 	}
 
-	free(cr_type->pr_set_path);
-	free(cr_type->ai_set_path);
+	free(cr_type->pr_type_path);
+	free(cr_type->ai_type_path);
 	free(cr_type->cr_set_path);
 	free(cr_type->cr_type_path);
 

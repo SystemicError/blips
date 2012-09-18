@@ -11,7 +11,7 @@ creature_media_set* creature_media_set_new(char *path)
 	int i,count;
 
 	cr_set=(creature_media_set*)malloc(sizeof(creature_media_set));
-	if(!(file=fopen(path,"r")))
+	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open creature_media_set:  %s.\n",path);
 		exit(1);

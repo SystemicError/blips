@@ -4,6 +4,14 @@
 #ifndef _BLIPS_INPUT_STATE_H
 #define _BLIPS_INPUT_STATE_H
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 typedef struct blips_input_state
 {
 	int firing;
