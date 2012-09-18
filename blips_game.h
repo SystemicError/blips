@@ -64,9 +64,6 @@
 #include"blips_campaign.h"
 #endif
 
-#define BLIPS_GAME_TILE_ROWS 16
-#define BLIPS_GAME_TILE_COLS 11
-
 typedef struct blips_game
 {
 	world_tile *world_tiles;

@@ -213,8 +213,8 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 	bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
 
 	/* update the active tiles */
-	for(i=0;i<BLIPS_GAME_TILE_ROWS;i++)
-		for(j=0;j<BLIPS_GAME_TILE_COLS;j++)
+	for(i=0;i<BLIPS_TILE_ROWS;i++)
+		for(j=0;j<BLIPS_TILE_COLS;j++)
 			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images)];
 	return;
 }

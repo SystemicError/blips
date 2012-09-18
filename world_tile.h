@@ -48,14 +48,29 @@
 #include"maze.h"
 #endif
 
+#define BLIPS_TILE_ROWS 16
+#define BLIPS_TILE_COLS 11
+
 typedef struct world_tile
 {
 	maze **creature_barriers;
 	maze **projectile_barriers;
+	char tile_strings[BLIPS_TILE_ROWS][BLIPS_TILE_COLS][2];
+	char *background_image;
+	char *north_tile;
+	char *east_tile;
+	char *south_tile;
+	char *west_tile;
+	char *music;
+	char *path;  /* the path to this world tile */
 } world_tile;
 
 world_tile* world_tile_create(char *path);
 void world_tile_destroy(world_tile *wt);
+
+/* internal helper functions */
+
+void world_tile_parse_barriers(FILE *fp,maze *m);
 
 #endif
 

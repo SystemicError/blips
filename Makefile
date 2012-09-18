@@ -1,5 +1,5 @@
-blips : main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o
-	gcc -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo
+blips : main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o
+	gcc -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo
 ai_type.o : ai_type.h ai_type.c
 	gcc -c ai_type.c
 breakable_type.o : breakable_type.h breakable_type.c
@@ -18,6 +18,10 @@ creature_media_set.o : creature_media_set.h creature_media_set.c
 	gcc -c creature_media_set.c
 projectile_media_set.o : projectile_media_set.h projectile_media_set.c
 	gcc -c projectile_media_set.c
+world_tile.o : world_tile.h world_tile.c maze.h
+	gcc -c world_tile.c
+maze.o : maze.h maze.c
+	gcc -c maze.c
 blips_input_state.o : blips_input_state.h blips_input_state.c
 	gcc -c blips_input_state.c
 blips_campaign.o : blips_campaign.h blips_campaign.c

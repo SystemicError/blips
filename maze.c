@@ -7,7 +7,7 @@
 maze* maze_create(int rows,int columns)
 {
 	maze *m;
-	int i, cell, direction, cell2, direction2, is_maximal;
+	int i;
 
 	m=(maze*)malloc(sizeof(maze));
 	m->rows=rows;
@@ -35,6 +35,12 @@ printf("Created zero-dimensional maze.\n");
 		m->tiles[i][MAZE_SOUTH]=(i<rows*(columns-1));
 		m->tiles[i][MAZE_WEST]=(i%columns!=0);
 	}
+	return m;
+}
+
+void maze_generate(maze *m)
+{
+	int cell, direction, cell2, direction2, is_maximal;
 	/* consider a random link, and delete it if it would not partition the maze */
 	do
 	{
@@ -54,6 +60,7 @@ printf("Created zero-dimensional maze.\n");
 	return m;
 }
 
+
 void maze_destroy(maze *m)
 {
 	int i;
@@ -69,6 +76,16 @@ void maze_destroy(maze *m)
 		exit(1);
 	}
 
+	return;
+}
+
+void maze_place_wall(maze *m,int r,int c,int direction)
+{
+	int cell, cell2, direction2;
+	cell=r*m->columns+c;
+	m->tiles[cell][direction]=0;
+	maze_get_opposing_link(m->columns,cell,direction,&cell2,&direction2);
+	m->tiles[cell2][direction2]=0;
 	return;
 }
 

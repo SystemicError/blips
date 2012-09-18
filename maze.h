@@ -1,6 +1,7 @@
 /* maze.h */
 /* Separated from labyrinth's main.c on 8/16/10 by Tevis Tsai. */
 /* Repurposed for Squawk Box on 6/8/12 by Tevis Tsai. */
+/* Re-repurposed for Blips on 9/18/12 by Tevis Tsai. */
 
 #ifndef _MAZE_H
 #define _MAZE_H 1
@@ -25,8 +26,11 @@ typedef struct maze
 } maze;
 
 maze* maze_create(int r,int c);
-
 void maze_destroy(maze *m);
+
+void maze_generate(maze *m);
+
+void maze_place_wall(maze *m,int r,int c,int direction);
 
 void maze_print(maze *m);
 

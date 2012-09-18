@@ -103,7 +103,7 @@ typedef struct blips_gui
 	int num_background_images;
 
 	/* active tile array */
-	cairo_surface_t *active_tiles[BLIPS_GAME_TILE_ROWS][BLIPS_GAME_TILE_COLS];
+	cairo_surface_t *active_tiles[BLIPS_TILE_ROWS][BLIPS_TILE_COLS];
 
 	/* active background */
 	cairo_surface_t *active_background;
