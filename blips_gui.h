@@ -137,7 +137,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *inputs);
 
 	/* translation */
-void* blips_gui_string_to_pointer(char *string,char **string_array,int count,void *pointers);
+int blips_gui_string_to_pointer_index(char *string,char **string_array,int count);
 
 #endif
 

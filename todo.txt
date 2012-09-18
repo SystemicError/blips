@@ -5,6 +5,9 @@
 
 +Finish media_set definitions.
 +Finish campaign definition.
--Finish input_state definition
++Finish input_state definition
+	-consider adding array of inputs?  Or will we do an array of input_states?
 -Consider a blips_input_reader which is configured by a text file.
+-Write world_tile
+-Write breakable,collectible,creature,projectile
 -Finish game definition.

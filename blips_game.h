@@ -52,6 +52,10 @@
 #include"projectile.h"
 #endif
 
+#ifndef _WORLD_TILE_H
+#include"world_tile.h"
+#endif
+
 #ifndef _BLIPS_INPUT_STATE_H
 #include"blips_input_state.h"
 #endif
@@ -65,8 +69,17 @@
 
 typedef struct blips_game
 {
+	world_tile *world_tiles;
+	world_tile *active_world_tile;
 	blips_campaign *campaign;
 } blips_game;
+
+blips_game* blips_game_create(void);
+void blips_game_destroy(blips_game *bgame);
+
+/**/
+
+world_tile* blips_game_active_world_tile(blips_game *bgame);
 
 #endif
 

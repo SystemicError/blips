@@ -178,7 +178,7 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	{
 		bgui->tile_key[i]=(char*)malloc(sizeof(char)*2);
 		fscanf(fp,"%s=%s\n",bgui->tile_key[i],path);
-		bgui->tile_images[i]=(char*)malloc(sizeof(char)*strlen(path));
+		bgui->tile_images[i]=cairo_surface_create_from_png(path);
 	}
 
 	/* UNFINISHED */
@@ -210,12 +210,12 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 	strcpy(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path);
 
 	/* update the active background */
-	bgui->active_background=blips_gui_string_to_pointer(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images,bgui->background_images);
+	bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
 
 	/* update the active tiles */
 	for(i=0;i<BLIPS_GAME_TILE_ROWS;i++)
 		for(j=0;j<BLIPS_GAME_TILE_COLS;j++)
-			bgui->active_tiles[i][j]=blips_gui_string_to_pointer(bgui,blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images,bgui->tile_images);
+			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images)];
 	return;
 }
 
@@ -239,7 +239,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 	if(SDL_MUSTLOCK(next_screen))
 		if(SDL_LockSurface(next_screen)<0)
 		{
-			fprintf("Can't lock surface:  %s\n",SDL_GetError());
+			fprintf(stderr,"Can't lock surface:  %s\n",SDL_GetError());
 			exit(1);
 		}
 
@@ -321,7 +321,7 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *i
 }
 
 /* translation */
-void* blips_gui_string_to_pointer(char *string,char **string_array,int count,void *pointers)
+int blips_gui_string_to_pointer_index(char *string,char **string_array,int count)
 {
 	/*** This function is a generic binary search algorithm.  It will be
 	 *** applied to any field of blips_gui with a key, accepting string_array
@@ -348,6 +348,6 @@ void* blips_gui_string_to_pointer(char *string,char **string_array,int count,voi
 
 		middle=(lower+upper)/2;
 	}
-	return pointers[middle];
+	return middle;
 }
 
