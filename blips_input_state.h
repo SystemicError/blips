@@ -1,0 +1,19 @@
+/* blips_input_state.h */
+/* Started 9/18/12 by Tevis Tsai */
+
+#ifndef _BLIPS_INPUT_STATE_H
+#define _BLIPS_INPUT_STATE_H
+
+typedef struct blips_input_state
+{
+	int firing;
+	double move_angle;
+	double aim_angle;
+	double speed;
+} blips_input_state;
+
+blips_input_state* blips_input_state_new(void);
+void blips_input_state_destroy(blips_input_state *bis);
+
+#endif
+

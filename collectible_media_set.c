@@ -41,6 +41,7 @@ collectible_media_set* collectible_media_set_new(char *path)
 	else
 		co_set->pickup_sound=0;
 
+	fclose(fp);
 	return co_set;
 }
 

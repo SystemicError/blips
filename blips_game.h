@@ -56,8 +56,16 @@
 #include"blips_input_state.h"
 #endif
 
+#ifndef _BLIPS_CAMPAIGN_H
+#include"blips_campaign.h"
+#endif
+
+#define BLIPS_GAME_TILE_ROWS 16
+#define BLIPS_GAME_TILE_COLS 11
+
 typedef struct blips_game
 {
+	blips_campaign *campaign;
 } blips_game;
 
 #endif

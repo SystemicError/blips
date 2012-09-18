@@ -137,6 +137,7 @@ creature_media_set* creature_media_set_new(char *path)
 	else
 		cr_set->stun_sound=0;
 
+	fclose(fp);
 	return cr_set;
 }
 

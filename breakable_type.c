@@ -27,6 +27,7 @@ breakable_type* breakable_type_new(char *path)
 	br_type->br_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(br_type->br_type_path,buffer);
 
+	fclose(fp);
 	return br_type;
 }
 

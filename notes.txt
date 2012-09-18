@@ -44,6 +44,8 @@ Fire goal:  spam, sight_first, spurt
 
 ***How to stat campaign:
 
+Need campaign directory/prefix.
+
 Need links to object key, tile image key, starting world tile, static list.
 
 Need num players.

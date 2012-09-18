@@ -103,7 +103,7 @@ typedef struct blips_gui
 	int num_background_images;
 
 	/* active tile array */
-	cairo_surface_t *active_tiles[BLIPS_GUI_TILE_ROWS][BLIPS_GUI_TILE_COLS];
+	cairo_surface_t *active_tiles[BLIPS_GAME_TILE_ROWS][BLIPS_GAME_TILE_COLS];
 
 	/* active background */
 	cairo_surface_t *active_background;
@@ -125,8 +125,8 @@ void blips_gui_main_loop(blips_gui *bgui);
 /* internal load, render, event, and translation functions */
 
 	/* load */
-blips_gui_fill_cache(blips_gui *bgui);  /* reads tile+object keys and initializes wts */
-blips_gui_update_active_world_tile(blips_gui *bgui);
+void blips_gui_fill_cache(blips_gui *bgui);  /* reads tile+object keys and initializes wts */
+void blips_gui_update_active_world_tile(blips_gui *bgui);
 
 	/* render */
 void blips_gui_render_screen(blips_gui *bgui);

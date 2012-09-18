@@ -67,28 +67,28 @@ printf("Blips GUI destructor called:\n");
 	}
 
 printf("Freeing blips game.\n");
-	if(bgui->bgame)
-		free(bgame);
+	if(bgui->game)
+		free(bgui->game);
 
 printf("Freeing media.\n");
 	/* media sets */
-	for(i=0;i<num_br_sets;i++)
-		breakable_media_set_destroy(bgui->br_sets[i]);
+	for(i=0;i<bgui->num_br_sets;i++)
+		breakable_media_set_destroy(bgui->br_sets+i);
 	if(bgui->num_br_sets)
 		free(bgui->br_sets);
 
-	for(i=0;i<num_co_sets;i++)
-		collectible_media_set_destroy(bgui->co_sets[i]);
+	for(i=0;i<bgui->num_co_sets;i++)
+		collectible_media_set_destroy(bgui->co_sets+i);
 	if(bgui->num_co_sets)
 		free(bgui->co_sets);
 
-	for(i=0;i<num_cr_sets;i++)
-		creature_media_set_destroy(bgui->cr_sets[i]);
+	for(i=0;i<bgui->num_cr_sets;i++)
+		creature_media_set_destroy(bgui->cr_sets+i);
 	if(bgui->num_cr_sets)
 		free(bgui->cr_sets);
 
-	for(i=0;i<num_pr_sets;i++)
-		projectile_media_set_destroy(bgui->pr_sets[i]);
+	for(i=0;i<bgui->num_pr_sets;i++)
+		projectile_media_set_destroy(bgui->pr_sets+i);
 	if(bgui->num_pr_sets)
 		free(bgui->pr_sets);
 
@@ -139,7 +139,7 @@ void blips_gui_main_loop(blips_gui *bgui)
 			blips_gui_update_active_world_tile(bgui);
 
 		/* iterate the game */
-		blips_game_step(bgame,inputs);
+		blips_game_step(bgui->game,inputs);
 	}
 	blips_input_state_destroy(inputs);
 	return;
@@ -191,6 +191,7 @@ bgui->num_background_images=0;
 	/* finally, set the active world tile string to 0 so it will update next cycle */
 	bgui->active_world_tile_path[0]=0;
 
+	fclose(fp);
 	return;
 }
 
@@ -212,8 +213,8 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 	bgui->active_background=blips_gui_string_to_pointer(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images,bgui->background_images);
 
 	/* update the active tiles */
-	for(i=0;i<BLIPS_GUI_TILE_ROWS;i++)
-		for(j=0;j<BLIPS_GUI_TILE_COLS;j++)
+	for(i=0;i<BLIPS_GAME_TILE_ROWS;i++)
+		for(j=0;j<BLIPS_GAME_TILE_COLS;j++)
 			bgui->active_tiles[i][j]=blips_gui_string_to_pointer(bgui,blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images,bgui->tile_images);
 	return;
 }
@@ -267,7 +268,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 	return;
 }
 
-void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface *surface)
+void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
 	cairo_pattern_t *pattern;
 
@@ -286,7 +287,7 @@ void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface *surface)
 	return;
 }
 
-void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface *surface)
+void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
 	/* UNFINISHED */
 

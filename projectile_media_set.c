@@ -55,6 +55,7 @@ projectile_media_set* projectile_media_set_new(char *path)
 	else
 		pr_set->impact_sound=0;
 
+	fclose(fp);
 	return pr_set;
 }
 

@@ -16,6 +16,10 @@
 #include<SDL_mixer.h>
 #endif
 
+#ifndef _SPRITE_ANIMATION_H
+#include"sprite_animation.h"
+#endif
+
 typedef struct projectile_media_set
 {
 	sprite_animation *fly_animation;

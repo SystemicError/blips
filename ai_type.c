@@ -61,6 +61,7 @@ ai_type* ai_type_new(char *path)
 	ait->ai_type_path=(char*)malloc(sizeof(char)*strlen(path));
 	strcpy(ait->ai_type_path,path);
 
+	fclose(fp);
 	return ait;
 }
 

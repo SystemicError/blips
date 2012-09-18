@@ -4,7 +4,7 @@
 #include<stdio.h>
 
 #include"blips_gui.h"
-#include"blips_campaign.h"
+#include"blips_game.h"
 
 int main(int argc,char *argv[])
 {

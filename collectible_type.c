@@ -25,6 +25,7 @@ collectible_type* collectible_type_new(char *path)
 	co_type->co_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(co_type->co_type_path,buffer);
 
+	fclose(fp);
 	return co_type;
 }
 

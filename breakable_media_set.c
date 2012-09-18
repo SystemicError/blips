@@ -51,6 +51,7 @@ breakable_media_set* breakable_media_set_new(char *path)
 	else
 		br_set->break_sound=0;
 
+	fclose(fp);
 	return br_set;
 }
 
