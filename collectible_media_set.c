@@ -19,17 +19,17 @@ collectible_media_set* collectible_media_set_create(char *path)
 
 	co_set->stand_animation=sprite_animation_create();
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(co_set->stand_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(co_set->pickup_sound=Mix_LoadWAV(buffer)))

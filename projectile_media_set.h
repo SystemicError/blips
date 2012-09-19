@@ -16,6 +16,10 @@
 #include<SDL_mixer.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 #ifndef _SPRITE_ANIMATION_H
 #include"sprite_animation.h"
 #endif

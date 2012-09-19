@@ -12,6 +12,10 @@
 #include<stdlib.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 typedef struct blips_input_state
 {
 	int firing;

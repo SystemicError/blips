@@ -16,13 +16,13 @@ collectible_type* collectible_type_create(char *path)
 		exit(1);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 
-	co_type->co_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	co_type->co_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(co_type->co_set_path,buffer);
 
-	co_type->co_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	co_type->co_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(co_type->co_type_path,buffer);
 
 	fclose(fp);

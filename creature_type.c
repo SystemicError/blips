@@ -16,31 +16,31 @@ creature_type* creature_type_create(char *path)
 		exit(1);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",cr_type->max_health);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	cr_type->pr_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	cr_type->pr_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(cr_type->pr_type_path,buffer);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",cr_type->move_speed);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",cr_type->fire_delay);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	cr_type->ai_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	cr_type->ai_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(cr_type->ai_type_path,buffer);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	cr_type->cr_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	cr_type->cr_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(cr_type->cr_set_path,buffer);
 
-	cr_type->cr_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	cr_type->cr_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(cr_type->cr_type_path,buffer);
 
 	fclose(fp);

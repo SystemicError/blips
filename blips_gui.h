@@ -40,6 +40,10 @@
 #include<math.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 #ifndef _BLIPS_GAME_H
 #include"blips_game.h"
 #endif

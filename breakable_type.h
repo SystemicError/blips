@@ -16,6 +16,10 @@
 #include<string.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 typedef struct breakable_type
 {
 	int toughness;

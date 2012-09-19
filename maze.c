@@ -57,7 +57,7 @@ void maze_generate(maze *m)
 		if(!maze_partitioned_by_wall(m,cell,direction,cell2,direction2))
 			m->tiles[cell][direction]=m->tiles[cell2][direction2]=0;
 	}while(!maze_is_maximal(m));
-	return m;
+	return;
 }
 
 

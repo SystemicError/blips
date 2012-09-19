@@ -17,8 +17,8 @@ ai_type* ai_type_create(char *path)
 		exit(1);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 
 	if(!strcmp(buffer,"dodge"))
 		ait->move_goal=AI_DODGE;
@@ -34,8 +34,8 @@ ai_type* ai_type_create(char *path)
 		ait->move_goal=AI_PATROL_EW;
 
 	
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 
 	if(!strcmp(buffer,"face"))
 		ait->aim_goal=AI_FACE;
@@ -48,8 +48,8 @@ ai_type* ai_type_create(char *path)
 	else if(!strcmp(buffer,"as_velocity"))
 		ait->aim_goal=AI_AS_VELOCITY;
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 
 	if(!strcmp(buffer,"spam"))
 		ait->fire_goal=AI_SPAM;

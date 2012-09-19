@@ -25,45 +25,45 @@ creature_media_set* creature_media_set_create(char *path)
 
 	/*** Animations ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(cr_set->stand_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(cr_set->walk_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(cr_set->walk_and_fire_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(cr_set->fire_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
@@ -72,8 +72,8 @@ creature_media_set* creature_media_set_create(char *path)
 
 	/*** Sounds ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->stand_sound=Mix_LoadWAV(buffer)))
@@ -85,8 +85,8 @@ creature_media_set* creature_media_set_create(char *path)
 	else
 		cr_set->stand_sound=0;
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->walk_sound=Mix_LoadWAV(buffer)))
@@ -98,8 +98,8 @@ creature_media_set* creature_media_set_create(char *path)
 	else
 		cr_set->walk_sound=0;
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->walk_and_fire_sound=Mix_LoadWAV(buffer)))
@@ -111,8 +111,8 @@ creature_media_set* creature_media_set_create(char *path)
 	else
 		cr_set->walk_and_fire_sound=0;
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->fire_sound=Mix_LoadWAV(buffer)))
@@ -124,8 +124,8 @@ creature_media_set* creature_media_set_create(char *path)
 	else
 		cr_set->fire_sound=0;
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->stun_sound=Mix_LoadWAV(buffer)))

@@ -24,6 +24,10 @@
 #include<cairo.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 typedef struct sprite_animation
 {
 	int num_frames;

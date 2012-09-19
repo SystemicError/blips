@@ -22,18 +22,18 @@ projectile_media_set* projectile_media_set_create(char *path)
 
 	/*** Animations ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(pr_set->fly_animation,buffer);
 	}
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
@@ -42,8 +42,8 @@ projectile_media_set* projectile_media_set_create(char *path)
 
 	/*** Sounds ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(pr_set->impact_sound=Mix_LoadWAV(buffer)))

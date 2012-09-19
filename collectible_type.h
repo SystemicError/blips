@@ -16,6 +16,10 @@
 #include<string.h>
 #endif
 
+#ifndef _DEFS_H
+#include"defs.h"
+#endif
+
 typedef struct collectible_type
 {
 	char *co_set_path;

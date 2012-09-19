@@ -26,29 +26,31 @@ blips_campaign *blips_campaign_create(char *path)
 
 	/*** Object Key ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	bc->object_key_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+printf("Got object key path:  %s.\n",buffer);
+	bc->object_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->object_key_path,buffer);
 
 	/*** Tile Image Key ***/
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	bc->tile_image_key_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+printf("Got tile image key path:  %s.\n",buffer);
+	bc->tile_image_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->tile_image_key_path,buffer);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	bc->starting_world_tile_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	bc->starting_world_tile_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->starting_world_tile_path,buffer);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
-	fgets(buffer,strlen(buffer),fp);
-	bc->statics_list_path=(char*)malloc(sizeof(char)*strlen(buffer));
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	bc->statics_list_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->statics_list_path,buffer);
 
-	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(bc->num_players));
 
 	bc->player_starting_rows=(int*)malloc(sizeof(int)*bc->num_players);
@@ -57,14 +59,14 @@ blips_campaign *blips_campaign_create(char *path)
 
 	for(i=0;i<bc->num_players;i++)
 	{
-		fgets(buffer,strlen(buffer),fp);  /* comment line */
+		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 		fscanf(fp,"%d\n",bc->player_starting_rows+i);
-		fgets(buffer,strlen(buffer),fp);  /* comment line */
+		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 		fscanf(fp,"%d\n",bc->player_starting_cols+i);
 
-		fgets(buffer,strlen(buffer),fp);  /* comment line */
-		fgets(buffer,strlen(buffer),fp);
-		bc->player_type_file_paths[i]=(char*)malloc(sizeof(char)*strlen(buffer));
+		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+		fgets(buffer,BUFFER_SIZE,fp);
+		bc->player_type_file_paths[i]=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 		strcpy(bc->player_type_file_paths[i],buffer);
 	}
 
