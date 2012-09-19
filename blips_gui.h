@@ -140,6 +140,7 @@ void blips_gui_load_background_images(blips_gui *bgui);
 	/* render */
 void blips_gui_render_screen(blips_gui *bgui);
 void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
+void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 
 	/* events */

@@ -129,18 +129,13 @@ void blips_gui_main_loop(blips_gui *bgui)
 	while(!quit)
 	{
 		/* display stuff */
-printf("Rendering screen . . .\n");
 		blips_gui_render_screen(bgui);
 
 		/* listen for stuff */
-printf("Polling events . . .\n");
 		while(SDL_PollEvent(&event))
 			quit=blips_gui_fetch_inputs(bgui,&event,inputs);
 
 		/* check if world tile has changed */
-printf("Checking for world tile updates . . .\n");
-printf("Active wt path (bgui):  %s.\n",bgui->active_world_tile_path);
-printf("Active wt path (bgame):  %s.\n",blips_game_active_world_tile(bgui->game)->path);
 		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
 {
 printf("Strings differ; need update.\n");
@@ -148,7 +143,6 @@ printf("Strings differ; need update.\n");
 }
 
 		/* iterate the game */
-printf("Iterating game . . .\n");
 		blips_game_step(bgui->game,inputs);
 	}
 	blips_input_state_destroy(inputs);
@@ -289,6 +283,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 	cr=cairo_create(surface);
 
 	blips_gui_render_bg(bgui,cr,surface);
+	blips_gui_render_tiles(bgui,cr,surface);
 	blips_gui_render_objects(bgui,cr,surface);
 
 	cairo_surface_destroy(surface);
@@ -367,7 +362,7 @@ void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
 	cairo_pattern_t *pattern;
 
-	/* if bg is not set for active world tile, leave */
+	/* if bg is not set for active world tile, skip to tiles images */
 	if(!(bgui->active_background))
 		return;
 
@@ -379,6 +374,19 @@ void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 
 	cairo_pattern_destroy(pattern);
 
+	return;
+}
+
+void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
+{
+	int i,j;
+
+	for(i=0;i<BLIPS_TILE_ROWS;i++)
+		for(j=0;j<BLIPS_TILE_COLS;j++)
+		{
+			cairo_set_source_surface(cr,bgui->active_tiles[i][j],j*BLIPS_TILE_SIZE,i*BLIPS_TILE_SIZE);
+			cairo_paint(cr);
+		}
 	return;
 }
 
