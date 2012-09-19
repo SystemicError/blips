@@ -85,6 +85,9 @@ void maze_place_wall(maze *m,int r,int c,int direction)
 	cell=r*m->columns+c;
 	m->tiles[cell][direction]=0;
 	maze_get_opposing_link(m->columns,cell,direction,&cell2,&direction2);
+
+	if(cell2<0 || cell2>=m->rows*m->columns)  /* opposing link could be outside maze */
+		return;
 	m->tiles[cell2][direction2]=0;
 	return;
 }
