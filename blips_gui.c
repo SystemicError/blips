@@ -141,7 +141,7 @@ printf("Polling events . . .\n");
 printf("Checking for world tile updates . . .\n");
 printf("Active wt path (bgui):  %s.\n",bgui->active_world_tile_path);
 printf("Active wt path (bgame):  %s.\n",blips_game_active_world_tile(bgui->game)->path);
-		if(bgui->num_background_images && strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
+		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
 {
 printf("Strings differ; need update.\n");
 			blips_gui_update_active_world_tile(bgui);
@@ -230,9 +230,13 @@ printf("Copying new path . . .\n");
 	strcpy(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path);
 
 	/* update the active background */
+
+	if(bgui->num_background_images)
+{
 printf("Updating active bg . . .\n");
 printf("Index selection:  %d.\n",blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images));
 	bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
+}
 
 	/* update the active tiles */
 printf("Updating active tiles . . .\n");
