@@ -10,7 +10,6 @@ world_tile* world_tile_create(char *path)
 	char buffer[BUFFER_SIZE];
 	int i,j;
 
-printf("Allocating world tile for path %s.\n",path);
 	wt=(world_tile*)malloc(sizeof(world_tile));
 	if(!(fp=fopen(path,"r")))
 	{
@@ -116,13 +115,12 @@ void world_tile_destroy(world_tile *wt)
 
 void world_tile_parse_barriers(FILE *fp,maze *m)
 {
-	char buffer[BLIPS_TILE_COLS*2+1];
+	char buffer[BLIPS_TILE_COLS*2+2];  /* needs two extra chars for endline, null terminator */
 	int i,j;
 
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
-printf("i=%d.\n",i);
-		fgets(buffer,BLIPS_TILE_COLS*2+1,fp);
+		fgets(buffer,BLIPS_TILE_COLS*2+2,fp);
 printf("Got line %d:  %s\n",i,buffer);
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
