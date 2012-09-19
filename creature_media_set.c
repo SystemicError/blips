@@ -3,7 +3,7 @@
 
 #include"creature_media_set.h"
 
-creature_media_set* creature_media_set_new(char *path)
+creature_media_set* creature_media_set_create(char *path)
 {
 	creature_media_set *cr_set;
 	char buffer[1024];
@@ -17,11 +17,11 @@ creature_media_set* creature_media_set_new(char *path)
 		exit(1);
 	}
 
-	cr_set->stand_animation=sprite_animation_new();
-	cr_set->walk_animation=sprite_animation_new();
-	cr_set->walk_and_fire_animation=sprite_animation_new();
-	cr_set->fire_animation=sprite_animation_new();
-	cr_set->stun_animation=sprite_animation_new();
+	cr_set->stand_animation=sprite_animation_create();
+	cr_set->walk_animation=sprite_animation_create();
+	cr_set->walk_and_fire_animation=sprite_animation_create();
+	cr_set->fire_animation=sprite_animation_create();
+	cr_set->stun_animation=sprite_animation_create();
 
 	/*** Animations ***/
 

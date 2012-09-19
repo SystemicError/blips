@@ -22,7 +22,7 @@ typedef struct collectible_type
 	char *co_type_path;
 } collectible_type;
 
-collectible_type* collectible_type_new(char *path);
+collectible_type* collectible_type_create(char *path);
 void collectible_type_destroy(collectible_type *co_type);
 
 #endif

@@ -27,7 +27,7 @@ typedef struct creature_type
 	char *cr_type_path;
 } creature_type;
 
-creature_type* creature_type_new(char *path);
+creature_type* creature_type_create(char *path);
 void creature_type_destroy(creature_type *cr_type);
 
 #endif

@@ -3,7 +3,7 @@
 
 #include"collectible_type.h"
 
-collectible_type* collectible_type_new(char *path)
+collectible_type* collectible_type_create(char *path)
 {
 	FILE *fp;
 	collectible_type *co_type;

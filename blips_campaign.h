@@ -30,7 +30,7 @@ typedef struct blips_campaign
 	char *path_prefix;
 } blips_campaign;
 
-blips_campaign *blips_campaign_new(char *path);
+blips_campaign *blips_campaign_create(char *path);
 void blips_campaign_destroy(blips_campaign *bc);
 
 #endif

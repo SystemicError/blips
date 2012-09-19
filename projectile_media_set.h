@@ -27,7 +27,7 @@ typedef struct projectile_media_set
 	Mix_Chunk *impact_sound;
 } projectile_media_set;
 
-projectile_media_set* projectile_media_set_new(char *path);
+projectile_media_set* projectile_media_set_create(char *path);
 void projectile_media_set_destroy(projectile_media_set *pr_set);
 
 #endif

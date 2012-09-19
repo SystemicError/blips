@@ -23,7 +23,7 @@ typedef struct breakable_type
 	char *br_type_path;
 } breakable_type;
 
-breakable_type* breakable_type_new(char *path);
+breakable_type* breakable_type_create(char *path);
 void breakable_type_destroy(breakable_type *br_type);
 
 #endif

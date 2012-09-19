@@ -29,7 +29,7 @@ typedef struct ai_type
 	char *ai_type_path;
 } ai_type;
 
-ai_type* ai_type_new(char *path);
+ai_type* ai_type_create(char *path);
 void ai_type_destroy(ai_type *ai_type);
 
 #endif

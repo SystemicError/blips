@@ -3,7 +3,7 @@
 
 #include"breakable_media_set.h"
 
-breakable_media_set* breakable_media_set_new(char *path)
+breakable_media_set* breakable_media_set_create(char *path)
 {
 	breakable_media_set *br_set;
 	char buffer[1024];
@@ -17,8 +17,8 @@ breakable_media_set* breakable_media_set_new(char *path)
 		exit(1);
 	}
 
-	br_set->stand_animation=sprite_animation_new();
-	br_set->break_animation=sprite_animation_new();
+	br_set->stand_animation=sprite_animation_create();
+	br_set->break_animation=sprite_animation_create();
 
 	fscanf(fp,"%s\n",buffer);  /* comment line */
 	fscanf(fp,"%d\n",&count);

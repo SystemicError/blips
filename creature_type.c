@@ -3,7 +3,7 @@
 
 #include"creature_type.h"
 
-creature_type* creature_type_new(char *path)
+creature_type* creature_type_create(char *path)
 {
 	FILE *fp;
 	creature_type *cr_type;

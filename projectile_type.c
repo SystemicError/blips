@@ -8,7 +8,7 @@
 	char *pr_set_path;
 	char *pr_type_path;
 
-projectile_type* projectile_type_new(char *path)
+projectile_type* projectile_type_create(char *path)
 {
 	FILE *fp;
 	projectile_type *pr_type;

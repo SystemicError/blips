@@ -3,7 +3,7 @@
 
 #include"projectile_media_set.h"
 
-projectile_media_set* projectile_media_set_new(char *path)
+projectile_media_set* projectile_media_set_create(char *path)
 {
 	projectile_media_set *pr_set;
 	char buffer[1024];
@@ -17,8 +17,8 @@ projectile_media_set* projectile_media_set_new(char *path)
 		exit(1);
 	}
 
-	pr_set->fly_animation=sprite_animation_new();
-	pr_set->impact_animation=sprite_animation_new();
+	pr_set->fly_animation=sprite_animation_create();
+	pr_set->impact_animation=sprite_animation_create();
 
 	/*** Animations ***/
 

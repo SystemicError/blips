@@ -3,7 +3,7 @@
 
 #include"breakable_type.h"
 
-breakable_type* breakable_type_new(char *path)
+breakable_type* breakable_type_create(char *path)
 {
 	breakable_type *br_type;
 	FILE *fp;

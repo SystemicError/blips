@@ -4,7 +4,7 @@
 
 #include"ai_type.h"
 
-ai_type* ai_type_new(char *path)
+ai_type* ai_type_create(char *path)
 {
 	ai_type *ait;
 	FILE *fp;

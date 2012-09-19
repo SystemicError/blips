@@ -3,7 +3,7 @@
 
 #include"collectible_media_set.h"
 
-collectible_media_set* collectible_media_set_new(char *path)
+collectible_media_set* collectible_media_set_create(char *path)
 {
 	collectible_media_set *co_set;
 	char buffer[1024];
@@ -17,7 +17,7 @@ collectible_media_set* collectible_media_set_new(char *path)
 		exit(1);
 	}
 
-	co_set->stand_animation=sprite_animation_new();
+	co_set->stand_animation=sprite_animation_create();
 
 	fscanf(fp,"%s\n",buffer);  /* comment line */
 	fscanf(fp,"%d\n",&count);

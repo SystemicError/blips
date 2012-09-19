@@ -3,7 +3,7 @@
 
 #include"sprite_animation.h"
 
-sprite_animation* sprite_animation_new(void)
+sprite_animation* sprite_animation_create(void)
 {
 	sprite_animation *sa;
 	sa=(sprite_animation*)malloc(sizeof(sprite_animation));

@@ -3,7 +3,7 @@
 
 #include"blips_campaign.h"
 
-blips_campaign *blips_campaign_new(char *path)
+blips_campaign *blips_campaign_create(char *path)
 {
 	FILE *fp;
 	blips_campaign *bc;

@@ -31,7 +31,7 @@ typedef struct sprite_animation
 	cairo_surface_t **frames;
 } sprite_animation;
 
-sprite_animation* sprite_animation_new(void);
+sprite_animation* sprite_animation_create(void);
 
 void sprite_animation_destroy(sprite_animation *sa);
 

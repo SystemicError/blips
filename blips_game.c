@@ -31,7 +31,8 @@ void blips_game_destroy(blips_game *bgame)
 
 void blips_game_load_campaign(blips_game *bgame,char *path)
 {
-	/*UNFINISHED */
+	bgame->campaign=blips_campaign_create(path);
+	/*UNFINISHED? -- do we need to do more from here, or will constructor have handled things?*/
 	return;
 }
 

@@ -35,6 +35,7 @@ blips_gui* blips_gui_create(blips_game *bgame)
 
 	/*** Audio ***/
 
+printf("Initializing audio . . .\n");
 	if(SDL_Init(SDL_INIT_AUDIO)<0)
 	{
 		fprintf(stderr,"Couldn't initialize audio.\n");
@@ -51,6 +52,7 @@ blips_gui* blips_gui_create(blips_game *bgame)
 
 	bgui->game=bgame;
 
+printf("Filling cache . . .\n");
 	blips_gui_fill_cache(bgui);
 
 	return bgui;
@@ -165,8 +167,14 @@ void blips_gui_fill_cache(blips_gui *bgui)
 
 	/* begin with the easy stuff, the image tile key */
 
-	fp=fopen(bgui->game->campaign->tile_image_key_path,"r");
+printf("Opening tile image key . . .\n");
+	if(!(fp=fopen(bgui->game->campaign->tile_image_key_path,"r")))
+	{
+		fprintf(stderr,"Couldn't open tile_image_key:  %s.\n",bgui->game->campaign->tile_image_key_path);
+		exit(1);
+	}
 
+printf("Reading tile image key . . .\n");
 	fscanf(fp,"%s\n",path);  /* comment line */
 	fscanf(fp,"%d\n",bgui->num_tile_images);
 

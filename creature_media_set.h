@@ -34,7 +34,7 @@ typedef struct creature_media_set
 	Mix_Chunk *stun_sound;
 } creature_media_set;
 
-creature_media_set* creature_media_set_new(char *path);
+creature_media_set* creature_media_set_create(char *path);
 void creature_media_set_destroy(creature_media_set *cr_set);
 
 #endif

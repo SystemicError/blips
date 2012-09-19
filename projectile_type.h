@@ -24,7 +24,7 @@ typedef struct projectile_type
 	char *pr_type_path;
 } projectile_type;
 
-projectile_type* projectile_type_new(char *path);
+projectile_type* projectile_type_create(char *path);
 void projectile_type_destroy(projectile_type *pr_type);
 
 #endif

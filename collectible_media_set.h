@@ -26,7 +26,7 @@ typedef struct collectible_media_set
 	Mix_Chunk *pickup_sound;
 } collectible_media_set;
 
-collectible_media_set* collectible_media_set_new(char *path);
+collectible_media_set* collectible_media_set_create(char *path);
 void collectible_media_set_destroy(collectible_media_set *co_set);
 
 #endif
