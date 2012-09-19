@@ -182,20 +182,24 @@ printf("Opening tile image key . . .\n");
 		exit(1);
 	}
 
-printf("Reading tile image key . . .\n");
-	fgets(path,strlen(path),fp);  /* comment line */
-	fscanf(fp,"%d\n",bgui->num_tile_images);
+	fgets(path,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(bgui->num_tile_images));
 
 	bgui->tile_images=(cairo_surface_t**)malloc(sizeof(cairo_surface_t*)*bgui->num_tile_images);
 	bgui->tile_key=(char**)malloc(sizeof(char*)*bgui->num_tile_images);
 
-	fgets(path,strlen(path),fp);  /* comment line */
+	fgets(path,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<bgui->num_tile_images;i++)
 	{
 		bgui->tile_key[i]=(char*)malloc(sizeof(char)*2);
-		fscanf(fp,"%s=%s\n",bgui->tile_key[i],path);
+		bgui->tile_key[i][0]=fgetc(fp);
+		bgui->tile_key[i][1]=fgetc(fp);
+		fscanf(fp,"=%s\n",path);
+printf("Loading tile image of path:  %s.\n",path);
 		bgui->tile_images[i]=cairo_image_surface_create_from_png(path);
 	}
+
+	fclose(fp);
 
 	/* UNFINISHED */
 bgui->num_br_sets=0;
@@ -210,7 +214,6 @@ bgui->num_pr_sets=0;
 	/* finally, set the active world tile string to 0 so it will update next cycle */
 	bgui->active_world_tile_path[0]=0;
 
-	fclose(fp);
 	return;
 }
 
