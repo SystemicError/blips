@@ -19,7 +19,7 @@ world_tile* world_tile_create(char *path)
 
 	/*** Object Map ***/
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	/*UNFINISHED*/
 for(i=0;i<11;i++)
 fscanf(fp,"%s\n",buffer);
@@ -35,7 +35,7 @@ fscanf(fp,"%s\n",buffer);
 
 	/*** Image Map ***/
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
@@ -45,37 +45,37 @@ fscanf(fp,"%s\n",buffer);
 
 	/*** Background Image ***/
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->background_image=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->background_image,buffer);
 
 	/*** Neighboring tiles ***/
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->north_tile=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->north_tile,buffer);
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->east_tile=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->east_tile,buffer);
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->south_tile=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->south_tile,buffer);
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->west_tile=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->west_tile,buffer);
 
 	/*** Music ***/
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	wt->music=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(wt->music,buffer);
 
@@ -104,7 +104,7 @@ void world_tile_parse_barriers(FILE *fp,maze *m)
 	char buffer[BLIPS_TILE_COLS*2];
 	int i,j;
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
 		fscanf(fp,"%s\n",buffer);

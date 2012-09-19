@@ -21,14 +21,14 @@ projectile_type* projectile_type_create(char *path)
 		exit(1);
 	}
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%d\n",pr_type->damage);
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%d\n",pr_type->move_speed);
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp); 
 	pr_type->pr_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(pr_type->pr_set_path,buffer);
 

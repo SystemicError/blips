@@ -16,10 +16,10 @@ breakable_type* breakable_type_create(char *path)
 		exit(1);
 	}
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%d\n",&(br_type->toughness));
-	fscanf(fp,"%s\n",buffer);  /* comment line */
 
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%s\n",buffer);
 	br_type->br_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(br_type->br_type_path,buffer);

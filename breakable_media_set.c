@@ -20,26 +20,26 @@ breakable_media_set* breakable_media_set_create(char *path)
 	br_set->stand_animation=sprite_animation_create();
 	br_set->break_animation=sprite_animation_create();
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(br_set->stand_animation,buffer);
 	}
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
 		fscanf(fp,"%s\n",buffer);
 		sprite_animation_add_frame(br_set->break_animation,buffer);
 	}
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 	if(strcmp(buffer,"none"))
 	{
 		if(!(br_set->break_sound=Mix_LoadWAV(buffer)))

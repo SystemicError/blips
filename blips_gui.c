@@ -175,13 +175,13 @@ printf("Opening tile image key . . .\n");
 	}
 
 printf("Reading tile image key . . .\n");
-	fscanf(fp,"%s\n",path);  /* comment line */
+	fgets(path,strlen(path),fp);  /* comment line */
 	fscanf(fp,"%d\n",bgui->num_tile_images);
 
 	bgui->tile_images=(cairo_surface_t**)malloc(sizeof(cairo_surface_t*)*bgui->num_tile_images);
 	bgui->tile_key=(char**)malloc(sizeof(char*)*bgui->num_tile_images);
 
-	fscanf(fp,"%s\n",path);  /* comment line */
+	fgets(path,strlen(path),fp);  /* comment line */
 	for(i=0;i<bgui->num_tile_images;i++)
 	{
 		bgui->tile_key[i]=(char*)malloc(sizeof(char)*2);

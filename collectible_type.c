@@ -16,9 +16,9 @@ collectible_type* collectible_type_create(char *path)
 		exit(1);
 	}
 
-	fscanf(fp,"%s\n",buffer);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);  /* comment line */
+	fgets(buffer,strlen(buffer),fp);
 
-	fscanf(fp,"%s\n",buffer);
 	co_type->co_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(co_type->co_set_path,buffer);
 
