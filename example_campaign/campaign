@@ -1,11 +1,11 @@
 Object Key:
-example.object_key
+example_campaign/example.object_key
 Tile Image Key:
-example.tile_image_key
+example_campaign/example.tile_image_key
 Starting World Tile:
-world_tiles/example.world_tile
+example_campaign/world_tiles/example.world_tile
 Statics List:
-example.statics
+example_campaign/example.statics
 Number of Players:
 1
 	Player 0 Starting Row:
@@ -13,6 +13,6 @@ Number of Players:
 	Player 0 Starting Column:
 0
 	Player 0 Type File:
-stats/creature_types/example_0.creature
+example_campaign/stats/creature_types/example_0.creature
 Comments:
 Indented Player headers would repeat if num players>1.

@@ -1,12 +1,12 @@
 Number of Breakable Strings:
 1
 Breakable Strings:
-00=stats/breakable_types/example_0.breakable
+00=example_campaign/stats/breakable_types/example_0.breakable
 Number of Collectible Strings:
 1
 Collectible Strings:
-+h=stats/collectible_types/example.collectible
++h=example_campaign/stats/collectible_types/example.collectible
 Number of Creature Strings:
 1
 Creature Strings:
-aa=stats/creature_types/example_1.creature
+aa=example_campaign/stats/creature_types/example_1.creature

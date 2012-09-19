@@ -57,7 +57,7 @@ none
 West Tile:
 none
 Music:
-music/example.ogg
+example_campaign/music/example.ogg
 Comments:
 
 Nothing after the "Comments:" line is parsed!

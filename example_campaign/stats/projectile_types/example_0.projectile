@@ -3,4 +3,4 @@ Damage:
 Move Speed:
 3
 Projectile Media Set:
-media_sets/projectiles/example_0.projectile_media_set
+example_campaign/media_sets/projectiles/example_0.projectile_media_set

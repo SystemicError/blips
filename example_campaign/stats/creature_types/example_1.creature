@@ -1,15 +1,15 @@
 Max Health:
 2
 Projectile Type:
-stats/projectile_types/example_1.projectile
+example_campaign/stats/projectile_types/example_1.projectile
 Move Speed:
 5
 Fire Delay:
 2
 AI Type:
-stats/ai_types/example.ai
+example_campaign/stats/ai_types/example.ai
 Creature Media Set:
-media_sets/creatures/example_1.creature_media_set
+example_campaign/media_sets/creatures/example_1.creature_media_set
 Comments:
 
 A simple enemy

@@ -4,7 +4,7 @@ Static Creatures:
 Number of Static Objects:
 1
 Static Objects:
-world_tile/example.world_tile
+example_campaign/world_tile/example.world_tile
 	8
 	1
 	+h

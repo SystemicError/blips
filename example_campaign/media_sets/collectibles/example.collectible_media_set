@@ -1,10 +1,10 @@
 Number of STAND animation frames:
 2
 STAND animation frames:
-animations/collectibles/example/stand_0.png
-animations/collectibles/example/stand_1.png
+example_campaign/animations/collectibles/example/stand_0.png
+example_campaign/animations/collectibles/example/stand_1.png
 PICKUP sound:
-sounds/collectibles/example/pickup.wav
+example_campaign/sounds/collectibles/example/pickup.wav
 Comments:
 
 A simple collectible media set.

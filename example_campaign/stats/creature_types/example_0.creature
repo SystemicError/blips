@@ -1,7 +1,7 @@
 Max Health:
 20
 Projectile Type:
-stats/projectile_types/example_0.projectile
+example_campaign/stats/projectile_types/example_0.projectile
 Move Speed:
 4
 Fire Delay:
@@ -9,7 +9,7 @@ Fire Delay:
 AI Type:
 player_0
 Creature Media Set:
-media_sets/creatures/example_0.creature_media_set
+example_campaign/media_sets/creatures/example_0.creature_media_set
 Comments:
 
 A simple player avatar. 
