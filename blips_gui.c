@@ -102,8 +102,6 @@ printf("Freeing media.\n");
 	if(bgui->background_images)
 		free(bgui->background_images);
 
-	/* UNFINISHED -- none of the keys are freed!  Don't free background_key, though. */
-printf("Destruction incomplete!  Finish this!\n");
 
 printf("Closing audio.\n");
 	Mix_CloseAudio();
@@ -441,7 +439,6 @@ int blips_gui_string_to_pointer_index(char *string,char **string_array,int count
 	lower=0;
 	middle=(lower+upper)/2;
 
-printf("Got request to convert string \"%s\" in matching index in array of size %d.\n",string,count);
 
 	while(comparison=strcmp(string,string_array[middle]))
 	{

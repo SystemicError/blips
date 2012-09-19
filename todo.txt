@@ -13,6 +13,4 @@
 -Write breakable,collectible,creature,projectile
 -Finish game definition.
 
--Remainder of campaign prefix code.
-
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, among others.

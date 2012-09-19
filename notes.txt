@@ -77,3 +77,7 @@ Should AI have args for lag_face and spurt?
 
 tile_strings in world_tile is two long.
 tile_key in blips_gui is three long, for null terminator.
+
+blips_gui doesn't instantiate keys; doesn't need to free them.
+
+Um, since I'm writing all my headers with ifndef ... endif protection, do I really need to do the ifndef/include/endif thing each time?
