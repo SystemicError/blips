@@ -191,9 +191,10 @@ printf("Opening tile image key . . .\n");
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<bgui->num_tile_images;i++)
 	{
-		bgui->tile_key[i]=(char*)malloc(sizeof(char)*2);
+		bgui->tile_key[i]=(char*)malloc(sizeof(char)*3);
 		bgui->tile_key[i][0]=fgetc(fp);
 		bgui->tile_key[i][1]=fgetc(fp);
+		bgui->tile_key[i][2]=0;  /* null terminator */
 		fscanf(fp,"=%s\n",path);
 printf("Loading tile image of path:  %s.\n",path);
 		bgui->tile_images[i]=cairo_image_surface_create_from_png(path);
@@ -227,6 +228,7 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 	 *** only once for each world tile. */
 
 	int i,j;
+	char tile_string[3];
 
 printf("Copying new path . . .\n");
 	/* update the active world tile path */
@@ -243,9 +245,14 @@ printf("Index selection:  %d.\n",blips_gui_string_to_pointer_index(bgui->active_
 
 	/* update the active tiles */
 printf("Updating active tiles . . .\n");
+	tile_string[2]=0;
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 		for(j=0;j<BLIPS_TILE_COLS;j++)
-			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images)];
+		{
+			tile_string[0]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][0];
+			tile_string[1]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][1];
+			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(tile_string,bgui->tile_key,bgui->num_tile_images)];
+		}
 	return;
 }
 
@@ -309,10 +316,10 @@ void blips_gui_load_background_images(blips_gui *bgui)
 	bgui->num_background_images=0;
 	for(i=0;i<bgui->game->num_world_tiles;i++)
 	{
-		if(strcmp(bgui->game->world_tiles[i]->path,"none"))
+		if(strcmp(bgui->game->world_tiles[i]->background_image,"none"))
 		{
 			for(j=0;j<bgui->num_background_images;j++)
-				if(!strcmp(bgui->game->world_tiles[i]->path,bgui->background_key[j]))
+				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_key[j]))
 				{
 					/* This is a duplicate; skip it. */
 					j=bgui->num_background_images;
@@ -326,7 +333,7 @@ void blips_gui_load_background_images(blips_gui *bgui)
 				bgui->background_key=(char**)realloc(bgui->background_key,sizeof(char*)*(bgui->num_background_images+1));
 					/* copy data */
 				bgui->background_images[bgui->num_background_images]=cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image);
-				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->path;
+				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->background_image;
 					/* increase count */
 				bgui->num_background_images++;
 			}

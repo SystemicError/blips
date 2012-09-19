@@ -73,3 +73,7 @@ Preload all world tiles (should be easy with tile system, and we're already prel
 
 
 Should AI have args for lag_face and spurt?
+
+
+tile_strings in world_tile is two long.
+tile_key in blips_gui is three long, for null terminator.
