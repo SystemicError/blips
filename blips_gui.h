@@ -107,7 +107,7 @@ typedef struct blips_gui
 
 	/* background image cache */
 	cairo_surface_t **background_images;
-	char **background_key;
+	char **background_key;  /* a link copy only */
 	int num_background_images;
 
 	/* active tile array */
@@ -117,10 +117,10 @@ typedef struct blips_gui
 	cairo_surface_t *active_background;
 
 	/* active music */
-	char active_music_path[1024];
+	char active_music_path[BUFFER_SIZE];
 
 	/* active world tile path */
-	char active_world_tile_path[1024];
+	char active_world_tile_path[BUFFER_SIZE];
 } blips_gui;
 
 blips_gui* blips_gui_create(blips_game *bgame);
@@ -135,6 +135,7 @@ void blips_gui_main_loop(blips_gui *bgui);
 	/* load */
 void blips_gui_fill_cache(blips_gui *bgui);  /* reads tile+object keys and initializes wts */
 void blips_gui_update_active_world_tile(blips_gui *bgui);
+void blips_gui_load_background_images(blips_gui *bgui);
 
 	/* render */
 void blips_gui_render_screen(blips_gui *bgui);

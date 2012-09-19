@@ -150,6 +150,7 @@ printf("Loading world tiles . . .\n");
 	}
 
 	blips_game_add_world_tile(bgame,bgame->campaign->starting_world_tile_path);
+	bgame->active_world_tile=bgame->world_tiles[0];
 
 	/* Terribly inefficient, I know.  We only do this once.  */
 	do

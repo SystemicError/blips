@@ -102,6 +102,9 @@ printf("Freeing media.\n");
 	if(bgui->background_images)
 		free(bgui->background_images);
 
+	/* UNFINISHED -- none of the keys are freed!  Don't free background_key, though. */
+printf("Destruction incomplete!  Finish this!\n");
+
 printf("Closing audio.\n");
 	Mix_CloseAudio();
 	SDL_JoystickClose(bgui->joy);
@@ -136,8 +139,13 @@ printf("Polling events . . .\n");
 
 		/* check if world tile has changed */
 printf("Checking for world tile updates . . .\n");
-		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
+printf("Active wt path (bgui):  %s.\n",bgui->active_world_tile_path);
+printf("Active wt path (bgame):  %s.\n",blips_game_active_world_tile(bgui->game)->path);
+		if(bgui->num_background_images && strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
+{
+printf("Strings differ; need update.\n");
 			blips_gui_update_active_world_tile(bgui);
+}
 
 		/* iterate the game */
 printf("Iterating game . . .\n");
@@ -165,7 +173,7 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	char path[BUFFER_SIZE];
 	int i;
 
-	/* begin with the easy stuff, the image tile key */
+	/*** Image Tile Key ***/
 
 printf("Opening tile image key . . .\n");
 	if(!(fp=fopen(bgui->game->campaign->tile_image_key_path,"r")))
@@ -194,7 +202,10 @@ bgui->num_br_sets=0;
 bgui->num_co_sets=0;
 bgui->num_cr_sets=0;
 bgui->num_pr_sets=0;
-bgui->num_background_images=0;
+
+	/*** Background Images ***/
+
+	blips_gui_load_background_images(bgui);
 
 	/* finally, set the active world tile string to 0 so it will update next cycle */
 	bgui->active_world_tile_path[0]=0;
@@ -214,13 +225,17 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 
 	int i,j;
 
+printf("Copying new path . . .\n");
 	/* update the active world tile path */
 	strcpy(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path);
 
 	/* update the active background */
+printf("Updating active bg . . .\n");
+printf("Index selection:  %d.\n",blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images));
 	bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
 
 	/* update the active tiles */
+printf("Updating active tiles . . .\n");
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(blips_game_active_world_tile(bgui->game)->tile_strings[i][j],bgui->tile_key,bgui->num_tile_images)];
@@ -275,6 +290,64 @@ void blips_gui_render_screen(blips_gui *bgui)
 	SDL_UpdateRect(bgui->screen,0,0,bgui->screen->w,bgui->screen->h);
 	return;
 }
+
+void blips_gui_load_background_images(blips_gui *bgui)
+{
+	int i,j,updated,duplicate;
+	char *chtmp;
+	cairo_surface_t *surftmp;
+
+	/* load bg images from game world tiles */
+
+	bgui->num_background_images=0;
+	for(i=0;i<bgui->game->num_world_tiles;i++)
+	{
+		if(strcmp(bgui->game->world_tiles[i]->path,"none"))
+		{
+			for(j=0;j<bgui->num_background_images;j++)
+				if(!strcmp(bgui->game->world_tiles[i]->path,bgui->background_key[j]))
+				{
+					/* This is a duplicate; skip it. */
+					j=bgui->num_background_images;
+					duplicate=1;
+				}
+			if(!duplicate)
+			{
+				/* Something new!  Add it to both the image list and key list. */
+					/* make room */
+				bgui->background_images=(cairo_surface_t**)realloc(bgui->background_images,sizeof(cairo_surface_t*)*(bgui->num_background_images+1));
+				bgui->background_key=(char**)realloc(bgui->background_key,sizeof(char*)*(bgui->num_background_images+1));
+					/* copy data */
+				bgui->background_images[bgui->num_background_images]=cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image);
+				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->path;
+					/* increase count */
+				bgui->num_background_images++;
+			}
+		}
+	}
+
+	/* sort bg images by file name */
+	for(i=0;i<bgui->num_background_images-1;i++)
+		for(j=i+1;j<bgui->num_background_images;j++)
+			if(strcmp(bgui->background_key[i],bgui->background_key[j])>0)
+			{
+				/* switch mismatched pair */
+				chtmp=bgui->background_key[i];
+				bgui->background_key[i]=bgui->background_key[j];
+				bgui->background_key[j]=chtmp;
+
+				surftmp=bgui->background_images[i];
+				bgui->background_images[i]=bgui->background_images[j];
+				bgui->background_images[j]=surftmp;
+			}
+printf("Bg key (should have no duplicates):\n");
+for(i=0;i<bgui->num_background_images;i++)
+printf("%s\n",bgui->background_key[i]);
+
+	return;
+}
+
+/*** render ***/
 
 void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
@@ -335,9 +408,18 @@ int blips_gui_string_to_pointer_index(char *string,char **string_array,int count
 	 *** the list of objects corresponding to the key. */
 
 	int upper,lower,middle,comparison;
+
+	if(count<=0)
+	{
+		fprintf(stderr,"Got binary search request on array of non-positive size!\n");
+		exit(1);
+	}
+
 	upper=count;
 	lower=0;
 	middle=(lower+upper)/2;
+
+printf("Got request to convert string \"%s\" in matching index in array of size %d.\n",string,count);
 
 	while(comparison=strcmp(string,string_array[middle]))
 	{
