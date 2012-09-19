@@ -7,7 +7,7 @@ breakable_type* breakable_type_create(char *path)
 {
 	breakable_type *br_type;
 	FILE *fp;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 
 	br_type=(breakable_type*)malloc(sizeof(breakable_type));
 	if(!(fp=fopen(path,"r")))

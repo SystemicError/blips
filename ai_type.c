@@ -8,7 +8,7 @@ ai_type* ai_type_create(char *path)
 {
 	ai_type *ait;
 	FILE *fp;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 
 	ait=(ai_type*)malloc(sizeof(ai_type));
 	if(!(fp=fopen(path,"r")))

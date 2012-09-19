@@ -162,7 +162,7 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	/* For now, let's assume that the tile key was never read, but its filename was. */
 
 	FILE *fp;
-	char path[1024];
+	char path[BUFFER_SIZE];
 	int i;
 
 	/* begin with the easy stuff, the image tile key */

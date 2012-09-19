@@ -6,7 +6,7 @@
 breakable_media_set* breakable_media_set_create(char *path)
 {
 	breakable_media_set *br_set;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 	FILE *fp;
 	int i,count;
 

@@ -6,7 +6,7 @@
 creature_media_set* creature_media_set_create(char *path)
 {
 	creature_media_set *cr_set;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 	FILE *fp;
 	int i,count;
 

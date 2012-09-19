@@ -7,7 +7,7 @@ collectible_type* collectible_type_create(char *path)
 {
 	FILE *fp;
 	collectible_type *co_type;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 
 	co_type=(collectible_type*)malloc(sizeof(collectible_type));
 	if(!(fp=fopen(path,"r")))

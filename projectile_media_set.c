@@ -6,7 +6,7 @@
 projectile_media_set* projectile_media_set_create(char *path)
 {
 	projectile_media_set *pr_set;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 	FILE *fp;
 	int i,count;
 

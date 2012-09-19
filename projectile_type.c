@@ -12,7 +12,7 @@ projectile_type* projectile_type_create(char *path)
 {
 	FILE *fp;
 	projectile_type *pr_type;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 
 	pr_type=(projectile_type*)malloc(sizeof(projectile_type));
 	if(!(fp=fopen(path,"r")))

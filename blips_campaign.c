@@ -7,8 +7,8 @@ blips_campaign *blips_campaign_create(char *path)
 {
 	FILE *fp;
 	blips_campaign *bc;
-	char buffer[1024];
-	char full_path[1024];
+	char buffer[BUFFER_SIZE];
+	char full_path[BUFFER_SIZE];
 	int i;
 
 	strcpy(full_path,path);

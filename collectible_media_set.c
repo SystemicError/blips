@@ -6,7 +6,7 @@
 collectible_media_set* collectible_media_set_create(char *path)
 {
 	collectible_media_set *co_set;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 	FILE *fp;
 	int i,count;
 

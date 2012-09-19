@@ -7,7 +7,7 @@ creature_type* creature_type_create(char *path)
 {
 	FILE *fp;
 	creature_type *cr_type;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 
 	cr_type=(creature_type*)malloc(sizeof(creature_type));
 	if(!(fp=fopen(path,"r")))

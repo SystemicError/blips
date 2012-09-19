@@ -7,7 +7,7 @@ world_tile* world_tile_create(char *path)
 {
 	world_tile *wt;
 	FILE *fp;
-	char buffer[1024];
+	char buffer[BUFFER_SIZE];
 	int i,j;
 
 	wt=(world_tile*)malloc(sizeof(world_tile));
