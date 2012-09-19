@@ -11,6 +11,8 @@
 +Write world_tile
 +Fix the whitespace problem!  fscanf(fp,"%s\n",buffer); stops at the first whitespace!  Replace with fgets.
 -Write breakable,collectible,creature,projectile
--Finish game definition.
+-Integrate these into game, gui.
+-Get rendering of objects working.
+-Create control scheme (AI/player).
 
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, among others.
