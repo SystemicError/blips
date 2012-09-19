@@ -30,8 +30,6 @@ typedef struct blips_campaign
 	int *player_starting_rows;
 	int *player_starting_cols;
 	char **player_type_file_paths;
-
-	char *path_prefix;
 } blips_campaign;
 
 blips_campaign *blips_campaign_create(char *path);

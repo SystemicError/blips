@@ -24,6 +24,10 @@
 #include"defs.h"
 #endif
 
+#ifndef _AI_TYPE_H
+#include"ai_type.h"
+#endif
+
 #ifndef _BREAKABLE_TYPE_H
 #include"breakable_type.h"
 #endif
@@ -38,6 +42,10 @@
 
 #ifndef _PROJECTILE_TYPE_H
 #include"projectile_type.h"
+#endif
+
+#ifndef _AI_H
+#include"ai.h"
 #endif
 
 #ifndef _BREAKABLE_H
@@ -70,8 +78,33 @@
 
 typedef struct blips_game
 {
-	world_tile *world_tiles;
+	world_tile **world_tiles;
+	int num_world_tiles;
+
+//	ai **ais;
+	int num_ais;
+//	breakable **breakables;
+	int num_breakables;
+//	collectible **collectibles;
+	int num_collectibles;
+//	creature **creatures;
+	int num_creatures;
+//	projectile **projectiles;
+	int num_projectiles;
+
+	ai_type **ai_types;
+	int num_ai_types;
+	breakable_type **br_types;
+	int num_br_types;
+	collectible_type **co_types;
+	int num_co_types;
+	creature_type **cr_types;
+	int num_cr_types;
+	projectile_type **pr_types;
+	int num_pr_types;
+
 	world_tile *active_world_tile;
+
 	blips_campaign *campaign;
 } blips_game;
 
@@ -81,6 +114,7 @@ void blips_game_destroy(blips_game *bgame);
 /* externally called requests */
 
 void blips_game_load_campaign(blips_game *bgame,char *path);
+void blips_game_load_world_tiles(blips_game *bgame);
 
 void blips_game_step(blips_game *bgame,blips_input_state *inputs);
 

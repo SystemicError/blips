@@ -8,21 +8,16 @@ blips_campaign *blips_campaign_create(char *path)
 	FILE *fp;
 	blips_campaign *bc;
 	char buffer[BUFFER_SIZE];
-	char full_path[BUFFER_SIZE];
 	int i;
 
-	strcpy(full_path,path);
-	strcat(full_path,"/campaign");
-
+printf("Creating campaign . . .\n");
 	bc=(blips_campaign*)malloc(sizeof(blips_campaign));
-	if(!(fp=fopen(full_path,"r")))
+printf("Opening file . . .\n");
+	if(!(fp=fopen(path,"r")))
 	{
-		fprintf(stderr,"Couldn't open blips_campaign file:  %s.\n",full_path);
+		fprintf(stderr,"Couldn't open blips_campaign file:  %s.\n",path);
 		exit(1);
 	}
-
-	bc->path_prefix=(char*)malloc(sizeof(char)*strlen(path));
-	strcpy(bc->path_prefix,path);
 
 	/*** Object Key ***/
 
@@ -87,10 +82,15 @@ void blips_campaign_destroy(blips_campaign *bc)
 		fprintf(stderr,"Attempt to free null blips_campaign!\n");
 		exit(1);
 	}
+printf("Freeing object key path.\n");
 	free(bc->object_key_path);
+printf("Tile image key path.\n");
 	free(bc->tile_image_key_path);
+printf("Starting world tile path.\n");
 	free(bc->starting_world_tile_path);
+printf("Statics list path.\n");
 	free(bc->statics_list_path);
+printf("Player type paths.\n");
 	for(i=0;i<bc->num_players;i++)
 		free(bc->player_type_file_paths[i]);
 	if(bc->num_players)

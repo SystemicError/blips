@@ -15,13 +15,13 @@ int main(int argc,char *argv[])
 	bgame=blips_game_create();
 
 	printf("Loading campaign . . .\n");
-	blips_game_load_campaign(bgame,"example_campaign/");
+	blips_game_load_campaign(bgame,"example_campaign/campaign");
 
 	printf("Creating GUI . . .\n");
 	bgui=blips_gui_create(bgame);
 
 	printf("Starting GUI main loop . . .\n");
-	blips_gui_main_loop(bgui);
+//	blips_gui_main_loop(bgui);
 
 	printf("Destroying GUI . . .\n");
 	blips_gui_destroy(bgui);

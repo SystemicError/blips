@@ -68,10 +68,6 @@ printf("Blips GUI destructor called:\n");
 		exit(1);
 	}
 
-printf("Freeing blips game.\n");
-	if(bgui->game)
-		free(bgui->game);
-
 printf("Freeing media.\n");
 	/* media sets */
 	for(i=0;i<bgui->num_br_sets;i++)
@@ -130,17 +126,21 @@ void blips_gui_main_loop(blips_gui *bgui)
 	while(!quit)
 	{
 		/* display stuff */
+printf("Rendering screen . . .\n");
 		blips_gui_render_screen(bgui);
 
 		/* listen for stuff */
+printf("Polling events . . .\n");
 		while(SDL_PollEvent(&event))
 			quit=blips_gui_fetch_inputs(bgui,&event,inputs);
 
 		/* check if world tile has changed */
+printf("Checking for world tile updates . . .\n");
 		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
 			blips_gui_update_active_world_tile(bgui);
 
 		/* iterate the game */
+printf("Iterating game . . .\n");
 		blips_game_step(bgui->game,inputs);
 	}
 	blips_input_state_destroy(inputs);

@@ -6,22 +6,109 @@
 blips_game* blips_game_create(void)
 {
 	blips_game *bgame;
-	bgame=(blips_game*)malloc(sizeof(bgame));
+	bgame=(blips_game*)malloc(sizeof(blips_game));
 
-	/*UNFINISHED*/
+	/*** World tiles ***/
+
+	bgame->world_tiles=0;
+	bgame->num_world_tiles=0;
+
+	/*** Instances of user-specified types ***/
+
+//	bgame->ais=0;
+	bgame->num_ais=0;
+//	bgame->breakables=0;
+	bgame->num_breakables=0;
+//	bgame->collectibles=0;
+	bgame->num_collectibles=0;
+//	bgame->creatures=0;
+	bgame->num_creatures=0;
+//	bgame->projectiles=0;
+	bgame->num_projectiles=0;
+
+	/*** User-specified types ***/
+
+	bgame->ai_types=0;
+	bgame->num_ai_types=0;
+	bgame->br_types=0;
+	bgame->num_br_types=0;
+	bgame->co_types=0;
+	bgame->num_co_types=0;
+	bgame->cr_types=0;
+	bgame->num_cr_types=0;
+	bgame->pr_types=0;
+	bgame->num_pr_types=0;
+
+	/*** Campaign ***/
+
+	bgame->campaign=0;
 
 	return bgame;
 }
 
 void blips_game_destroy(blips_game *bgame)
 {
+	int i;
 	if(!bgame)
 	{
 		fprintf(stderr,"Attempt to free null blips_game!\n");
 		exit(1);
 	}
 
-	/*UNFINISHED*/
+	for(i=0;i<bgame->num_world_tiles;i++)
+		world_tile_destroy(bgame->world_tiles[i]);
+	if(bgame->num_world_tiles)
+		free(bgame->world_tiles);
+
+	/*** Instances of user-specified types ***/
+
+/*	for(i=0;i<bgame->num_ais;i++)
+		ai_destroy(bgame->ais[i]);
+	if(bgame->num_ais)
+		free(bgame->ais);
+	for(i=0;i<bgame->num_breakables;i++)
+		breakable_destroy(bgame->breakables[i]);
+	if(bgame->num_breakables)
+		free(bgame->breakables);
+	for(i=0;i<bgame->num_collectibles;i++)
+		collectible_destroy(bgame->collectibles[i]);
+	if(bgame->num_collectibles)
+		free(bgame->collectibles);
+	for(i=0;i<bgame->num_creatures;i++)
+		creature_destroy(bgame->creatures[i]);
+	if(bgame->num_creatures)
+		free(bgame->creatures);
+	for(i=0;i<bgame->num_projectiles;i++)
+		projectile_destroy(bgame->projectiles[i]);
+	if(bgame->num_projectiles)
+		free(bgame->projectiles);
+
+	/*** User-specified types ***/
+
+	for(i=0;i<bgame->num_ai_types;i++)
+		ai_type_destroy(bgame->ai_types[i]);
+	if(bgame->num_ais)
+		free(bgame->ai_types);
+	for(i=0;i<bgame->num_br_types;i++)
+		breakable_type_destroy(bgame->br_types[i]);
+	if(bgame->num_br_types)
+		free(bgame->br_types);
+	for(i=0;i<bgame->num_co_types;i++)
+		collectible_type_destroy(bgame->co_types[i]);
+	if(bgame->num_co_types)
+		free(bgame->co_types);
+	for(i=0;i<bgame->num_cr_types;i++)
+		creature_type_destroy(bgame->cr_types[i]);
+	if(bgame->num_cr_types)
+		free(bgame->cr_types);
+	for(i=0;i<bgame->num_pr_types;i++)
+		projectile_type_destroy(bgame->pr_types[i]);
+	if(bgame->num_pr_types)
+		free(bgame->pr_types);
+
+	/*** campaign ***/
+
+	blips_campaign_destroy(bgame->campaign);
 
 	free(bgame);
 	return;
@@ -32,7 +119,13 @@ void blips_game_destroy(blips_game *bgame)
 void blips_game_load_campaign(blips_game *bgame,char *path)
 {
 	bgame->campaign=blips_campaign_create(path);
-	/*UNFINISHED? -- do we need to do more from here, or will constructor have handled things?*/
+	blips_game_load_world_tiles(bgame);
+	return;
+}
+
+void blips_game_load_world_tiles(blips_game *bgame)
+{
+	/* UNFINISHED */
 	return;
 }
 
