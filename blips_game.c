@@ -156,11 +156,13 @@ printf("Loading world tiles . . .\n");
 	{
 		updated=0;
 		for(i=0;i<bgame->num_world_tiles;i++)
-			if(blips_game_add_world_tile(bgame,bgame->world_tiles[i]->north_tile) ||
-			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->east_tile) ||
-			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->south_tile) ||
-			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->west_tile))
+		{
+			if((strcmp("none",bgame->world_tiles[i]->north_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->north_tile)) ||
+			   (strcmp("none",bgame->world_tiles[i]->east_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->east_tile)) ||
+			   (strcmp("none",bgame->world_tiles[i]->south_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->south_tile)) ||
+			   (strcmp("none",bgame->world_tiles[i]->west_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->west_tile)))
 			updated=1;
+		}
 	}while(updated);
 
 	return;
