@@ -47,11 +47,11 @@ void maze_generate(maze *m)
 		/* select random link */
 		do
 		{
-			cell=rand()%(rows*columns); /* this could actually rest outside the loop, since no cell will have all directions cut, but then we increase the likelyhood of three-walled cells being tested */
+			cell=rand()%(m->rows*m->columns); /* this could actually rest outside the loop, since no cell will have all directions cut, but then we increase the likelyhood of three-walled cells being tested */
 			direction=rand()%4;
 		}while(!m->tiles[cell][direction]);
 			/* for convenience, record the other end of the link, too */
-		maze_get_opposing_link(columns,cell,direction,&cell2,&direction2);
+		maze_get_opposing_link(m->columns,cell,direction,&cell2,&direction2);
 		/* will this partition the maze? */
 			/* if not, delete it */
 		if(!maze_partitioned_by_wall(m,cell,direction,cell2,direction2))

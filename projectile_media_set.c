@@ -46,7 +46,7 @@ projectile_media_set* projectile_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(pr_set->impact_sound=Mix_LoadWav(buffer)))
+		if(!(pr_set->impact_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);

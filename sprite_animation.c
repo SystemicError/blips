@@ -28,7 +28,7 @@ void sprite_animation_destroy(sprite_animation *sa)
 	return;
 }
 
-SDL_Surface* sprite_animation_cycle(sprite_animation *sa)
+cairo_surface_t* sprite_animation_cycle(sprite_animation *sa)
 {
 	cairo_surface_t *s;
 	if(sa->num_frames==0)
@@ -57,7 +57,7 @@ void sprite_animation_add_frame(sprite_animation *sa,const char *path)
 		case CAIRO_STATUS_NO_MEMORY:
 		case CAIRO_STATUS_FILE_NOT_FOUND:
 		case CAIRO_STATUS_READ_ERROR:
-			fprintf(stderr,"Error loading sprite animation frame:  %s\n",complete_path);
+			fprintf(stderr,"Error loading sprite animation frame:  %s\n",path);
 			exit(1);
 		break;
 	}

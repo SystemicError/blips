@@ -76,7 +76,7 @@ creature_media_set* creature_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(cr_set->stand_sound=Mix_LoadWav(buffer)))
+		if(!(cr_set->stand_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);
@@ -89,7 +89,7 @@ creature_media_set* creature_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(cr_set->walk_sound=Mix_LoadWav(buffer)))
+		if(!(cr_set->walk_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);
@@ -102,7 +102,7 @@ creature_media_set* creature_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(cr_set->walk_and_fire_sound=Mix_LoadWav(buffer)))
+		if(!(cr_set->walk_and_fire_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);
@@ -115,7 +115,7 @@ creature_media_set* creature_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(cr_set->fire_sound=Mix_LoadWav(buffer)))
+		if(!(cr_set->fire_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);
@@ -128,7 +128,7 @@ creature_media_set* creature_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(cr_set->stun_sound=Mix_LoadWav(buffer)))
+		if(!(cr_set->stun_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);

@@ -51,7 +51,7 @@ blips_gui* blips_gui_create(blips_game *bgame)
 
 	bgui->game=bgame;
 
-	blips_gui_load_fill_cache(bgui);
+	blips_gui_fill_cache(bgui);
 
 	return bgui;
 }
@@ -178,7 +178,7 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	{
 		bgui->tile_key[i]=(char*)malloc(sizeof(char)*2);
 		fscanf(fp,"%s=%s\n",bgui->tile_key[i],path);
-		bgui->tile_images[i]=cairo_surface_create_from_png(path);
+		bgui->tile_images[i]=cairo_image_surface_create_from_png(path);
 	}
 
 	/* UNFINISHED */
@@ -302,8 +302,6 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *i
 	 *** which the gui will use to inform the game of events while hiding
 	 *** how they are obtained. ***/
 	int i;
-
-	blips_input_state_clear(inputs);
 
 	/* modify button/joystick states as necessary */
 	switch(event->type)

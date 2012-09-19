@@ -4,6 +4,14 @@
 #ifndef _SPRITE_ANIMATION_H
 #define _SPRITE_ANIMATION_H 1
 
+#ifndef _STDIO_H
+#include<stdio.h>
+#endif
+
+#ifndef _STDLIB_H
+#include<stdlib.h>
+#endif
+
 #ifndef _SDL_H
 #include<SDL.h>
 #endif

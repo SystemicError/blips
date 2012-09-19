@@ -163,7 +163,7 @@ void world_tile_parse_barriers(FILE *fp,maze *m)
 					}
 				break;
 				case '/':
-					if(buffer[j*2+1]=='\')
+					if(buffer[j*2+1]=='\'')
 					{
 						maze_place_wall(m,i,j,MAZE_NORTH);
 						maze_place_wall(m,i,j,MAZE_WEST);
@@ -178,7 +178,7 @@ void world_tile_parse_barriers(FILE *fp,maze *m)
 						maze_place_wall(m,i,j,MAZE_SOUTH);
 					}
 				break;
-				case '\':
+				case '\'':
 					if(buffer[j*2+1]=='/')
 					{
 						maze_place_wall(m,i,j,MAZE_SOUTH);

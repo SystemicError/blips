@@ -20,8 +20,10 @@ typedef struct blips_input_state
 	double speed;
 } blips_input_state;
 
-blips_input_state* blips_input_state_new(void);
+blips_input_state* blips_input_state_create(void);
 void blips_input_state_destroy(blips_input_state *bis);
+
+/* public functions */
 
 #endif
 

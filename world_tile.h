@@ -57,8 +57,8 @@
 
 typedef struct world_tile
 {
-	maze **creature_barriers;
-	maze **projectile_barriers;
+	maze *creature_barriers;
+	maze *projectile_barriers;
 	char tile_strings[BLIPS_TILE_ROWS][BLIPS_TILE_COLS][2];
 	char *background_image;
 	char *north_tile;

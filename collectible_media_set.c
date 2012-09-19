@@ -32,7 +32,7 @@ collectible_media_set* collectible_media_set_new(char *path)
 	fscanf(fp,"%s\n",buffer);
 	if(strcmp(buffer,"none"))
 	{
-		if(!(co_set->pickup_sound=Mix_LoadWav(buffer)))
+		if(!(co_set->pickup_sound=Mix_LoadWAV(buffer)))
 		{
 			fprintf(stderr,"Error loading sample:  %s.\n",buffer);
 			exit(1);

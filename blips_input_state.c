@@ -3,7 +3,7 @@
 
 #include"blips_input_state.h"
 
-blips_input_state* blips_input_state_new(void)
+blips_input_state* blips_input_state_create(void)
 {
 	blips_input_state *bis;
 	bis=(blips_input_state*)malloc(sizeof(blips_input_state));
@@ -20,4 +20,6 @@ void blips_input_state_destroy(blips_input_state *bis)
 	free(bis);
 	return;
 }
+
+/* public functions */
 
