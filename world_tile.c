@@ -47,8 +47,11 @@ printf("Comment line:  %s.\n",buffer);
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
-			fscanf(fp,"%c%c",wt->tile_strings[i][j][0],wt->tile_strings[i][j][1]);
-		fscanf(fp,"\n");
+		{
+			wt->tile_strings[i][j][0]=fgetc(fp);
+			wt->tile_strings[i][j][1]=fgetc(fp);
+		}
+		fgetc(fp);
 	}
 
 	/*** Background Image ***/
@@ -121,7 +124,6 @@ void world_tile_parse_barriers(FILE *fp,maze *m)
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
 		fgets(buffer,BLIPS_TILE_COLS*2+2,fp);
-printf("Got line %d:  %s\n",i,buffer);
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			switch(buffer[j*2])
