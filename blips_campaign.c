@@ -37,20 +37,29 @@ printf("Got tile image key path:  %s.\n",buffer);
 	bc->tile_image_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->tile_image_key_path,buffer);
 
+	/*** Starting World Tile ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+printf("Got starting world tile path:  %s.\n",buffer);
 	bc->starting_world_tile_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->starting_world_tile_path,buffer);
 
+	/*** Statics List ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+printf("Got statics list path:  %s.\n",buffer);
 	bc->statics_list_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->statics_list_path,buffer);
 
+	/*** Number of Players/Player Info ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(bc->num_players));
+printf("Got number of players:  %d.\n",bc->num_players);
 
 	bc->player_starting_rows=(int*)malloc(sizeof(int)*bc->num_players);
 	bc->player_starting_cols=(int*)malloc(sizeof(int)*bc->num_players);
@@ -60,16 +69,20 @@ printf("Got tile image key path:  %s.\n",buffer);
 	{
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 		fscanf(fp,"%d\n",bc->player_starting_rows+i);
+printf("Got %d starting row:  %d.\n",i,bc->player_starting_rows[i]);
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 		fscanf(fp,"%d\n",bc->player_starting_cols+i);
+printf("Got %d starting col:  %d.\n",i,bc->player_starting_cols[i]);
 
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 		fgets(buffer,BUFFER_SIZE,fp);
 		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+printf("Got %d type file path:  %s.\n",i,buffer);
 		bc->player_type_file_paths[i]=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 		strcpy(bc->player_type_file_paths[i],buffer);
 	}
 
+printf("Done loading campaign.\n");
 	fclose(fp);
 	return bc;
 }

@@ -10,6 +10,7 @@ world_tile* world_tile_create(char *path)
 	char buffer[BUFFER_SIZE];
 	int i,j;
 
+printf("Allocating world tile for path %s.\n",path);
 	wt=(world_tile*)malloc(sizeof(world_tile));
 	if(!(fp=fopen(path,"r")))
 	{
@@ -18,19 +19,27 @@ world_tile* world_tile_create(char *path)
 	}
 
 	/*** Object Map ***/
-
+printf("Reading (skipping) object map.\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	/*UNFINISHED*/
 for(i=0;i<11;i++)
-fscanf(fp,"%s\n",buffer);
+fgets(buffer,BUFFER_SIZE,fp);
 
 	/*** Creature Barrier Map ***/
+printf("Reading Cr Barrier map.\n");
 
 	wt->creature_barriers=maze_create(BLIPS_TILE_ROWS,BLIPS_TILE_COLS);
+printf("Created maze.\n");
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+printf("Comment line:  %s.\n",buffer);
 	world_tile_parse_barriers(fp,wt->creature_barriers);
 
 	/*** Projectile Barrier Map ***/
+printf("Reading Pr Barrier map.\n");
+
 	wt->projectile_barriers=maze_create(BLIPS_TILE_ROWS,BLIPS_TILE_COLS);
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+printf("Comment line:  %s.\n",buffer);
 	world_tile_parse_barriers(fp,wt->projectile_barriers);
 
 	/*** Image Map ***/
@@ -107,13 +116,14 @@ void world_tile_destroy(world_tile *wt)
 
 void world_tile_parse_barriers(FILE *fp,maze *m)
 {
-	char buffer[BLIPS_TILE_COLS*2];
+	char buffer[BLIPS_TILE_COLS*2+1];
 	int i,j;
 
-	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
-		fgets(buffer,BUFFER_SIZE,fp);
+printf("i=%d.\n",i);
+		fgets(buffer,BLIPS_TILE_COLS*2+1,fp);
+printf("Got line %d:  %s\n",i,buffer);
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			switch(buffer[j*2])

@@ -123,12 +123,6 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 	return;
 }
 
-void blips_game_load_world_tiles(blips_game *bgame)
-{
-	/* UNFINISHED */
-	return;
-}
-
 void blips_game_step(blips_game *bgame,blips_input_state *inputs)
 {
 	/*UNFINISHED*/
@@ -138,5 +132,61 @@ void blips_game_step(blips_game *bgame,blips_input_state *inputs)
 world_tile* blips_game_active_world_tile(blips_game *bgame)
 {
 	return bgame->active_world_tile;
+}
+
+/* private functions */
+
+void blips_game_load_world_tiles(blips_game *bgame)
+{
+	/***  Adds all world tiles reachable from one specified in campaign. */
+	int i;
+	int updated;
+
+printf("Loading world tiles . . .\n");
+	if(bgame->num_world_tiles)
+	{
+		fprintf(stderr,"Attempt to load world tile cache into already loaded game!\n");
+		exit(1);
+	}
+
+	blips_game_add_world_tile(bgame,bgame->campaign->starting_world_tile_path);
+
+	/* Terribly inefficient, I know.  We only do this once.  */
+	do
+	{
+		updated=0;
+		for(i=0;i<bgame->num_world_tiles;i++)
+			if(blips_game_add_world_tile(bgame,bgame->world_tiles[i]->north_tile) ||
+			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->east_tile) ||
+			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->south_tile) ||
+			   blips_game_add_world_tile(bgame,bgame->world_tiles[i]->west_tile))
+			updated=1;
+	}while(updated);
+
+	return;
+}
+
+int blips_game_add_world_tile(blips_game *bgame,char *path)
+{
+	/*** Adds a single world tile to the world_tiles array.  Returns
+	 *** non-zero if added, zero if a rejected duplicate.  */
+
+	int i;
+
+printf("Got request to add world tile of path:  %s.\n",path);
+
+	/* scan for duplication */
+	for(i=0;i<bgame->num_world_tiles;i++)
+		if(!strcmp(bgame->world_tiles[i]->path,path))
+			return 0;
+
+printf("Passed duplicate search, is unique against extant %d tiles.\n",bgame->num_world_tiles);
+
+	bgame->world_tiles=(world_tile**)realloc(bgame->world_tiles,sizeof(world_tile*)*bgame->num_world_tiles+1);
+printf("Allocated ptr.  Creating.\n");
+	bgame->world_tiles[bgame->num_world_tiles]=world_tile_create(path);
+printf("Incrementing count.\n");
+	bgame->num_world_tiles++;
+	return 1;
 }
 
