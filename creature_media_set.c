@@ -74,6 +74,7 @@ creature_media_set* creature_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->stand_sound=Mix_LoadWAV(buffer)))
@@ -87,6 +88,7 @@ creature_media_set* creature_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->walk_sound=Mix_LoadWAV(buffer)))
@@ -100,6 +102,7 @@ creature_media_set* creature_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->walk_and_fire_sound=Mix_LoadWAV(buffer)))
@@ -113,6 +116,7 @@ creature_media_set* creature_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->fire_sound=Mix_LoadWAV(buffer)))
@@ -126,6 +130,7 @@ creature_media_set* creature_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(cr_set->stun_sound=Mix_LoadWAV(buffer)))

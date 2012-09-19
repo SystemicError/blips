@@ -29,6 +29,7 @@ projectile_type* projectile_type_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp); 
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	pr_type->pr_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(pr_type->pr_set_path,buffer);
 

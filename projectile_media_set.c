@@ -44,6 +44,7 @@ projectile_media_set* projectile_media_set_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(strcmp(buffer,"none"))
 	{
 		if(!(pr_set->impact_sound=Mix_LoadWAV(buffer)))

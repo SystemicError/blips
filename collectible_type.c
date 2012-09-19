@@ -18,6 +18,7 @@ collectible_type* collectible_type_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 
 	co_type->co_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(co_type->co_set_path,buffer);

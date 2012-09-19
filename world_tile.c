@@ -47,6 +47,7 @@ fscanf(fp,"%s\n",buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->background_image=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->background_image,buffer);
 
@@ -54,21 +55,25 @@ fscanf(fp,"%s\n",buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->north_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->north_tile,buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->east_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->east_tile,buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->south_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->south_tile,buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->west_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->west_tile,buffer);
 
@@ -76,6 +81,7 @@ fscanf(fp,"%s\n",buffer);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	wt->music=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(wt->music,buffer);
 
@@ -107,7 +113,7 @@ void world_tile_parse_barriers(FILE *fp,maze *m)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 	{
-		fscanf(fp,"%s\n",buffer);
+		fgets(buffer,BUFFER_SIZE,fp);
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			switch(buffer[j*2])
