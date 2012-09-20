@@ -6,5 +6,7 @@
 
 #define BUFFER_SIZE 1024
 
+typedef enum spawn_trigger {SPAWN_ON_ENTRANCE,SPAWN_ON_CLEAR} spawn_trigger;
+
 #endif
 

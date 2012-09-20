@@ -25,6 +25,8 @@ typedef struct breakable_type
 	int toughness;
 	char *br_set_path;
 	char *br_type_path;
+	spawn_trigger trigger;
+	int respawn;
 } breakable_type;
 
 breakable_type* breakable_type_create(char *path);

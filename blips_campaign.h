@@ -25,7 +25,6 @@ typedef struct blips_campaign
 	char *object_key_path;
 	char *tile_image_key_path;
 	char *starting_world_tile_path;
-	char *statics_list_path;
 	int num_players;
 	int *player_starting_rows;
 	int *player_starting_cols;

@@ -16,8 +16,26 @@ breakable_type* breakable_type_create(char *path)
 		exit(1);
 	}
 
+	/*** Toughness ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(br_type->toughness));
+
+	/*** Spawn Trigger ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	if(strcmp(buffer,"enter"))
+		br_type->trigger=SPAWN_ON_ENTRANCE;
+	else if(strcmp(buffer,"clear"))
+		br_type->trigger=SPAWN_ON_CLEAR;
+
+	/*** Respawn ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(br_type->respawn));
+
+	/*** Media Set ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%s\n",buffer);

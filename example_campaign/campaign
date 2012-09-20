@@ -4,8 +4,6 @@ Tile Image Key:
 example_campaign/example.tile_image_key
 Starting World Tile:
 example_campaign/world_tiles/example.world_tile
-Statics List:
-example_campaign/example.statics
 Number of Players:
 1
 	Player 0 Starting Row:

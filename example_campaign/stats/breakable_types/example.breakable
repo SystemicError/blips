@@ -1,4 +1,8 @@
 Toughness:
 10
+Spawn Trigger:
+enter
+Respawn
+1
 Breakable Media Set:
 example_campaign/media_sets/breakables/example.breakable_media_set

@@ -16,6 +16,22 @@ collectible_type* collectible_type_create(char *path)
 		exit(1);
 	}
 
+	/*** Spawn Trigger ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	if(strcmp(buffer,"enter"))
+		co_type->trigger=SPAWN_ON_ENTRANCE;
+	else if(strcmp(buffer,"clear"))
+		co_type->trigger=SPAWN_ON_CLEAR;
+
+	/*** Respawn ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(co_type->respawn));
+
+	/*** Media Set ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */

@@ -46,15 +46,6 @@ printf("Got starting world tile path:  %s.\n",buffer);
 	bc->starting_world_tile_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(bc->starting_world_tile_path,buffer);
 
-	/*** Statics List ***/
-
-	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fgets(buffer,BUFFER_SIZE,fp);
-	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-printf("Got statics list path:  %s.\n",buffer);
-	bc->statics_list_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(bc->statics_list_path,buffer);
-
 	/*** Number of Players/Player Info ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
@@ -101,8 +92,6 @@ printf("Tile image key path.\n");
 	free(bc->tile_image_key_path);
 printf("Starting world tile path.\n");
 	free(bc->starting_world_tile_path);
-printf("Statics list path.\n");
-	free(bc->statics_list_path);
 printf("Player type paths.\n");
 	for(i=0;i<bc->num_players;i++)
 		free(bc->player_type_file_paths[i]);

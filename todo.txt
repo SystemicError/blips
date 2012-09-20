@@ -22,7 +22,7 @@
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, among others.
 
 
--Consider removing statics list.  Give a new map to each world tile file to do this task.  May have to assume everything is on_drop, though.
-	Could have two maps, one for immediate statics, one for drop statics.
+-Rewrite statics support:
 	Could add int static field to creatures.  Objects of type static would appear in normal key, would need separate definitons.  I like this solution because it doesn't introduce yet another map, and it's not a huge hassle to have static objects occasionally be copies of non-static ones.
-	Also, new keyword.  Call it enum spawn_trigger {enter, clear} and bool respawn.
+	+Also, new keyword.  Call it enum spawn_trigger {enter, clear} and bool respawn.
+	+Rewrite *_type.* files to accommodate these new fields.
