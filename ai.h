@@ -20,9 +20,10 @@
 #include"ai_type.h"
 #endif
 
-//typedef struct ai
-//{
-	
+typedef struct ai
+{
+	ai_type *type;
+} ai;
 
 #endif
 

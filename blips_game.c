@@ -17,13 +17,13 @@ blips_game* blips_game_create(void)
 
 //	bgame->ais=0;
 	bgame->num_ais=0;
-//	bgame->breakables=0;
+	bgame->breakables=0;
 	bgame->num_breakables=0;
-//	bgame->collectibles=0;
+	bgame->collectibles=0;
 	bgame->num_collectibles=0;
-//	bgame->creatures=0;
+	bgame->creatures=0;
 	bgame->num_creatures=0;
-//	bgame->projectiles=0;
+	bgame->projectiles=0;
 	bgame->num_projectiles=0;
 
 	/*** User-specified types ***/
@@ -66,7 +66,7 @@ void blips_game_destroy(blips_game *bgame)
 		ai_destroy(bgame->ais[i]);
 	if(bgame->num_ais)
 		free(bgame->ais);
-	for(i=0;i<bgame->num_breakables;i++)
+*/	for(i=0;i<bgame->num_breakables;i++)
 		breakable_destroy(bgame->breakables[i]);
 	if(bgame->num_breakables)
 		free(bgame->breakables);

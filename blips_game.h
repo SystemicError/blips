@@ -83,13 +83,13 @@ typedef struct blips_game
 
 //	ai **ais;
 	int num_ais;
-//	breakable **breakables;
+	breakable **breakables;
 	int num_breakables;
-//	collectible **collectibles;
+	collectible **collectibles;
 	int num_collectibles;
-//	creature **creatures;
+	creature **creatures;
 	int num_creatures;
-//	projectile **projectiles;
+	projectile **projectiles;
 	int num_projectiles;
 
 	ai_type **ai_types;
