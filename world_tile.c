@@ -18,11 +18,18 @@ world_tile* world_tile_create(char *path)
 	}
 
 	/*** Object Map ***/
-printf("Reading (skipping) object map.\n");
+printf("Reading object map.\n");
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	/*UNFINISHED*/
-for(i=0;i<11;i++)
-fgets(buffer,BUFFER_SIZE,fp);
+	for(i=0;i<BLIPS_TILE_ROWS;i++)
+	{
+		for(j=0;j<BLIPS_TILE_COLS;j++)
+		{
+			wt->object_strings[i][j][0]=fgetc(fp);
+			wt->object_strings[i][j][1]=fgetc(fp);
+		}
+		fgetc(fp);
+	}
 
 	/*** Creature Barrier Map ***/
 printf("Reading Cr Barrier map.\n");

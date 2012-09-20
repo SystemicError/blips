@@ -38,9 +38,9 @@ breakable_type* breakable_type_create(char *path)
 	/*** Media Set ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%s\n",buffer);
+	fgets(buffer,BUFFER_SIZE,fp);
 	br_type->br_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(br_type->br_type_path,buffer);
+	strcpy(br_type->br_set_path,buffer);
 
 	br_type->br_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
 	strcpy(br_type->br_type_path,buffer);

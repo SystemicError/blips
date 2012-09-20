@@ -103,6 +103,11 @@ typedef struct blips_game
 	projectile_type **pr_types;
 	int num_pr_types;
 
+	/* keys */
+	char **br_type_key;
+	char **co_type_key;
+	char **cr_type_key;
+
 	world_tile *active_world_tile;
 
 	blips_campaign *campaign;
@@ -122,6 +127,21 @@ world_tile* blips_game_active_world_tile(blips_game *bgame);
 /* private functions */
 
 void blips_game_load_world_tiles(blips_game *bgame);
+
+int blips_game_add_world_tile(blips_game *bgame,char *path);
+
+	/* clear objects from game */
+void blips_game_despawn(blips_game *bgame);
+	/* spawn objects which follow spawn_trigger trigger from active tile */
+void blips_game_spawn(blips_game *bgame,spawn_trigger trigger);
+
+	/* load object key specified by campaign */
+void blips_game_load_object_types(blips_game *bgame);
+
+	/* load user_specified types */
+void blips_game_add_breakable_type(blips_game *bgame,char *path,char *string);
+void blips_game_add_collectible_type(blips_game *bgame,char *path,char *string);
+void blips_game_add_creature_type(blips_game *bgame,char *path,char *string);
 
 #endif
 

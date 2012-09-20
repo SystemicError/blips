@@ -19,35 +19,39 @@ creature_type* creature_type_create(char *path)
 	/*** Max Health ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",cr_type->max_health);
+	fscanf(fp,"%d\n",&(cr_type->max_health));
 
 	/*** Projectile Type ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->pr_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+	cr_type->pr_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(cr_type->pr_type_path,buffer);
 
 	/*** Move Speed ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",cr_type->move_speed);
+	fscanf(fp,"%d\n",&(cr_type->move_speed));
 
 	/*** Fire Delay ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",cr_type->fire_delay);
+	fscanf(fp,"%d\n",&(cr_type->fire_delay));
 
 	/*** AI Type ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
+printf("AD path %s buffer %s len %d\n",path,buffer,strlen(buffer));
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->ai_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+printf("ADE\n");
+	cr_type->ai_type_path=(char*)malloc(sizeof(char)*strlen(buffer));
+printf("AE\n");
 	strcpy(cr_type->ai_type_path,buffer);
 
 	/*** Spawn Trigger ***/
+printf("BA\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
@@ -66,11 +70,11 @@ creature_type* creature_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->cr_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+	cr_type->cr_set_path=(char*)malloc(sizeof(char)*strlen(buffer));
 	strcpy(cr_type->cr_set_path,buffer);
 
-	cr_type->cr_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(cr_type->cr_type_path,buffer);
+	cr_type->cr_type_path=(char*)malloc(sizeof(char)*strlen(path));
+	strcpy(cr_type->cr_type_path,path);
 
 	fclose(fp);
 	return cr_type;
