@@ -248,47 +248,34 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 			 * and add an object of the type specified */
 
 				/* breakable types */
-printf("Searching for breakable of type %s.\n",string);
-			string_map_string_to_pointer(bgame->br_types_map,string,(void**)br_type);
+			string_map_string_to_pointer(bgame->br_types_map,string,(void**)&br_type);
 
 			if(br_type && br_type->trigger==trigger)
 			{
-printf("Spawning breakable of type %s.\n",string);
 				bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables+1));
 				bgame->breakables[bgame->num_breakables]=breakable_create(br_type);
 				bgame->num_breakables++;
 			}
-else
-printf("Didn't find it.\n");
 
 				/* search collectible types */
-printf("Searching for co among %d.\n",bgame->co_types_map->size);
-printf("(Only string in these is %s.)\n",bgame->co_types_map->strings[0]);
-			string_map_string_to_pointer(bgame->co_types_map,string,(void**)co_type);
+			string_map_string_to_pointer(bgame->co_types_map,string,(void**)&co_type);
 
 			if(co_type && co_type->trigger==trigger)
 			{
-printf("Spawning collectible of type %s.\n",string);
 				bgame->collectibles=(collectible**)realloc(bgame->collectibles,sizeof(collectible*)*(bgame->num_collectibles+1));
 				bgame->collectibles[bgame->num_collectibles]=collectible_create(co_type);
 				bgame->num_collectibles++;
 			}
-else
-printf("Didn't find.\n");
 
 				/* search creature types */
-printf("Searching for cr.\n");
-			string_map_string_to_pointer(bgame->cr_types_map,string,(void**)cr_type);
+			string_map_string_to_pointer(bgame->cr_types_map,string,(void**)&cr_type);
 
 			if(cr_type && cr_type->trigger==trigger)
 			{
-printf("Spawning creature of type %s.\n",string);
 				bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures+1));
 				bgame->creatures[bgame->num_creatures]=creature_create(cr_type);
 				bgame->num_creatures++;
 			}
-else
-printf("Didn't find.\n");
 		}
 
 	return;
