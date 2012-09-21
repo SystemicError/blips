@@ -93,9 +93,7 @@ typedef struct blips_gui
 	string_map *pr_map;
 
 	/* tile image cache and key */
-	cairo_surface_t **tile_images;
-	char **tile_key;
-	int num_tile_images;
+	string_map *tile_map;
 
 	/* background image cache */
 	string_map *background_map;
@@ -141,10 +139,6 @@ void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *su
 
 	/* events */
 int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *inputs);
-
-	/* translation */
-int blips_gui_string_to_pointer_index(char *string,char **string_array,int count);
-void blips_gui_sort_pointers_by_strings(void **ptrs,char **strings,int size);
 
 #endif
 

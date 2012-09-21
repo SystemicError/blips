@@ -56,9 +56,11 @@ void sprite_animation_add_frame(sprite_animation *sa,const char *path)
 		case CAIRO_STATUS_NO_MEMORY:
 			fprintf(stderr,"Error loading sprite animation frame (no memory available):  %s\n",path);
 			exit(1);
+		break;
 		case CAIRO_STATUS_FILE_NOT_FOUND:
 			fprintf(stderr,"Error loading sprite animation frame (file not found):  %s\n",path);
 			exit(1);
+		break;
 		case CAIRO_STATUS_READ_ERROR:
 			fprintf(stderr,"Error loading sprite animation frame (read error):  %s\n",path);
 			exit(1);

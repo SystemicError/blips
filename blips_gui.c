@@ -63,6 +63,10 @@ printf("Initializing audio . . .\n");
 
 	bgui->background_map=string_map_create();
 
+	/* tile map key */
+
+	bgui->tile_map=string_map_create();
+
 printf("Filling cache . . .\n");
 	blips_gui_fill_cache(bgui);
 
@@ -97,11 +101,13 @@ printf("Freeing media.\n");
 		projectile_media_set_destroy((projectile_media_set*)(bgui->pr_map->pointers[i]));
 	string_map_destroy(bgui->pr_map);
 
-	/* tile images */
-	for(i=0;i<bgui->num_tile_images;i++)
-		cairo_surface_destroy(bgui->tile_images[i]);
-	if(bgui->tile_images)
-		free(bgui->tile_images);
+	/* tile images -- somewhat unique in that the strings are instanced here, not elsewhere */
+	for(i=0;i<bgui->tile_map->size;i++)
+	{
+		free(bgui->tile_map->strings[i]);
+		cairo_surface_destroy((cairo_surface_t*)(bgui->tile_map->pointers[i]));
+	}
+	string_map_destroy(bgui->tile_map);
 
 	/* bg images */
 	for(i=0;i<bgui->background_map->size;i++)
@@ -168,7 +174,9 @@ void blips_gui_fill_cache(blips_gui *bgui)
 
 	FILE *fp;
 	char path[BUFFER_SIZE];
-	int i;
+	int i,count;
+	char *chs;
+	cairo_surface_t *surface;
 
 	/*** Image Tile Key ***/
 
@@ -179,20 +187,41 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	}
 
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(bgui->num_tile_images));
-
-	bgui->tile_images=(cairo_surface_t**)malloc(sizeof(cairo_surface_t*)*bgui->num_tile_images);
-	bgui->tile_key=(char**)malloc(sizeof(char*)*bgui->num_tile_images);
+	fscanf(fp,"%d\n",&count);
 
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
-	for(i=0;i<bgui->num_tile_images;i++)
+	for(i=0;i<count;i++)
 	{
-		bgui->tile_key[i]=(char*)malloc(sizeof(char)*3);
-		bgui->tile_key[i][0]=fgetc(fp);
-		bgui->tile_key[i][1]=fgetc(fp);
-		bgui->tile_key[i][2]=0;  /* null terminator */
+		chs=(char*)malloc(sizeof(char)*3);
+		chs[0]=fgetc(fp);
+		chs[1]=fgetc(fp);
+		chs[2]=0;  /* null terminator */
 		fscanf(fp,"=%s\n",path);
-		bgui->tile_images[i]=cairo_image_surface_create_from_png(path);
+printf("Reading tile: %s.\n",path);
+		surface=cairo_image_surface_create_from_png(path);
+
+		/* Error check */
+		switch(cairo_surface_status(surface))
+		{
+			case CAIRO_STATUS_NO_MEMORY:
+				fprintf(stderr,"Error loading sprite animation frame (no memory available):  %s\n",path);
+				exit(1);
+			break;
+			case CAIRO_STATUS_FILE_NOT_FOUND:
+				fprintf(stderr,"Error loading sprite animation frame (file not found):  %s\n",path);
+				exit(1);
+			break;
+			case CAIRO_STATUS_READ_ERROR:
+				fprintf(stderr,"Error loading sprite animation frame (read error):  %s\n",path);
+				exit(1);
+			break;
+		}
+
+if(!surface)
+printf("Adding nothing.\n");
+else
+printf("Adding address %d.\n",surface);
+		string_map_add(bgui->tile_map,chs,surface);
 	}
 
 	fclose(fp);
@@ -232,17 +261,31 @@ printf("Copying new path . . .\n");
 	/* update the active background */
 
 	if(bgui->background_map->size)
-		string_map_string_to_pointer(bgui->background_map,bgui->active_world_tile_path,bgui->active_background);
+{
+printf("Updating background from map of size %d.\n",bgui->background_map->size);
+		string_map_string_to_pointer(bgui->background_map,bgui->active_world_tile_path,(void**)&(bgui->active_background));
+}
 
 	/* update the active tiles */
 	tile_string[2]=0;
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
+{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			tile_string[0]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][0];
 			tile_string[1]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][1];
-			bgui->active_tiles[i][j]=bgui->tile_images[blips_gui_string_to_pointer_index(tile_string,bgui->tile_key,bgui->num_tile_images)];
+printf("%s",tile_string);
+			string_map_string_to_pointer(bgui->tile_map,
+						     tile_string,
+						     (void**)&(bgui->active_tiles[i][j]));
+if(!(bgui->active_tiles[i][j]))
+{
+printf("nothing there.\n");
+printf("Tile map size: %d.\n",bgui->tile_map->size);
+}
 		}
+printf("\n");
+}
 	return;
 }
 
@@ -401,10 +444,11 @@ void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface
 
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 		for(j=0;j<BLIPS_TILE_COLS;j++)
-		{
-			cairo_set_source_surface(cr,bgui->active_tiles[i][j],j*BLIPS_TILE_SIZE,i*BLIPS_TILE_SIZE);
-			cairo_paint(cr);
-		}
+			if(bgui->active_tiles[i][j])
+			{
+				cairo_set_source_surface(cr,bgui->active_tiles[i][j],j*BLIPS_TILE_SIZE,i*BLIPS_TILE_SIZE);
+				cairo_paint(cr);
+			}
 	return;
 }
 
@@ -514,66 +558,5 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *i
 		break;
 	}
 	return 0;
-}
-
-/* translation */
-int blips_gui_string_to_pointer_index(char *string,char **string_array,int count)
-{
-	/*** This function is a generic binary search algorithm.  It will be
-	 *** applied to any field of blips_gui with a key, accepting string_array
-	 *** as the key, count as the number of strings/pointers, and pointers as
-	 *** the list of objects corresponding to the key. */
-
-	int upper,lower,middle,comparison;
-
-	if(count<=0)
-	{
-		fprintf(stderr,"Got binary search request on array of non-positive size!\n");
-		exit(1);
-	}
-
-	upper=count;
-	lower=0;
-	middle=(lower+upper)/2;
-
-
-	while(comparison=strcmp(string,string_array[middle]))
-	{
-		if(comparison>0)  /* input>candidate */
-			lower=middle;
-		else
-			upper=middle;
-
-		if(lower==upper)
-		{
-			fprintf(stderr,"Got request for item not in key!\n");
-			exit(1);
-		}
-
-		middle=(lower+upper)/2;
-	}
-	return middle;
-}
-
-void blips_gui_sort_pointers_by_strings(void **ptrs,char **strings,int size)
-{
-	int i,j;
-	void *ptmp;
-	char *chtmp;
-
-	for(i=0;i<size-1;i++)
-		for(j=i;j<size;j++)
-			if(strcmp(strings[i],strings[j])>0)
-			{
-				/* switch 'em */
-				ptmp=ptrs[i];
-				ptrs[i]=ptrs[j];
-				ptrs[j]=ptmp;
-
-				chtmp=strings[i];
-				strings[i]=strings[j];
-				strings[j]=chtmp;
-			}
-	return;
 }
 

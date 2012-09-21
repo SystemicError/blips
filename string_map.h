@@ -26,7 +26,7 @@ void string_map_destroy(string_map *smap);
 
 void string_map_add(string_map *smap,char *string,void *ptr);
 
-void string_map_string_to_pointer(string_map *smap,char *string,void *ret);
+void string_map_string_to_pointer(string_map *smap,char *string,void **ret);
 
 /* private functions */
 

@@ -54,7 +54,7 @@ void string_map_add(string_map *smap,char *string,void *ptr)
 	return;
 }
 
-void string_map_string_to_pointer(string_map *smap,char *string,void *ret)
+void string_map_string_to_pointer(string_map *smap,char *string,void **ret)
 {
 	/*** This function is a generic binary search algorithm. ***/
 
@@ -86,7 +86,7 @@ void string_map_string_to_pointer(string_map *smap,char *string,void *ret)
 
 		middle=(lower+upper)/2;
 	}
-	ret=smap->pointers[middle];
+	(*ret)=smap->pointers[middle];
 
 	return;
 }
