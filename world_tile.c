@@ -119,7 +119,18 @@ void world_tile_destroy(world_tile *wt)
 		fprintf(stderr,"Attempt to free null world_tile!\n");
 		exit(1);
 	}
-	/*UNFINISHED*/
+
+	maze_destroy(wt->creature_barriers);
+	maze_destroy(wt->projectile_barriers);
+
+	free(wt->background_image);
+	free(wt->north_tile);
+	free(wt->east_tile);
+	free(wt->south_tile);
+	free(wt->west_tile);
+	free(wt->music);
+	free(wt->path);
+
 	return;
 }
 
