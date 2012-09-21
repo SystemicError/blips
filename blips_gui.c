@@ -71,22 +71,22 @@ printf("Blips GUI destructor called:\n");
 printf("Freeing media.\n");
 	/* media sets */
 	for(i=0;i<bgui->num_br_sets;i++)
-		breakable_media_set_destroy(bgui->br_sets+i);
+		breakable_media_set_destroy(bgui->br_sets[i]);
 	if(bgui->num_br_sets)
 		free(bgui->br_sets);
 
 	for(i=0;i<bgui->num_co_sets;i++)
-		collectible_media_set_destroy(bgui->co_sets+i);
+		collectible_media_set_destroy(bgui->co_sets[i]);
 	if(bgui->num_co_sets)
 		free(bgui->co_sets);
 
 	for(i=0;i<bgui->num_cr_sets;i++)
-		creature_media_set_destroy(bgui->cr_sets+i);
+		creature_media_set_destroy(bgui->cr_sets[i]);
 	if(bgui->num_cr_sets)
 		free(bgui->cr_sets);
 
 	for(i=0;i<bgui->num_pr_sets;i++)
-		projectile_media_set_destroy(bgui->pr_sets+i);
+		projectile_media_set_destroy(bgui->pr_sets[i]);
 	if(bgui->num_pr_sets)
 		free(bgui->pr_sets);
 
@@ -135,10 +135,7 @@ void blips_gui_main_loop(blips_gui *bgui)
 
 		/* check if world tile has changed */
 		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
-{
-printf("Strings differ; need update.\n");
 			blips_gui_update_active_world_tile(bgui);
-}
 
 		/* iterate the game */
 		blips_game_step(bgui->game,inputs);
@@ -157,9 +154,11 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	 *** bgui->game and fill out the caches of images and media sets.
 	 *** It is also charged with filling out the key of tiles and backgrounds.*/
 
-	/* How much of this function will be given to blips_game?  It would be nice if blips_game read all the campaign files and kept the information on hand, so we didn't have to re-read it here. */
+	/* blips_game reads all the campaign files and keeps the filepath information
+	 * on hand, so we didn't have to re-read it here.  In particular, world files
+	 * and creature types have already been loaded. */
 
-	/* For now, let's assume that the tile key was never read, but its filename was. */
+	/* The tile key content is never read by blips_game, but its filename is. */
 
 	FILE *fp;
 	char path[BUFFER_SIZE];
@@ -194,11 +193,9 @@ printf("Loading tile image of path:  %s.\n",path);
 
 	fclose(fp);
 
-	/* UNFINISHED */
-bgui->num_br_sets=0;
-bgui->num_co_sets=0;
-bgui->num_cr_sets=0;
-bgui->num_pr_sets=0;
+	/*** Object Media Sets ***/
+
+	blips_gui_load_media_sets(bgui);
 
 	/*** Background Images ***/
 
@@ -229,11 +226,7 @@ printf("Copying new path . . .\n");
 	/* update the active background */
 
 	if(bgui->num_background_images)
-{
-printf("Updating active bg . . .\n");
-printf("Index selection:  %d.\n",blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images));
-	bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
-}
+		bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
 
 	/* update the active tiles */
 printf("Updating active tiles . . .\n");
@@ -248,7 +241,131 @@ printf("Updating active tiles . . .\n");
 	return;
 }
 
-/* render */
+void blips_gui_load_media_sets(blips_gui *bgui)
+{
+	/*** Helper function to fill_cache(). ***/
+	/* Theoretically inefficient, since we're keying media sets by object types.
+	 * If multiple objects have the same media set, we're wasting time searching
+	 * through key strings (object type strings) that differ, even though
+	 * their content (media sets) do not.  However, there would have to be many,
+	 * many different types of identical media set before the performance difference
+	 * became noticeable. */
+
+	int i;
+
+	/*** Breakable Media Sets ***/
+
+	bgui->num_br_sets=bgui->game->num_br_types;
+
+	bgui->br_sets=(breakable_media_set**)malloc(sizeof(breakable_media_set*)*bgui->num_br_sets);
+	bgui->br_key=(char**)malloc(sizeof(char*)*bgui->num_br_sets);
+
+	for(i=0;i<bgui->game->num_br_types;i++)
+	{
+		bgui->br_sets[i]=breakable_media_set_create(bgui->game->br_types[i]->br_set_path);
+		bgui->br_key[i]=bgui->game->br_types[i]->br_set_path;  /* not a copy, just a pointer */
+	}
+
+	/* sort that mess */
+	blips_gui_sort_pointers_by_strings((void**)(bgui->br_sets),bgui->br_key,bgui->num_br_sets);
+
+	/*** Collectible Media Sets ***/
+
+	bgui->num_co_sets=bgui->game->num_co_types;
+
+	bgui->co_sets=(collectible_media_set**)malloc(sizeof(collectible_media_set*)*bgui->num_co_sets);
+	bgui->co_key=(char**)malloc(sizeof(char*)*bgui->num_co_sets);
+
+	for(i=0;i<bgui->game->num_co_types;i++)
+	{
+		bgui->co_sets[i]=collectible_media_set_create(bgui->game->co_types[i]->co_set_path);
+		bgui->co_key[i]=bgui->game->co_types[i]->co_set_path;  /* not a copy, just a pointer */
+	}
+
+	/* sort that mess */
+	blips_gui_sort_pointers_by_strings((void**)(bgui->co_sets),bgui->co_key,bgui->num_co_sets);
+
+	/*** Creature Media Sets ***/
+
+	bgui->num_cr_sets=bgui->game->num_cr_types;
+
+	bgui->cr_sets=(creature_media_set**)malloc(sizeof(creature_media_set*)*bgui->num_cr_sets);
+	bgui->cr_key=(char**)malloc(sizeof(char*)*bgui->num_cr_sets);
+
+	for(i=0;i<bgui->game->num_cr_types;i++)
+	{
+		bgui->cr_sets[i]=creature_media_set_create(bgui->game->cr_types[i]->cr_set_path);
+		bgui->cr_key[i]=bgui->game->cr_types[i]->cr_set_path;  /* not a copy, just a pointer */
+	}
+
+	/* sort that mess */
+	blips_gui_sort_pointers_by_strings((void**)(bgui->cr_sets),bgui->cr_key,bgui->num_cr_sets);
+
+	/*** Projectile Media Sets ***/
+
+	bgui->num_pr_sets=bgui->game->num_pr_types;
+
+	bgui->pr_sets=(projectile_media_set**)malloc(sizeof(projectile_media_set*)*bgui->num_pr_sets);
+	bgui->pr_key=(char**)malloc(sizeof(char*)*bgui->num_pr_sets);
+
+	for(i=0;i<bgui->game->num_pr_types;i++)
+	{
+		bgui->pr_sets[i]=projectile_media_set_create(bgui->game->pr_types[i]->pr_set_path);
+		bgui->pr_key[i]=bgui->game->pr_types[i]->pr_set_path;  /* not a copy, just a pointer */
+	}
+
+	/* sort that mess */
+	blips_gui_sort_pointers_by_strings((void**)(bgui->pr_sets),bgui->pr_key,bgui->num_pr_sets);
+
+	return;
+}
+
+
+void blips_gui_load_background_images(blips_gui *bgui)
+{
+	int i,j,updated,duplicate;
+	char *chtmp;
+	cairo_surface_t *surftmp;
+
+	/* load bg images from game world tiles */
+
+	bgui->num_background_images=0;
+	for(i=0;i<bgui->game->num_world_tiles;i++)
+	{
+		if(strcmp(bgui->game->world_tiles[i]->background_image,"none"))
+		{
+			for(j=0;j<bgui->num_background_images;j++)
+				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_key[j]))
+				{
+					/* This is a duplicate; skip it. */
+					j=bgui->num_background_images;
+					duplicate=1;
+				}
+			if(!duplicate)
+			{
+				/* Something new!  Add it to both the image list and key list. */
+					/* make room */
+				bgui->background_images=(cairo_surface_t**)realloc(bgui->background_images,sizeof(cairo_surface_t*)*(bgui->num_background_images+1));
+				bgui->background_key=(char**)realloc(bgui->background_key,sizeof(char*)*(bgui->num_background_images+1));
+					/* copy data */
+				bgui->background_images[bgui->num_background_images]=cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image);
+				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->background_image;
+					/* increase count */
+				bgui->num_background_images++;
+			}
+		}
+	}
+
+	/* sort bg images by file name */
+	blips_gui_sort_pointers_by_strings((void**)(bgui->background_images),bgui->background_key,bgui->num_background_images);
+printf("Bg key (should have no duplicates):\n");
+for(i=0;i<bgui->num_background_images;i++)
+printf("%s\n",bgui->background_key[i]);
+
+	return;
+}
+
+/*** render ***/
 
 void blips_gui_render_screen(blips_gui *bgui)
 {
@@ -297,64 +414,6 @@ void blips_gui_render_screen(blips_gui *bgui)
 	SDL_UpdateRect(bgui->screen,0,0,bgui->screen->w,bgui->screen->h);
 	return;
 }
-
-void blips_gui_load_background_images(blips_gui *bgui)
-{
-	int i,j,updated,duplicate;
-	char *chtmp;
-	cairo_surface_t *surftmp;
-
-	/* load bg images from game world tiles */
-
-	bgui->num_background_images=0;
-	for(i=0;i<bgui->game->num_world_tiles;i++)
-	{
-		if(strcmp(bgui->game->world_tiles[i]->background_image,"none"))
-		{
-			for(j=0;j<bgui->num_background_images;j++)
-				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_key[j]))
-				{
-					/* This is a duplicate; skip it. */
-					j=bgui->num_background_images;
-					duplicate=1;
-				}
-			if(!duplicate)
-			{
-				/* Something new!  Add it to both the image list and key list. */
-					/* make room */
-				bgui->background_images=(cairo_surface_t**)realloc(bgui->background_images,sizeof(cairo_surface_t*)*(bgui->num_background_images+1));
-				bgui->background_key=(char**)realloc(bgui->background_key,sizeof(char*)*(bgui->num_background_images+1));
-					/* copy data */
-				bgui->background_images[bgui->num_background_images]=cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image);
-				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->background_image;
-					/* increase count */
-				bgui->num_background_images++;
-			}
-		}
-	}
-
-	/* sort bg images by file name */
-	for(i=0;i<bgui->num_background_images-1;i++)
-		for(j=i+1;j<bgui->num_background_images;j++)
-			if(strcmp(bgui->background_key[i],bgui->background_key[j])>0)
-			{
-				/* switch mismatched pair */
-				chtmp=bgui->background_key[i];
-				bgui->background_key[i]=bgui->background_key[j];
-				bgui->background_key[j]=chtmp;
-
-				surftmp=bgui->background_images[i];
-				bgui->background_images[i]=bgui->background_images[j];
-				bgui->background_images[j]=surftmp;
-			}
-printf("Bg key (should have no duplicates):\n");
-for(i=0;i<bgui->num_background_images;i++)
-printf("%s\n",bgui->background_key[i]);
-
-	return;
-}
-
-/*** render ***/
 
 void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
@@ -456,5 +515,27 @@ int blips_gui_string_to_pointer_index(char *string,char **string_array,int count
 		middle=(lower+upper)/2;
 	}
 	return middle;
+}
+
+void blips_gui_sort_pointers_by_strings(void **ptrs,char **strings,int size)
+{
+	int i,j;
+	void *ptmp;
+	char *chtmp;
+
+	for(i=0;i<size-1;i++)
+		for(j=i;j<size;j++)
+			if(strcmp(strings[i],strings[j])>0)
+			{
+				/* switch 'em */
+				ptmp=ptrs[i];
+				ptrs[i]=ptrs[j];
+				ptrs[j]=ptmp;
+
+				chtmp=strings[i];
+				strings[i]=strings[j];
+				strings[j]=chtmp;
+			}
+	return;
 }
 

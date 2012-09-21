@@ -83,19 +83,19 @@ typedef struct blips_gui
 	blips_game *game;
 
 	/* media sets */
-	breakable_media_set *br_sets;
+	breakable_media_set **br_sets;
 	int num_br_sets;
 	char **br_key;
 
-	collectible_media_set *co_sets;
+	collectible_media_set **co_sets;
 	int num_co_sets;
 	char **co_key;
 
-	creature_media_set *cr_sets;
+	creature_media_set **cr_sets;
 	int num_cr_sets;
 	char **cr_key;
 
-	projectile_media_set *pr_sets;
+	projectile_media_set **pr_sets;
 	int num_pr_sets;
 	char **pr_key;
 
@@ -135,6 +135,7 @@ void blips_gui_main_loop(blips_gui *bgui);
 	/* load */
 void blips_gui_fill_cache(blips_gui *bgui);  /* reads tile+object keys and initializes wts */
 void blips_gui_update_active_world_tile(blips_gui *bgui);
+void blips_gui_load_media_sets(blips_gui *bgui);
 void blips_gui_load_background_images(blips_gui *bgui);
 
 	/* render */
@@ -148,6 +149,7 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *i
 
 	/* translation */
 int blips_gui_string_to_pointer_index(char *string,char **string_array,int count);
+void blips_gui_sort_pointers_by_strings(void **ptrs,char **strings,int size);
 
 #endif
 

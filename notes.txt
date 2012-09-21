@@ -84,3 +84,5 @@ Um, since I'm writing all my headers with ifndef ... endif protection, do I real
 
 
 Strlen doesn't include terminating \0!  Disastrous reprecussions if you forget this!
+
+if sizeof(void*)!=sizeof(breakable_type*), we need to revamp the general sort in blips_gui.

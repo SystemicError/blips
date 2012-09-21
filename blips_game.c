@@ -62,7 +62,6 @@ void blips_game_destroy(blips_game *bgame)
 	}
 
 	/*** World Tiles ***/
-printf("World tiles.\n");
 
 	for(i=0;i<bgame->num_world_tiles;i++)
 		world_tile_destroy(bgame->world_tiles[i]);
@@ -76,39 +75,32 @@ printf("World tiles.\n");
 	if(bgame->num_ais)
 		free(bgame->ais);
 */
-printf("Despawning.\n");
 	blips_game_despawn(bgame);
 
 	/*** User-specified types ***/
-printf("Types.\n");
 
 	for(i=0;i<bgame->num_ai_types;i++)
 		ai_type_destroy(bgame->ai_types[i]);
 	if(bgame->num_ai_types)
 		free(bgame->ai_types);
-printf("Br Types.\n");
 	for(i=0;i<bgame->num_br_types;i++)
 		breakable_type_destroy(bgame->br_types[i]);
 	if(bgame->num_br_types)
 		free(bgame->br_types);
-printf("Co Types.\n");
 	for(i=0;i<bgame->num_co_types;i++)
 		collectible_type_destroy(bgame->co_types[i]);
 	if(bgame->num_co_types)
 		free(bgame->co_types);
-printf("Cr Types.\n");
 	for(i=0;i<bgame->num_cr_types;i++)
 		creature_type_destroy(bgame->cr_types[i]);
 	if(bgame->num_cr_types)
 		free(bgame->cr_types);
-printf("Pr Types.\n");
 	for(i=0;i<bgame->num_pr_types;i++)
 		projectile_type_destroy(bgame->pr_types[i]);
 	if(bgame->num_pr_types)
 		free(bgame->pr_types);
 
 	/*** Keys ***/
-printf("Keys.\n");
 
 	for(i=0;i<bgame->num_br_types;i++)
 		free(bgame->br_type_key[i]);
@@ -124,7 +116,6 @@ printf("Keys.\n");
 		free(bgame->cr_type_key);
 
 	/*** campaign ***/
-printf("Campaign.\n");
 
 	blips_campaign_destroy(bgame->campaign);
 
@@ -138,9 +129,7 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 {
 	bgame->campaign=blips_campaign_create(path);
 	blips_game_load_world_tiles(bgame);
-printf("Loading object types . . .\n");
 	blips_game_load_object_types(bgame);
-printf("Finished loading object types.\n");
 	return;
 }
 
