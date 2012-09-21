@@ -30,8 +30,7 @@ blips_game* blips_game_create(void)
 
 	bgame->ai_types=0;
 	bgame->num_ai_types=0;
-	bgame->br_types=0;
-	bgame->num_br_types=0;
+
 	bgame->co_types=0;
 	bgame->num_co_types=0;
 	bgame->cr_types=0;
@@ -39,9 +38,9 @@ blips_game* blips_game_create(void)
 	bgame->pr_types=0;
 	bgame->num_pr_types=0;
 
-	/*** Keys ***/
+	/*** Keyed types ***/
 
-	bgame->br_type_key=0;
+	bgame->br_types_map=string_map_create();
 	bgame->co_type_key=0;
 	bgame->cr_type_key=0;
 
@@ -83,10 +82,7 @@ void blips_game_destroy(blips_game *bgame)
 		ai_type_destroy(bgame->ai_types[i]);
 	if(bgame->num_ai_types)
 		free(bgame->ai_types);
-	for(i=0;i<bgame->num_br_types;i++)
-		breakable_type_destroy(bgame->br_types[i]);
-	if(bgame->num_br_types)
-		free(bgame->br_types);
+
 	for(i=0;i<bgame->num_co_types;i++)
 		collectible_type_destroy(bgame->co_types[i]);
 	if(bgame->num_co_types)
@@ -102,10 +98,13 @@ void blips_game_destroy(blips_game *bgame)
 
 	/*** Keys ***/
 
-	for(i=0;i<bgame->num_br_types;i++)
-		free(bgame->br_type_key[i]);
-	if(bgame->num_br_types)
-		free(bgame->br_type_key);
+	for(i=0;i<bgame->br_types_map->size;i++)
+	{
+		breakable_type_destroy((breakable_type*)(bgame->br_types_map->pointers[i]));
+		free(bgame->br_types_map->strings[i]);
+	}
+	string_map_destroy(bgame->br_types_map);
+
 	for(i=0;i<bgame->num_co_types;i++)
 		free(bgame->co_type_key[i]);
 	if(bgame->num_co_types)
@@ -266,7 +265,7 @@ void blips_game_load_object_types(blips_game *bgame)
 {
 	FILE *fp;
 	int i,count;
-	char string[3];
+	char *string;
 	char buffer[BUFFER_SIZE];
 
 	if(!(fp=fopen(bgame->campaign->object_key_path,"r")))
@@ -275,7 +274,6 @@ void blips_game_load_object_types(blips_game *bgame)
 		exit(1);
 	}
 
-	string[2]=0;
 
 	/*** Breakable Types/Strings ***/
 printf("Loading breakable types . . .\n");
@@ -285,10 +283,14 @@ printf("Loading breakable types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
+		string=(char*)malloc(sizeof(char)*3);
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
+		string[2]=0;
 		fscanf(fp,"=%s\n",buffer);
-		blips_game_add_breakable_type(bgame,buffer,string);
+		string_map_add(bgame->br_types_map,
+				string,
+				(void*)breakable_type_create(buffer));
 	}
 
 	/*** Collectible Types/Strings ***/
@@ -337,21 +339,6 @@ printf("Loading creature types . . .\n");
 }
 
 	/* load user_specified types */
-void blips_game_add_breakable_type(blips_game *bgame,char *path,char *string)
-{
-	bgame->br_types=(breakable_type**)realloc(bgame->br_types,sizeof(breakable_type*)*(bgame->num_br_types+1));
-	bgame->br_type_key=(char**)realloc(bgame->br_type_key,sizeof(char*)*(bgame->num_br_types+1));
-
-	bgame->br_types[bgame->num_br_types]=breakable_type_create(path);
-	bgame->br_type_key[bgame->num_br_types]=(char*)malloc(sizeof(char)*3);
-
-	strcpy(bgame->br_type_key[bgame->num_br_types],string);
-
-	bgame->num_br_types++;
-
-	return;
-}
-
 void blips_game_add_collectible_type(blips_game *bgame,char *path,char *string)
 {
 char* ch;

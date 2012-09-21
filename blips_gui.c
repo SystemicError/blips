@@ -217,10 +217,6 @@ printf("Reading tile: %s.\n",path);
 			break;
 		}
 
-if(!surface)
-printf("Adding nothing.\n");
-else
-printf("Adding address %d.\n",surface);
 		string_map_add(bgui->tile_map,chs,surface);
 	}
 
@@ -228,9 +224,7 @@ printf("Adding address %d.\n",surface);
 
 	/*** Object Media Sets ***/
 
-printf("Loading object media sets . . .\n");
 	blips_gui_load_media_sets(bgui);
-printf("Done loading object media sets.\n");
 
 	/*** Background Images ***/
 
@@ -261,31 +255,19 @@ printf("Copying new path . . .\n");
 	/* update the active background */
 
 	if(bgui->background_map->size)
-{
-printf("Updating background from map of size %d.\n",bgui->background_map->size);
 		string_map_string_to_pointer(bgui->background_map,bgui->active_world_tile_path,(void**)&(bgui->active_background));
-}
 
 	/* update the active tiles */
 	tile_string[2]=0;
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
-{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			tile_string[0]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][0];
 			tile_string[1]=blips_game_active_world_tile(bgui->game)->tile_strings[i][j][1];
-printf("%s",tile_string);
 			string_map_string_to_pointer(bgui->tile_map,
 						     tile_string,
 						     (void**)&(bgui->active_tiles[i][j]));
-if(!(bgui->active_tiles[i][j]))
-{
-printf("nothing there.\n");
-printf("Tile map size: %d.\n",bgui->tile_map->size);
-}
 		}
-printf("\n");
-}
 	return;
 }
 
@@ -303,15 +285,14 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 
 	/*** Breakable Media Sets ***/
 
-printf("Br ms.\n");
-	for(i=0;i<bgui->game->num_br_types;i++)
+	for(i=0;i<bgui->game->br_types_map->size;i++)
 		string_map_add(bgui->br_map,
-				bgui->game->br_types[i]->br_set_path,
-				(void*)breakable_media_set_create(bgui->game->br_types[i]->br_set_path));
+				((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path,
+				(void*)breakable_media_set_create(
+					((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path));
 
 	/*** Collectible Media Sets ***/
 
-printf("Co ms.\n");
 	for(i=0;i<bgui->game->num_co_types;i++)
 		string_map_add(bgui->co_map,
 				bgui->game->co_types[i]->co_set_path,
@@ -319,7 +300,6 @@ printf("Co ms.\n");
 
 	/*** Creature Media Sets ***/
 
-printf("Cr ms.\n");
 	for(i=0;i<bgui->game->num_cr_types;i++)
 		string_map_add(bgui->cr_map,
 				bgui->game->cr_types[i]->cr_set_path,
@@ -327,7 +307,6 @@ printf("Cr ms.\n");
 
 	/*** Projectile Media Sets ***/
 
-printf("Pr ms.\n");
 	for(i=0;i<bgui->game->num_pr_types;i++)
 		string_map_add(bgui->pr_map,
 				bgui->game->pr_types[i]->pr_set_path,
