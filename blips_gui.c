@@ -282,28 +282,37 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 	 * became noticeable. */
 
 	int i;
+	char *path;
 
 	/*** Breakable Media Sets ***/
 
 	for(i=0;i<bgui->game->br_types_map->size;i++)
+	{
+		path=((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path;
 		string_map_add(bgui->br_map,
-				((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path,
-				(void*)breakable_media_set_create(
-					((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path));
+				path,
+				(void*)breakable_media_set_create(path));
+	}
 
 	/*** Collectible Media Sets ***/
 
-	for(i=0;i<bgui->game->num_co_types;i++)
+	for(i=0;i<bgui->game->co_types_map->size;i++)
+	{
+		path=((collectible_type*)(bgui->game->co_types_map->pointers[i]))->co_set_path;
 		string_map_add(bgui->co_map,
-				bgui->game->co_types[i]->co_set_path,
-				(void*)collectible_media_set_create(bgui->game->co_types[i]->co_set_path));
+				path,
+				(void*)collectible_media_set_create(path));
+	}
 
 	/*** Creature Media Sets ***/
 
-	for(i=0;i<bgui->game->num_cr_types;i++)
+	for(i=0;i<bgui->game->cr_types_map->size;i++)
+	{
+		path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_set_path;
 		string_map_add(bgui->cr_map,
-				bgui->game->cr_types[i]->cr_set_path,
-				(void*)creature_media_set_create(bgui->game->cr_types[i]->cr_set_path));
+				path,
+				(void*)creature_media_set_create(path));
+	}
 
 	/*** Projectile Media Sets ***/
 

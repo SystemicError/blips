@@ -31,18 +31,14 @@ blips_game* blips_game_create(void)
 	bgame->ai_types=0;
 	bgame->num_ai_types=0;
 
-	bgame->co_types=0;
-	bgame->num_co_types=0;
-	bgame->cr_types=0;
-	bgame->num_cr_types=0;
 	bgame->pr_types=0;
 	bgame->num_pr_types=0;
 
-	/*** Keyed types ***/
+	/*** Keyed user-specified types ***/
 
 	bgame->br_types_map=string_map_create();
-	bgame->co_type_key=0;
-	bgame->cr_type_key=0;
+	bgame->co_types_map=string_map_create();
+	bgame->cr_types_map=string_map_create();
 
 	/*** Campaign ***/
 
@@ -83,14 +79,6 @@ void blips_game_destroy(blips_game *bgame)
 	if(bgame->num_ai_types)
 		free(bgame->ai_types);
 
-	for(i=0;i<bgame->num_co_types;i++)
-		collectible_type_destroy(bgame->co_types[i]);
-	if(bgame->num_co_types)
-		free(bgame->co_types);
-	for(i=0;i<bgame->num_cr_types;i++)
-		creature_type_destroy(bgame->cr_types[i]);
-	if(bgame->num_cr_types)
-		free(bgame->cr_types);
 	for(i=0;i<bgame->num_pr_types;i++)
 		projectile_type_destroy(bgame->pr_types[i]);
 	if(bgame->num_pr_types)
@@ -105,14 +93,19 @@ void blips_game_destroy(blips_game *bgame)
 	}
 	string_map_destroy(bgame->br_types_map);
 
-	for(i=0;i<bgame->num_co_types;i++)
-		free(bgame->co_type_key[i]);
-	if(bgame->num_co_types)
-		free(bgame->co_type_key);
-	for(i=0;i<bgame->num_cr_types;i++)
-		free(bgame->cr_type_key[i]);
-	if(bgame->num_cr_types)
-		free(bgame->cr_type_key);
+	for(i=0;i<bgame->co_types_map->size;i++)
+	{
+		collectible_type_destroy((collectible_type*)(bgame->co_types_map->pointers[i]));
+		free(bgame->co_types_map->strings[i]);
+	}
+	string_map_destroy(bgame->co_types_map);
+
+	for(i=0;i<bgame->cr_types_map->size;i++)
+	{
+		creature_type_destroy((creature_type*)(bgame->cr_types_map->pointers[i]));
+		free(bgame->cr_types_map->strings[i]);
+	}
+	string_map_destroy(bgame->cr_types_map);
 
 	/*** campaign ***/
 
@@ -301,10 +294,14 @@ printf("Loading collectible types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
+		string=(char*)malloc(sizeof(char)*3);
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
+		string[2]=0;
 		fscanf(fp,"=%s\n",buffer);
-		blips_game_add_collectible_type(bgame,buffer,string);
+		string_map_add(bgame->co_types_map,
+				string,
+				(void*)collectible_type_create(buffer));
 	}
 
 	/*** Creature Types/Strings ***/
@@ -315,10 +312,14 @@ printf("Loading creature types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
+		string=(char*)malloc(sizeof(char)*3);
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
+		string[2]=0;
 		fscanf(fp,"=%s\n",buffer);
-		blips_game_add_creature_type(bgame,buffer,string);
+		string_map_add(bgame->cr_types_map,
+				string,
+				(void*)creature_type_create(buffer));
 	}
 
 	fclose(fp);
@@ -334,40 +335,6 @@ printf("Loading creature types . . .\n");
 	/* These have to be loaded from creature list, checked for duplicates. */
 
 	/*UNFINISHED*/
-
-	return;
-}
-
-	/* load user_specified types */
-void blips_game_add_collectible_type(blips_game *bgame,char *path,char *string)
-{
-char* ch;
-	bgame->co_types=(collectible_type**)realloc(bgame->co_types,sizeof(collectible_type*)*(bgame->num_co_types+1));
-	bgame->co_type_key=(char**)realloc(bgame->co_type_key,sizeof(char*)*(bgame->num_co_types+1));
-
-	bgame->co_types[bgame->num_co_types]=collectible_type_create(path);
-	bgame->co_type_key[bgame->num_co_types]=(char*)malloc(sizeof(char)*2);
-
-	strcpy(bgame->co_type_key[bgame->num_co_types],string);
-
-	bgame->num_co_types++;
-
-	return;
-}
-
-void blips_game_add_creature_type(blips_game *bgame,char *path,char *string)
-{
-	bgame->cr_types=(creature_type**)realloc(bgame->cr_types,sizeof(creature_type*)*(bgame->num_cr_types+1));
-	bgame->cr_type_key=(char**)realloc(bgame->cr_type_key,sizeof(char*)*(bgame->num_cr_types+1));
-
-printf("Creating new creature_type.\n");
-	bgame->cr_types[bgame->num_cr_types]=creature_type_create(path);
-printf("created.\n");
-	bgame->cr_type_key[bgame->num_cr_types]=(char*)malloc(sizeof(char)*2);
-
-	strcpy(bgame->cr_type_key[bgame->num_cr_types],string);
-
-	bgame->num_cr_types++;
 
 	return;
 }

@@ -99,17 +99,13 @@ typedef struct blips_game
 	ai_type **ai_types;
 	int num_ai_types;
 
-	collectible_type **co_types;
-	int num_co_types;
-	creature_type **cr_types;
-	int num_cr_types;
 	projectile_type **pr_types;
 	int num_pr_types;
 
 	/* keyed types (i.e. types that appear as symbols in world tile ascii maps) */
 	string_map *br_types_map;
-	char **co_type_key;
-	char **cr_type_key;
+	string_map *co_types_map;
+	string_map *cr_types_map;
 
 	world_tile *active_world_tile;
 
@@ -140,10 +136,6 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger);
 
 	/* load object key specified by campaign */
 void blips_game_load_object_types(blips_game *bgame);
-
-	/* load user_specified types */
-void blips_game_add_collectible_type(blips_game *bgame,char *path,char *string);
-void blips_game_add_creature_type(blips_game *bgame,char *path,char *string);
 
 #endif
 
