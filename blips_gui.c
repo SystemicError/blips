@@ -166,7 +166,6 @@ void blips_gui_fill_cache(blips_gui *bgui)
 
 	/*** Image Tile Key ***/
 
-printf("Opening tile image key . . .\n");
 	if(!(fp=fopen(bgui->game->campaign->tile_image_key_path,"r")))
 	{
 		fprintf(stderr,"Couldn't open tile_image_key:  %s.\n",bgui->game->campaign->tile_image_key_path);
@@ -187,7 +186,6 @@ printf("Opening tile image key . . .\n");
 		bgui->tile_key[i][1]=fgetc(fp);
 		bgui->tile_key[i][2]=0;  /* null terminator */
 		fscanf(fp,"=%s\n",path);
-printf("Loading tile image of path:  %s.\n",path);
 		bgui->tile_images[i]=cairo_image_surface_create_from_png(path);
 	}
 
@@ -229,7 +227,6 @@ printf("Copying new path . . .\n");
 		bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
 
 	/* update the active tiles */
-printf("Updating active tiles . . .\n");
 	tile_string[2]=0;
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
 		for(j=0;j<BLIPS_TILE_COLS;j++)
@@ -358,9 +355,6 @@ void blips_gui_load_background_images(blips_gui *bgui)
 
 	/* sort bg images by file name */
 	blips_gui_sort_pointers_by_strings((void**)(bgui->background_images),bgui->background_key,bgui->num_background_images);
-printf("Bg key (should have no duplicates):\n");
-for(i=0;i<bgui->num_background_images;i++)
-printf("%s\n",bgui->background_key[i]);
 
 	return;
 }

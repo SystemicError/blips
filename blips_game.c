@@ -248,9 +248,14 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 			string[0]=bgame->active_world_tile->object_strings[i][j][0];
 			string[1]=bgame->active_world_tile->object_strings[i][j][1];
 
-			/* Compare the string to our object key */
+			/* Compare the string to our object key
+			 * and add an object of the type specified */
+
+				/* search breakable types */
 /* UNFINISHED */
-			/* Add an object of the type specified */
+				/* search collectible types */
+/* UNFINISHED */
+				/* search creature types */
 /* UNFINISHED */
 		}
 
@@ -261,7 +266,7 @@ void blips_game_load_object_types(blips_game *bgame)
 {
 	FILE *fp;
 	int i,count;
-	char string[2];
+	char string[3];
 	char buffer[BUFFER_SIZE];
 
 	if(!(fp=fopen(bgame->campaign->object_key_path,"r")))
@@ -269,6 +274,8 @@ void blips_game_load_object_types(blips_game *bgame)
 		fprintf(stderr,"Couldn't open object_key path:  %s\n.",bgame->campaign->object_key_path);
 		exit(1);
 	}
+
+	string[2]=0;
 
 	/*** Breakable Types/Strings ***/
 printf("Loading breakable types . . .\n");
@@ -315,9 +322,15 @@ printf("Loading creature types . . .\n");
 	fclose(fp);
 
 	/*** AI Types ***/
+
+	/* These have to be loaded from creature list, checked for duplicates. */
+
 	/*UNFINISHED */
 
 	/*** Projectile Types ***/
+
+	/* These have to be loaded from creature list, checked for duplicates. */
+
 	/*UNFINISHED*/
 
 	return;
@@ -330,10 +343,9 @@ void blips_game_add_breakable_type(blips_game *bgame,char *path,char *string)
 	bgame->br_type_key=(char**)realloc(bgame->br_type_key,sizeof(char*)*(bgame->num_br_types+1));
 
 	bgame->br_types[bgame->num_br_types]=breakable_type_create(path);
-	bgame->br_type_key[bgame->num_br_types]=(char*)malloc(sizeof(char)*2);
+	bgame->br_type_key[bgame->num_br_types]=(char*)malloc(sizeof(char)*3);
 
-	bgame->br_type_key[bgame->num_br_types][0]=string[0];
-	bgame->br_type_key[bgame->num_br_types][1]=string[1];
+	strcpy(bgame->br_type_key[bgame->num_br_types],string);
 
 	bgame->num_br_types++;
 
@@ -349,8 +361,7 @@ char* ch;
 	bgame->co_types[bgame->num_co_types]=collectible_type_create(path);
 	bgame->co_type_key[bgame->num_co_types]=(char*)malloc(sizeof(char)*2);
 
-	bgame->co_type_key[bgame->num_co_types][0]=string[0];
-	bgame->co_type_key[bgame->num_co_types][1]=string[1];
+	strcpy(bgame->co_type_key[bgame->num_co_types],string);
 
 	bgame->num_co_types++;
 
@@ -367,8 +378,7 @@ printf("Creating new creature_type.\n");
 printf("created.\n");
 	bgame->cr_type_key[bgame->num_cr_types]=(char*)malloc(sizeof(char)*2);
 
-	bgame->cr_type_key[bgame->num_cr_types][0]=string[0];
-	bgame->cr_type_key[bgame->num_cr_types][1]=string[1];
+	strcpy(bgame->cr_type_key[bgame->num_cr_types],string);
 
 	bgame->num_cr_types++;
 

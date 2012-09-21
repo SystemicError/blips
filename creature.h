@@ -26,7 +26,7 @@ typedef struct creature
 	int x_in_cell,y_in_cell;
 	int current_health,current_move_speed;
 	double move_orientation,aim_orientation;
-	int fire_cycle_state;
+	int fire_cycle_state;  /* -1 indicates not firing. */
 	int team;
 	creature_type *type;
 } creature;
