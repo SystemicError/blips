@@ -2,17 +2,20 @@
 +Do the same for sounds.
 +Write keys, campaign file.
 +Start coding?
-
 +Finish media_set definitions.
 +Finish campaign definition.
-+Finish input_state definition
-	-consider adding array of inputs?  Or will we do an array of input_states?
--Consider a blips_input_reader which is configured by a text file.
 +Write world_tile
 +Fix the whitespace problem!  fscanf(fp,"%s\n",buffer); stops at the first whitespace!  Replace with fgets.
++Make a new class called "string_map."  This will be a map in the data structure sense, to associate a string with a void pointer.  Use this to encapsulate all the damn keys hanging around.
++Rewrite statics support:
+	Could add int static field to creatures.  Objects of type static would appear in normal key, would need separate definitons.  I like this solution because it doesn't introduce yet another map, and it's not a huge hassle to have static objects occasionally be copies of non-static ones.
+	+Also, new keyword.  Call it enum spawn_trigger {enter, clear} and bool respawn.
+	+Rewrite *_type.* files to accommodate these new fields.
++Figure out how we're going to deal with object keys.  Will world tiles just read the map strings, letting the game translate?  Seems reasonable, actually.
+
 +Write breakable,collectible,creature,projectile
 -Integrate these into game, gui.
-	-Give game a function called spawn() or something, which causes current world tile's list of objects to be entered into present br/co/cr/pr lists.
+	+Give game a function called spawn() or something, which causes current world tile's list of objects to be entered into present br/co/cr/pr lists.
 	-Give game a function called despawn() or something, which removes all non-player objects in preparation for spawn().
 	-Have both spawn() and despawn() called by change_tile(maze_direction).
 	-Have change_tile(maze_direction) triggered by [bool] player_leaving_tile().
@@ -22,17 +25,12 @@
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, among others.
 
 
-+Rewrite statics support:
-	Could add int static field to creatures.  Objects of type static would appear in normal key, would need separate definitons.  I like this solution because it doesn't introduce yet another map, and it's not a huge hassle to have static objects occasionally be copies of non-static ones.
-	+Also, new keyword.  Call it enum spawn_trigger {enter, clear} and bool respawn.
-	+Rewrite *_type.* files to accommodate these new fields.
-
-+:w
-Figure out how we're going to deal with object keys.  Will world tiles just read the map strings, letting the game translate?  Seems reasonable, actually.
 
 
 -Get working on loading pr_types and ai_types in blips_game.
 
 -Test maze/barrier loading. (print it!)
 
--Make a new class called "string_map."  This will be a map in the data structure sense, to associate a string with a void pointer.  Use this to encapsulate all the damn keys hanging around.
+-Consider a blips_input_reader which is configured by a text file.
++Finish input_state definition
+	-consider adding array of inputs?  Or will we do an array of input_states?

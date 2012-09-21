@@ -232,6 +232,7 @@ printf("Reading tile: %s.\n",path);
 
 	/* finally, set the active world tile string to 0 so it will update next cycle */
 	bgui->active_world_tile_path[0]=0;
+printf("Done filling cache.\n");
 
 	return;
 }

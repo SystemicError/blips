@@ -70,7 +70,6 @@ void string_map_string_to_pointer(string_map *smap,char *string,void **ret)
 	lower=0;
 	middle=(lower+upper)/2;
 
-
 	while(comparison=strcmp(string,smap->strings[middle]))
 	{
 		if(comparison>0)  /* input>candidate */
@@ -78,10 +77,11 @@ void string_map_string_to_pointer(string_map *smap,char *string,void **ret)
 		else
 			upper=middle;
 
-		if(lower==upper)
+		if(lower>=upper-1)
 		{
-			fprintf(stderr,"Got request for item not in key!\n");
-			exit(1);
+printf("Got request for item not in key!\n");
+			(*ret)=0;
+			return;
 		}
 
 		middle=(lower+upper)/2;
