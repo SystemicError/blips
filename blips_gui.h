@@ -98,9 +98,7 @@ typedef struct blips_gui
 	int num_tile_images;
 
 	/* background image cache */
-	cairo_surface_t **background_images;
-	char **background_key;  /* a link copy only */
-	int num_background_images;
+	string_map *background_map;
 
 	/* active tile array */
 	cairo_surface_t *active_tiles[BLIPS_TILE_ROWS][BLIPS_TILE_COLS];

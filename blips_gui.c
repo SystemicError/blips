@@ -59,6 +59,10 @@ printf("Initializing audio . . .\n");
 	bgui->cr_map=string_map_create();
 	bgui->pr_map=string_map_create();
 
+	/* background map key */
+
+	bgui->background_map=string_map_create();
+
 printf("Filling cache . . .\n");
 	blips_gui_fill_cache(bgui);
 
@@ -100,10 +104,9 @@ printf("Freeing media.\n");
 		free(bgui->tile_images);
 
 	/* bg images */
-	for(i=0;i<bgui->num_background_images;i++)
-		cairo_surface_destroy(bgui->background_images[i]);
-	if(bgui->background_images)
-		free(bgui->background_images);
+	for(i=0;i<bgui->background_map->size;i++)
+		cairo_surface_destroy((cairo_surface_t*)(bgui->background_map->pointers[i]));
+	string_map_destroy(bgui->background_map);
 
 
 printf("Closing audio.\n");
@@ -228,8 +231,8 @@ printf("Copying new path . . .\n");
 
 	/* update the active background */
 
-	if(bgui->num_background_images)
-		bgui->active_background=bgui->background_images[blips_gui_string_to_pointer_index(bgui->active_world_tile_path,bgui->background_key,bgui->num_background_images)];
+	if(bgui->background_map->size)
+		string_map_string_to_pointer(bgui->background_map,bgui->active_world_tile_path,bgui->active_background);
 
 	/* update the active tiles */
 	tile_string[2]=0;
@@ -299,35 +302,26 @@ void blips_gui_load_background_images(blips_gui *bgui)
 
 	/* load bg images from game world tiles */
 
-	bgui->num_background_images=0;
 	for(i=0;i<bgui->game->num_world_tiles;i++)
 	{
 		if(strcmp(bgui->game->world_tiles[i]->background_image,"none"))
 		{
-			for(j=0;j<bgui->num_background_images;j++)
-				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_key[j]))
+			for(j=0;j<bgui->background_map->size;j++)
+				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_map->strings[j]))
 				{
 					/* This is a duplicate; skip it. */
-					j=bgui->num_background_images;
+					j=bgui->background_map->size;
 					duplicate=1;
 				}
 			if(!duplicate)
 			{
 				/* Something new!  Add it to both the image list and key list. */
-					/* make room */
-				bgui->background_images=(cairo_surface_t**)realloc(bgui->background_images,sizeof(cairo_surface_t*)*(bgui->num_background_images+1));
-				bgui->background_key=(char**)realloc(bgui->background_key,sizeof(char*)*(bgui->num_background_images+1));
-					/* copy data */
-				bgui->background_images[bgui->num_background_images]=cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image);
-				bgui->background_key[bgui->num_background_images]=bgui->game->world_tiles[i]->background_image;
-					/* increase count */
-				bgui->num_background_images++;
+				string_map_add(bgui->background_map,
+					       bgui->game->world_tiles[i]->background_image,
+					       (void*)cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image));
 			}
 		}
 	}
-
-	/* sort bg images by file name */
-	blips_gui_sort_pointers_by_strings((void**)(bgui->background_images),bgui->background_key,bgui->num_background_images);
 
 	return;
 }
