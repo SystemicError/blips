@@ -449,8 +449,77 @@ void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface
 
 void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
-	/* UNFINISHED */
+	int i;
+	int set_index;
 
+	/*** Breakables ***/
+
+	for(i=0;i<bgui->game->num_breakables;i++)
+	{
+		/* Find the media set which matches the object type for this object instance. */
+		set_index=blips_gui_string_to_pointer_index(bgui->game->breakables[i]->type->br_type_path,bgui->br_key,bgui->num_br_sets);
+
+		/* render that media set according to the stat of this object instance */
+		blips_gui_render_breakable(bgui,cr,surface,bgui->br_sets[set_index],bgui->game->breakables[i]);
+	}
+
+	/*** Collectibles ***/
+
+	for(i=0;i<bgui->game->num_collectibles;i++)
+	{
+		/* Find the media set which matches the object type for this object instance. */
+		set_index=blips_gui_string_to_pointer_index(bgui->game->collectibles[i]->type->co_type_path,bgui->co_key,bgui->num_co_sets);
+
+		/* render that media set according to the stat of this object instance */
+		blips_gui_render_collectible(bgui,cr,surface,bgui->co_sets[set_index],bgui->game->collectibles[i]);
+	}
+
+	/*** Creatures ***/
+
+	for(i=0;i<bgui->game->num_creatures;i++)
+	{
+		/* Find the media set which matches the object type for this object instance. */
+		set_index=blips_gui_string_to_pointer_index(bgui->game->creatures[i]->type->cr_type_path,bgui->cr_key,bgui->num_cr_sets);
+
+		/* render that media set according to the stat of this object instance */
+		blips_gui_render_creature(bgui,cr,surface,bgui->cr_sets[set_index],bgui->game->creatures[i]);
+	}
+
+	/*** Projectiles ***/
+
+	for(i=0;i<bgui->game->num_projectiles;i++)
+	{
+		/* Find the media set which matches the object type for this object instance. */
+		set_index=blips_gui_string_to_pointer_index(bgui->game->projectiles[i]->type->pr_type_path,bgui->pr_key,bgui->num_pr_sets);
+
+		/* render that media set according to the stat of this object instance */
+		blips_gui_render_projectile(bgui,cr,surface,bgui->pr_sets[set_index],bgui->game->projectiles[i]);
+	}
+
+	return;
+}
+
+void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,breakable_media_set *br_set,breakable *br)
+{
+	/* UNFINISHED */
+	return;
+}
+
+void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,collectible_media_set *co_set,collectible *co)
+{
+	/* UNFINISHED */
+	return;
+}
+
+void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,creature_media_set *cr_set,creature *creat)
+{
+	/* UNFINISHED */
+	return;
+}
+
+void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,projectile_media_set *pr_set,projectile *pr)
+{
+	/* UNFINISHED */
 	return;
 }
 

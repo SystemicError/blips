@@ -144,6 +144,11 @@ void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 
+void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,breakable_media_set *br_set,breakable *br);
+void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,collectible_media_set *co_set,collectible *co);
+void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,creature_media_set *cr_set,creature *creat);
+void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,projectile_media_set *pr_set,projectile *pr);
+
 	/* events */
 int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *inputs);
 
