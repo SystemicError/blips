@@ -61,7 +61,7 @@ ai_type* ai_type_create(char *path)
 	else if(!strcmp(buffer,"spurt"))
 		ait->fire_goal=AI_SPURT;
 
-	ait->ai_type_path=(char*)malloc(sizeof(char)*strlen(path));
+	ait->ai_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
 	strcpy(ait->ai_type_path,path);
 
 	fclose(fp);

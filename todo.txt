@@ -33,3 +33,5 @@
 -Get working on loading object types (ai/br/co/cr/pr) aside from the objects that are keyed.
 
 -Test maze/barrier loading. (print it!)
+
+-Fix current segfault!

@@ -38,14 +38,22 @@ breakable_type* breakable_type_create(char *path)
 	/*** Media Set ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+printf("Media set comment:  %s.\n",buffer);
 	fgets(buffer,BUFFER_SIZE,fp);
-	br_type->br_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+	buffer[strlen(buffer)-1]=0;
+printf("Media set (post):  %s.\n",buffer);
+	br_type->br_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
 	strcpy(br_type->br_set_path,buffer);
 
-	br_type->br_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(br_type->br_type_path,buffer);
-
+	/* We're done with the file, now. */
 	fclose(fp);
+
+	/*** Breakable Type (self) Path ***/
+printf("Path is %s, %d.\n",path,strlen(path));
+	br_type->br_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
+	strcpy(br_type->br_type_path,path);
+printf("Final char is %d.\n",br_type->br_type_path[strlen(path)]);
+
 	return br_type;
 }
 

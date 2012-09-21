@@ -23,9 +23,9 @@
 typedef struct collectible_type
 {
 	char *co_set_path;
-	char *co_type_path;
 	spawn_trigger trigger;
 	int respawn;
+	char *co_type_path;
 } collectible_type;
 
 collectible_type* collectible_type_create(char *path);

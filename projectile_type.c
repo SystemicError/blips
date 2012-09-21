@@ -3,11 +3,6 @@
 
 #include"projectile_type.h"
 
-	int damage;
-	int move_speed;
-	char *pr_set_path;
-	char *pr_type_path;
-
 projectile_type* projectile_type_create(char *path)
 {
 	FILE *fp;
@@ -30,11 +25,11 @@ projectile_type* projectile_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp); 
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	pr_type->pr_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+	pr_type->pr_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
 	strcpy(pr_type->pr_set_path,buffer);
 
-	pr_type->pr_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(pr_type->pr_type_path,buffer);
+	pr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
+	strcpy(pr_type->pr_type_path,path);
 
 	fclose(fp);
 	return pr_type;

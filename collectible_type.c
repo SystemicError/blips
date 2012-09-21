@@ -17,6 +17,7 @@ collectible_type* collectible_type_create(char *path)
 	}
 
 	/*** Spawn Trigger ***/
+printf("Collectible Spawn Trigger.\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
@@ -26,23 +27,31 @@ collectible_type* collectible_type_create(char *path)
 		co_type->trigger=SPAWN_ON_CLEAR;
 
 	/*** Respawn ***/
+printf("Collectible Respawn.\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(co_type->respawn));
 
 	/*** Media Set ***/
+printf("Collectible Media Set.\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 
-	co_type->co_set_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
+	co_type->co_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
 	strcpy(co_type->co_set_path,buffer);
 
-	co_type->co_type_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(co_type->co_type_path,buffer);
+	/*** Collectible Type (self) Path ***/
+printf("Collectible Type self Path.\n");
+
+	co_type->co_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
+printf("Now copying path:  %s.\n",path);
+	strcpy(co_type->co_type_path,path);
+printf("Done copying.\n");
 
 	fclose(fp);
+printf("Returning from co_type_create().\n");
 	return co_type;
 }
 
@@ -54,9 +63,12 @@ void collectible_type_destroy(collectible_type *co_type)
 		exit(1);
 	}
 
+printf("Freeing co media set path (currently reads:  %s).\n",co_type->co_set_path);
 	free(co_type->co_set_path);
+printf("Freeing co type path.\n");
 	free(co_type->co_type_path);
 
+printf("Freeing co_type.\n");
 	free(co_type);
 
 	return;

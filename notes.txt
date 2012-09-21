@@ -81,3 +81,6 @@ tile_key in blips_gui is three long, for null terminator.
 blips_gui doesn't instantiate keys; doesn't need to free them.
 
 Um, since I'm writing all my headers with ifndef ... endif protection, do I really need to do the ifndef/include/endif thing each time?
+
+
+Strlen doesn't include terminating \0!  Disastrous reprecussions if you forget this!

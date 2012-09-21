@@ -39,6 +39,12 @@ blips_game* blips_game_create(void)
 	bgame->pr_types=0;
 	bgame->num_pr_types=0;
 
+	/*** Keys ***/
+
+	bgame->br_type_key=0;
+	bgame->co_type_key=0;
+	bgame->cr_type_key=0;
+
 	/*** Campaign ***/
 
 	bgame->campaign=0;
@@ -91,6 +97,21 @@ void blips_game_destroy(blips_game *bgame)
 		projectile_type_destroy(bgame->pr_types[i]);
 	if(bgame->num_pr_types)
 		free(bgame->pr_types);
+
+	/*** Keys ***/
+
+	for(i=0;i<bgame->num_br_types;i++)
+		free(bgame->br_type_key[i]);
+	if(bgame->num_br_types)
+		free(bgame->br_type_key);
+	for(i=0;i<bgame->num_co_types;i++)
+		free(bgame->co_type_key[i]);
+	if(bgame->num_co_types)
+		free(bgame->co_type_key);
+	for(i=0;i<bgame->num_cr_types;i++)
+		free(bgame->cr_type_key[i]);
+	if(bgame->num_cr_types)
+		free(bgame->cr_type_key);
 
 	/*** campaign ***/
 
@@ -294,7 +315,6 @@ printf("Loading creature types . . .\n");
 		blips_game_add_creature_type(bgame,buffer,string);
 	}
 
-
 	fclose(fp);
 
 	/*** AI Types ***/
@@ -314,8 +334,10 @@ void blips_game_add_breakable_type(blips_game *bgame,char *path,char *string)
 
 printf("Allocating individual/loading br_type . . .\n");
 	bgame->br_types[bgame->num_br_types]=breakable_type_create(path);
+printf("Attempting to destroy breakable type we just made.\n");
+breakable_type_destroy(bgame->br_types[bgame->num_br_types]);
 printf("Beep.\n");
-	bgame->br_type_key[bgame->num_br_types]=malloc(sizeof(char)*2);
+	bgame->br_type_key[bgame->num_br_types]=(char*)malloc(sizeof(char)*2);
 
 printf("Copying string . . .\n");
 	bgame->br_type_key[bgame->num_br_types][0]=string[0];
@@ -328,17 +350,33 @@ printf("Copying string . . .\n");
 
 void blips_game_add_collectible_type(blips_game *bgame,char *path,char *string)
 {
+char* ch;
 	bgame->co_types=(collectible_type**)realloc(bgame->co_types,sizeof(collectible_type*)*(bgame->num_co_types+1));
 	bgame->co_type_key=(char**)realloc(bgame->co_type_key,sizeof(char*)*(bgame->num_co_types+1));
 
+printf("Starting allocation test.\n");
+ch=(char*)malloc(sizeof(char)*2);
+printf("Allocated test.\n");
+free(ch);
+printf("Freed test.\n");
 	bgame->co_types[bgame->num_co_types]=collectible_type_create(path);
-	bgame->co_type_key[bgame->num_co_types]=malloc(sizeof(char)*2);
+printf("Temp--destroy co.\n");
+collectible_type_destroy(bgame->co_types[bgame->num_co_types]);
+printf("Returned from type_create().  num_co_types=%d.\n",bgame->num_co_types);
+ch=(char*)malloc(sizeof(char)*2);
+printf("Allocated test.\n");
+free(ch);
+printf("Freed test.\n");
+	bgame->co_type_key[bgame->num_co_types]=(char*)malloc(sizeof(char)*2);
+printf("Allocated co_type_key.\n");
 
 	bgame->co_type_key[bgame->num_co_types][0]=string[0];
 	bgame->co_type_key[bgame->num_co_types][1]=string[1];
+printf("Copied string.\n");
 
 	bgame->num_co_types++;
 
+printf("Returning from add_collectible_types.\n");
 	return;
 }
 
@@ -347,8 +385,10 @@ void blips_game_add_creature_type(blips_game *bgame,char *path,char *string)
 	bgame->cr_types=(creature_type**)realloc(bgame->cr_types,sizeof(creature_type*)*(bgame->num_cr_types+1));
 	bgame->cr_type_key=(char**)realloc(bgame->cr_type_key,sizeof(char*)*(bgame->num_cr_types+1));
 
+printf("Creating new creature_type.\n");
 	bgame->cr_types[bgame->num_cr_types]=creature_type_create(path);
-	bgame->cr_type_key[bgame->num_cr_types]=malloc(sizeof(char)*2);
+printf("created.\n");
+	bgame->cr_type_key[bgame->num_cr_types]=(char*)malloc(sizeof(char)*2);
 
 	bgame->cr_type_key[bgame->num_cr_types][0]=string[0];
 	bgame->cr_type_key[bgame->num_cr_types][1]=string[1];
