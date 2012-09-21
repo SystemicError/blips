@@ -52,6 +52,13 @@ printf("Initializing audio . . .\n");
 
 	bgui->game=bgame;
 
+	/* object media sets and keys */
+
+	bgui->br_map=string_map_create();
+	bgui->co_map=string_map_create();
+	bgui->cr_map=string_map_create();
+	bgui->pr_map=string_map_create();
+
 printf("Filling cache . . .\n");
 	blips_gui_fill_cache(bgui);
 
@@ -70,25 +77,21 @@ printf("Blips GUI destructor called:\n");
 
 printf("Freeing media.\n");
 	/* media sets */
-	for(i=0;i<bgui->num_br_sets;i++)
-		breakable_media_set_destroy(bgui->br_sets[i]);
-	if(bgui->num_br_sets)
-		free(bgui->br_sets);
+	for(i=0;i<bgui->br_map->size;i++)
+		breakable_media_set_destroy((breakable_media_set*)(bgui->br_map->pointers[i]));
+	string_map_destroy(bgui->br_map);
 
-	for(i=0;i<bgui->num_co_sets;i++)
-		collectible_media_set_destroy(bgui->co_sets[i]);
-	if(bgui->num_co_sets)
-		free(bgui->co_sets);
+	for(i=0;i<bgui->co_map->size;i++)
+		collectible_media_set_destroy((collectible_media_set*)(bgui->co_map->pointers[i]));
+	string_map_destroy(bgui->co_map);
 
-	for(i=0;i<bgui->num_cr_sets;i++)
-		creature_media_set_destroy(bgui->cr_sets[i]);
-	if(bgui->num_cr_sets)
-		free(bgui->cr_sets);
+	for(i=0;i<bgui->cr_map->size;i++)
+		creature_media_set_destroy((creature_media_set*)(bgui->cr_map->pointers[i]));
+	string_map_destroy(bgui->cr_map);
 
-	for(i=0;i<bgui->num_pr_sets;i++)
-		projectile_media_set_destroy(bgui->pr_sets[i]);
-	if(bgui->num_pr_sets)
-		free(bgui->pr_sets);
+	for(i=0;i<bgui->pr_map->size;i++)
+		projectile_media_set_destroy((projectile_media_set*)(bgui->pr_map->pointers[i]));
+	string_map_destroy(bgui->pr_map);
 
 	/* tile images */
 	for(i=0;i<bgui->num_tile_images;i++)
@@ -193,7 +196,9 @@ void blips_gui_fill_cache(blips_gui *bgui)
 
 	/*** Object Media Sets ***/
 
+printf("Loading object media sets . . .\n");
 	blips_gui_load_media_sets(bgui);
+printf("Done loading object media sets.\n");
 
 	/*** Background Images ***/
 
@@ -252,67 +257,35 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 
 	/*** Breakable Media Sets ***/
 
-	bgui->num_br_sets=bgui->game->num_br_types;
-
-	bgui->br_sets=(breakable_media_set**)malloc(sizeof(breakable_media_set*)*bgui->num_br_sets);
-	bgui->br_key=(char**)malloc(sizeof(char*)*bgui->num_br_sets);
-
+printf("Br ms.\n");
 	for(i=0;i<bgui->game->num_br_types;i++)
-	{
-		bgui->br_sets[i]=breakable_media_set_create(bgui->game->br_types[i]->br_set_path);
-		bgui->br_key[i]=bgui->game->br_types[i]->br_set_path;  /* not a copy, just a pointer */
-	}
-
-	/* sort that mess */
-	blips_gui_sort_pointers_by_strings((void**)(bgui->br_sets),bgui->br_key,bgui->num_br_sets);
+		string_map_add(bgui->br_map,
+				bgui->game->br_types[i]->br_set_path,
+				(void*)breakable_media_set_create(bgui->game->br_types[i]->br_set_path));
 
 	/*** Collectible Media Sets ***/
 
-	bgui->num_co_sets=bgui->game->num_co_types;
-
-	bgui->co_sets=(collectible_media_set**)malloc(sizeof(collectible_media_set*)*bgui->num_co_sets);
-	bgui->co_key=(char**)malloc(sizeof(char*)*bgui->num_co_sets);
-
+printf("Co ms.\n");
 	for(i=0;i<bgui->game->num_co_types;i++)
-	{
-		bgui->co_sets[i]=collectible_media_set_create(bgui->game->co_types[i]->co_set_path);
-		bgui->co_key[i]=bgui->game->co_types[i]->co_set_path;  /* not a copy, just a pointer */
-	}
-
-	/* sort that mess */
-	blips_gui_sort_pointers_by_strings((void**)(bgui->co_sets),bgui->co_key,bgui->num_co_sets);
+		string_map_add(bgui->co_map,
+				bgui->game->co_types[i]->co_set_path,
+				(void*)collectible_media_set_create(bgui->game->co_types[i]->co_set_path));
 
 	/*** Creature Media Sets ***/
 
-	bgui->num_cr_sets=bgui->game->num_cr_types;
-
-	bgui->cr_sets=(creature_media_set**)malloc(sizeof(creature_media_set*)*bgui->num_cr_sets);
-	bgui->cr_key=(char**)malloc(sizeof(char*)*bgui->num_cr_sets);
-
+printf("Cr ms.\n");
 	for(i=0;i<bgui->game->num_cr_types;i++)
-	{
-		bgui->cr_sets[i]=creature_media_set_create(bgui->game->cr_types[i]->cr_set_path);
-		bgui->cr_key[i]=bgui->game->cr_types[i]->cr_set_path;  /* not a copy, just a pointer */
-	}
-
-	/* sort that mess */
-	blips_gui_sort_pointers_by_strings((void**)(bgui->cr_sets),bgui->cr_key,bgui->num_cr_sets);
+		string_map_add(bgui->cr_map,
+				bgui->game->cr_types[i]->cr_set_path,
+				(void*)creature_media_set_create(bgui->game->cr_types[i]->cr_set_path));
 
 	/*** Projectile Media Sets ***/
 
-	bgui->num_pr_sets=bgui->game->num_pr_types;
-
-	bgui->pr_sets=(projectile_media_set**)malloc(sizeof(projectile_media_set*)*bgui->num_pr_sets);
-	bgui->pr_key=(char**)malloc(sizeof(char*)*bgui->num_pr_sets);
-
+printf("Pr ms.\n");
 	for(i=0;i<bgui->game->num_pr_types;i++)
-	{
-		bgui->pr_sets[i]=projectile_media_set_create(bgui->game->pr_types[i]->pr_set_path);
-		bgui->pr_key[i]=bgui->game->pr_types[i]->pr_set_path;  /* not a copy, just a pointer */
-	}
-
-	/* sort that mess */
-	blips_gui_sort_pointers_by_strings((void**)(bgui->pr_sets),bgui->pr_key,bgui->num_pr_sets);
+		string_map_add(bgui->pr_map,
+				bgui->game->pr_types[i]->pr_set_path,
+				(void*)projectile_media_set_create(bgui->game->pr_types[i]->pr_set_path));
 
 	return;
 }
@@ -444,17 +417,19 @@ void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface
 void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
 {
 	int i;
-	int set_index;
+	void *ptr;
 
 	/*** Breakables ***/
 
 	for(i=0;i<bgui->game->num_breakables;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		set_index=blips_gui_string_to_pointer_index(bgui->game->breakables[i]->type->br_type_path,bgui->br_key,bgui->num_br_sets);
+		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_breakable(bgui,cr,surface,bgui->br_sets[set_index],bgui->game->breakables[i]);
+		blips_gui_render_breakable(bgui,cr,surface,
+					   (breakable_media_set*)ptr,
+					   bgui->game->breakables[i]);
 	}
 
 	/*** Collectibles ***/
@@ -462,10 +437,12 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_collectibles;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		set_index=blips_gui_string_to_pointer_index(bgui->game->collectibles[i]->type->co_type_path,bgui->co_key,bgui->num_co_sets);
+		string_map_string_to_pointer(bgui->co_map,bgui->game->collectibles[i]->type->co_type_path,ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_collectible(bgui,cr,surface,bgui->co_sets[set_index],bgui->game->collectibles[i]);
+		blips_gui_render_collectible(bgui,cr,surface,
+					     (collectible_media_set*)ptr,
+					     bgui->game->collectibles[i]);
 	}
 
 	/*** Creatures ***/
@@ -473,10 +450,12 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_creatures;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		set_index=blips_gui_string_to_pointer_index(bgui->game->creatures[i]->type->cr_type_path,bgui->cr_key,bgui->num_cr_sets);
+		string_map_string_to_pointer(bgui->cr_map,bgui->game->creatures[i]->type->cr_type_path,ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_creature(bgui,cr,surface,bgui->cr_sets[set_index],bgui->game->creatures[i]);
+		blips_gui_render_creature(bgui,cr,surface,
+					  (creature_media_set*)ptr,
+					  bgui->game->creatures[i]);
 	}
 
 	/*** Projectiles ***/
@@ -484,10 +463,12 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_projectiles;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		set_index=blips_gui_string_to_pointer_index(bgui->game->projectiles[i]->type->pr_type_path,bgui->pr_key,bgui->num_pr_sets);
+		string_map_string_to_pointer(bgui->pr_map,bgui->game->projectiles[i]->type->pr_type_path,ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_projectile(bgui,cr,surface,bgui->pr_sets[set_index],bgui->game->projectiles[i]);
+		blips_gui_render_projectile(bgui,cr,surface,
+					    (projectile_media_set*)ptr,
+					     bgui->game->projectiles[i]);
 	}
 
 	return;

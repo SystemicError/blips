@@ -42,7 +42,7 @@ void string_map_destroy(string_map *smap)
 void string_map_add(string_map *smap,char *string,void *ptr)
 {
 	smap->pointers=(void**)realloc(smap->pointers,sizeof(void*)*(smap->size+1));
-	smap->strings=(void**)realloc(smap->strings,sizeof(void*)*(smap->size+1));
+	smap->strings=(char**)realloc(smap->strings,sizeof(char*)*(smap->size+1));
 
 	smap->pointers[smap->size]=ptr;
 	smap->strings[smap->size]=string;
@@ -54,7 +54,7 @@ void string_map_add(string_map *smap,char *string,void *ptr)
 	return;
 }
 
-void string_map_string_to_pointer_index(string_map *smap,char *string,void *ret)
+void string_map_string_to_pointer(string_map *smap,char *string,void *ret)
 {
 	/*** This function is a generic binary search algorithm. ***/
 

@@ -44,6 +44,10 @@
 #include"defs.h"
 #endif
 
+#ifndef _STRING_MAP_H
+#include"string_map.h"
+#endif
+
 #ifndef _BLIPS_GAME_H
 #include"blips_game.h"
 #endif
@@ -83,22 +87,10 @@ typedef struct blips_gui
 	blips_game *game;
 
 	/* media sets */
-	breakable_media_set **br_sets;
-	int num_br_sets;
-	char **br_key;
-
-	collectible_media_set **co_sets;
-	int num_co_sets;
-	char **co_key;
-
-	creature_media_set **cr_sets;
-	int num_cr_sets;
-	char **cr_key;
-
-	projectile_media_set **pr_sets;
-	int num_pr_sets;
-	char **pr_key;
-
+	string_map *br_map;
+	string_map *co_map;
+	string_map *cr_map;
+	string_map *pr_map;
 
 	/* tile image cache and key */
 	cairo_surface_t **tile_images;
