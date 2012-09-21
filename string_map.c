@@ -1,0 +1,117 @@
+/* string_map.c */
+/* Started 9/21/12 by Tevis Tsai */
+
+/* There's no reason a more general map couldn't be made from this using function pointers to replace the comparison operation. */
+
+#include"string_map.h"
+
+string_map* string_map_create(void)
+{
+	string_map *smap;
+
+	smap=(string_map*)malloc(sizeof(string_map));
+
+	smap->size=0;
+	smap->pointers=0;
+	smap->strings=0;
+
+	return smap;
+}
+
+void string_map_destroy(string_map *smap)
+{
+	if(!smap)
+	{
+		fprintf(stderr,"Attempt to destroy null string_map!\n");
+		exit(1);
+	}
+
+	if(smap->size)
+	{
+		free(smap->pointers);
+		free(smap->strings);
+	}
+
+	free(smap);
+
+	return;
+}
+
+/* public functions */
+
+void string_map_add(string_map *smap,char *string,void *ptr)
+{
+	smap->pointers=(void**)realloc(smap->pointers,sizeof(void*)*(smap->size+1));
+	smap->strings=(void**)realloc(smap->strings,sizeof(void*)*(smap->size+1));
+
+	smap->pointers[smap->size]=ptr;
+	smap->strings[smap->size]=string;
+
+	smap->size++;
+
+	string_map_sort(smap);
+
+	return;
+}
+
+void string_map_string_to_pointer_index(string_map *smap,char *string,void *ret)
+{
+	/*** This function is a generic binary search algorithm. ***/
+
+	int upper,lower,middle,comparison;
+
+	if(smap->size<=0)
+	{
+		fprintf(stderr,"Got binary search request on array of non-positive size!\n");
+		exit(1);
+	}
+
+	upper=smap->size;
+	lower=0;
+	middle=(lower+upper)/2;
+
+
+	while(comparison=strcmp(string,smap->strings[middle]))
+	{
+		if(comparison>0)  /* input>candidate */
+			lower=middle;
+		else
+			upper=middle;
+
+		if(lower==upper)
+		{
+			fprintf(stderr,"Got request for item not in key!\n");
+			exit(1);
+		}
+
+		middle=(lower+upper)/2;
+	}
+	ret=smap->pointers[middle];
+
+	return;
+}
+
+/* private functions */
+
+void string_map_sort(string_map *smap)
+{
+	int i,j;
+	void *ptmp;
+	char *chtmp;
+
+	for(i=0;i<smap->size-1;i++)
+		for(j=i;j<smap->size;j++)
+			if(strcmp(smap->strings[i],smap->strings[j])>0)
+			{
+				/* switch 'em */
+				ptmp=smap->pointers[i];
+				smap->pointers[i]=smap->pointers[j];
+				smap->pointers[j]=ptmp;
+
+				chtmp=smap->strings[i];
+				smap->strings[i]=smap->strings[j];
+				smap->strings[j]=chtmp;
+			}
+	return;
+}
+
