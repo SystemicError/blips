@@ -392,7 +392,9 @@ void blips_gui_render_screen(blips_gui *bgui)
 
 	blips_gui_render_bg(bgui,cr,surface);
 	blips_gui_render_tiles(bgui,cr,surface);
+printf("Render objects.\n");
 	blips_gui_render_objects(bgui,cr,surface);
+printf("Done rendering.\n");
 
 	cairo_surface_destroy(surface);
 	cairo_destroy(cr);
@@ -451,7 +453,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_breakables;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,ptr);
+		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
 		blips_gui_render_breakable(bgui,cr,surface,
@@ -464,7 +466,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_collectibles;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		string_map_string_to_pointer(bgui->co_map,bgui->game->collectibles[i]->type->co_type_path,ptr);
+		string_map_string_to_pointer(bgui->co_map,bgui->game->collectibles[i]->type->co_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
 		blips_gui_render_collectible(bgui,cr,surface,
@@ -477,7 +479,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_creatures;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		string_map_string_to_pointer(bgui->cr_map,bgui->game->creatures[i]->type->cr_type_path,ptr);
+		string_map_string_to_pointer(bgui->cr_map,bgui->game->creatures[i]->type->cr_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
 		blips_gui_render_creature(bgui,cr,surface,
@@ -490,7 +492,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	for(i=0;i<bgui->game->num_projectiles;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
-		string_map_string_to_pointer(bgui->pr_map,bgui->game->projectiles[i]->type->pr_type_path,ptr);
+		string_map_string_to_pointer(bgui->pr_map,bgui->game->projectiles[i]->type->pr_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
 		blips_gui_render_projectile(bgui,cr,surface,
