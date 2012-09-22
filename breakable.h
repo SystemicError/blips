@@ -23,6 +23,7 @@
 typedef struct breakable
 {
 	int row,col;
+	int time_remaining;  /* -1 indicates not breaking */
 	breakable_type *type;
 } breakable;
 

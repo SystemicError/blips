@@ -505,13 +505,36 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 
 void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,breakable_media_set *br_set,breakable *br)
 {
-	/* UNFINISHED */
+	cairo_surface_t *source;
+
+	/* Get the appropriate animation frame */
+
+	if(br->time_remaining==-1)  /* is it breaking? */
+		source=sprite_animation_cycle(br_set->stand_animation);
+	else
+		source=sprite_animation_cycle(br_set->break_animation);
+
+	/* draw it to the appropriate place */
+
+	cairo_set_source_surface(cr,source,br->col*BLIPS_TILE_SIZE,br->row*BLIPS_TILE_SIZE);
+	cairo_paint(cr);
+
 	return;
 }
 
 void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,collectible_media_set *co_set,collectible *co)
 {
-	/* UNFINISHED */
+	cairo_surface_t *source;
+
+	/* Get animation frame */
+
+	source=sprite_animation_cycle(co_set->stand_animation);
+
+	/* draw it to the appropriate place */
+
+	cairo_set_source_surface(cr,source,co->col*BLIPS_TILE_SIZE,co->row*BLIPS_TILE_SIZE);
+	cairo_paint(cr);
+
 	return;
 }
 

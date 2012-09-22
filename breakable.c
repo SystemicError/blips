@@ -7,6 +7,7 @@ breakable* breakable_create(breakable_type *bt)
 {
 	breakable *br;
 	br=(breakable*)malloc(sizeof(breakable));
+	br->time_remaining=-1;
 	br->type=bt;
 	return br;
 }
