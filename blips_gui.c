@@ -449,6 +449,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	void *ptr;
 
 	/*** Breakables ***/
+printf("Render breakables.\n");
 
 	for(i=0;i<bgui->game->num_breakables;i++)
 	{
@@ -456,12 +457,14 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_breakable(bgui,cr,surface,
-					   (breakable_media_set*)ptr,
-					   bgui->game->breakables[i]);
+		if(ptr)
+			blips_gui_render_breakable(bgui,cr,surface,
+						   (breakable_media_set*)ptr,
+						   bgui->game->breakables[i]);
 	}
 
 	/*** Collectibles ***/
+printf("Render co.\n");
 
 	for(i=0;i<bgui->game->num_collectibles;i++)
 	{
@@ -469,12 +472,14 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 		string_map_string_to_pointer(bgui->co_map,bgui->game->collectibles[i]->type->co_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_collectible(bgui,cr,surface,
-					     (collectible_media_set*)ptr,
-					     bgui->game->collectibles[i]);
+		if(ptr)
+			blips_gui_render_collectible(bgui,cr,surface,
+						     (collectible_media_set*)ptr,
+						     bgui->game->collectibles[i]);
 	}
 
 	/*** Creatures ***/
+printf("Render cr.\n");
 
 	for(i=0;i<bgui->game->num_creatures;i++)
 	{
@@ -482,12 +487,14 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 		string_map_string_to_pointer(bgui->cr_map,bgui->game->creatures[i]->type->cr_type_path,&ptr);
 
 		/* render that media set according to the stat of this object instance */
-		blips_gui_render_creature(bgui,cr,surface,
-					  (creature_media_set*)ptr,
-					  bgui->game->creatures[i]);
+		if(ptr)
+			blips_gui_render_creature(bgui,cr,surface,
+						  (creature_media_set*)ptr,
+						  bgui->game->creatures[i]);
 	}
 
 	/*** Projectiles ***/
+printf("Render pr.\n");
 
 	for(i=0;i<bgui->game->num_projectiles;i++)
 	{
@@ -527,11 +534,12 @@ void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *s
 	cairo_surface_t *source;
 
 	/* Get animation frame */
-
+printf("Getting frame.\n");
 	source=sprite_animation_cycle(co_set->stand_animation);
+printf("sa has %d frames.\n",co_set->stand_animation->num_frames);
 
 	/* draw it to the appropriate place */
-
+printf("Drawing frame.\n");
 	cairo_set_source_surface(cr,source,co->col*BLIPS_TILE_SIZE,co->row*BLIPS_TILE_SIZE);
 	cairo_paint(cr);
 

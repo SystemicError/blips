@@ -27,6 +27,7 @@
 
 
 -Get working on loading pr_types and ai_types in blips_game.
+-Not to mention spawing projectiles.
 
 -Test maze/barrier loading. (print it!)
 
@@ -40,5 +41,6 @@
 	-Cr
 	-Pr
 
+-Insert code for player creatures.
 
 -Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?
