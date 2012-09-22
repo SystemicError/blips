@@ -79,7 +79,6 @@ void string_map_string_to_pointer(string_map *smap,char *string,void **ret)
 
 		if(lower==upper)
 		{
-printf("Got request for item not in key!\n");
 			(*ret)=0;
 			return;
 		}

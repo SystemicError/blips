@@ -283,36 +283,40 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 	 * became noticeable. */
 
 	int i;
-	char *path;
+	char *set_path;
+	char *type_path;
 
 	/*** Breakable Media Sets ***/
 
 	for(i=0;i<bgui->game->br_types_map->size;i++)
 	{
-		path=((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path;
+		type_path=((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_type_path;
+		set_path=((breakable_type*)(bgui->game->br_types_map->pointers[i]))->br_set_path;
 		string_map_add(bgui->br_map,
-				path,
-				(void*)breakable_media_set_create(path));
+				type_path,
+				(void*)breakable_media_set_create(set_path));
 	}
 
 	/*** Collectible Media Sets ***/
 
 	for(i=0;i<bgui->game->co_types_map->size;i++)
 	{
-		path=((collectible_type*)(bgui->game->co_types_map->pointers[i]))->co_set_path;
+		type_path=((collectible_type*)(bgui->game->co_types_map->pointers[i]))->co_type_path;
+		set_path=((collectible_type*)(bgui->game->co_types_map->pointers[i]))->co_set_path;
 		string_map_add(bgui->co_map,
-				path,
-				(void*)collectible_media_set_create(path));
+				type_path,
+				(void*)collectible_media_set_create(set_path));
 	}
 
 	/*** Creature Media Sets ***/
 
 	for(i=0;i<bgui->game->cr_types_map->size;i++)
 	{
-		path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_set_path;
+		type_path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_type_path;
+		set_path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_set_path;
 		string_map_add(bgui->cr_map,
-				path,
-				(void*)creature_media_set_create(path));
+				type_path,
+				(void*)creature_media_set_create(set_path));
 	}
 
 	/*** Projectile Media Sets ***/
@@ -392,9 +396,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 
 	blips_gui_render_bg(bgui,cr,surface);
 	blips_gui_render_tiles(bgui,cr,surface);
-printf("Render objects.\n");
 	blips_gui_render_objects(bgui,cr,surface);
-printf("Done rendering.\n");
 
 	cairo_surface_destroy(surface);
 	cairo_destroy(cr);
@@ -449,12 +451,15 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 	void *ptr;
 
 	/*** Breakables ***/
-printf("Render breakables.\n");
 
+printf("Num breakables:  %d.\n",bgui->game->num_breakables);
+printf("breakable type:  %s.\n",bgui->game->breakables[0]->type->br_type_path);
 	for(i=0;i<bgui->game->num_breakables;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
 		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,&ptr);
+printf("Precall, we have breakable map of %d entries.\n",bgui->br_map->size);
+printf("First string entry:  %s.\n",bgui->br_map->strings[0]);
 
 		/* render that media set according to the stat of this object instance */
 		if(ptr)
@@ -464,7 +469,6 @@ printf("Render breakables.\n");
 	}
 
 	/*** Collectibles ***/
-printf("Render co.\n");
 
 	for(i=0;i<bgui->game->num_collectibles;i++)
 	{
@@ -479,7 +483,6 @@ printf("Render co.\n");
 	}
 
 	/*** Creatures ***/
-printf("Render cr.\n");
 
 	for(i=0;i<bgui->game->num_creatures;i++)
 	{
@@ -494,7 +497,6 @@ printf("Render cr.\n");
 	}
 
 	/*** Projectiles ***/
-printf("Render pr.\n");
 
 	for(i=0;i<bgui->game->num_projectiles;i++)
 	{
@@ -525,6 +527,7 @@ void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *sur
 
 	cairo_set_source_surface(cr,source,br->col*BLIPS_TILE_SIZE,br->row*BLIPS_TILE_SIZE);
 	cairo_paint(cr);
+printf("SHOULD SEE if rendering breakables.\n");
 
 	return;
 }

@@ -236,7 +236,10 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 	string[2]=0;
 
+printf("Size of br types map at spawn:  %d.\n",bgame->br_types_map->size);
+printf("First str of br types map at spawn:  %s.\n",bgame->br_types_map->strings[0]);
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
+{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			/* Fetch a string from the world tile  */
@@ -277,6 +280,8 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 				bgame->num_creatures++;
 			}
 		}
+printf("\n");
+}
 
 	return;
 }
