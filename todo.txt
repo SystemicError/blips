@@ -36,8 +36,8 @@
 	-consider adding array of inputs?  Or will we do an array of input_states?
 
 -Get rendering of objects working.
-	-Br
-	-Co
+	+Br
+	+Co
 	-Cr
 	-Pr
 
