@@ -122,6 +122,9 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 	bgame->campaign=blips_campaign_create(path);
 	blips_game_load_world_tiles(bgame);
 	blips_game_load_object_types(bgame);
+
+	/* for first tile spawn */
+	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
 	return;
 }
 

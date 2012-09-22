@@ -15,7 +15,7 @@
 
 +Write breakable,collectible,creature,projectile
 -Integrate these into game, gui.
-	+Give game a function called spawn() or something, which causes current world tile's list of objects to be entered into present br/co/cr/pr lists.
+	+Give game a function called spawn() or something, which causes current world tile's list of objects to be entered into present br/co/cr lists.
 	-Give game a function called despawn() or something, which removes all non-player objects in preparation for spawn().
 	-Have both spawn() and despawn() called by change_tile(maze_direction).
 	-Have change_tile(maze_direction) triggered by [bool] player_leaving_tile().
@@ -38,8 +38,8 @@
 -Get rendering of objects working.
 	+Br
 	+Co
-	-Cr
-	-Pr
+	-Cr needs rotation support.
+	-Pr also needs rotation support, general testing.
 
 -Insert code for player creatures.
 

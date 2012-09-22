@@ -21,7 +21,6 @@ int main(int argc,char *argv[])
 	bgui=blips_gui_create(bgame);
 
 printf("Created gui.\n");
-blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
 	printf("Starting GUI main loop . . .\n");
 	blips_gui_main_loop(bgui);
 
