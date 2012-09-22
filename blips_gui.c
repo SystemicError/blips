@@ -540,13 +540,51 @@ void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *s
 
 void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,creature_media_set *cr_set,creature *creat)
 {
-	/* UNFINISHED */
+	cairo_surface_t *source;
+
+	/* Get the appropriate animation frame */
+/*UNFINISHED -- no support for rotation yet! */
+
+	if(creat->fire_cycle_state==-1)  /* is it firing? */
+	{
+		if(creat->current_move_speed)
+			source=sprite_animation_cycle(cr_set->walk_animation);
+		else
+			source=sprite_animation_cycle(cr_set->stand_animation);
+	}
+	else
+	{
+		if(creat->current_move_speed)
+			source=sprite_animation_cycle(cr_set->walk_and_fire_animation);
+		else
+			source=sprite_animation_cycle(cr_set->fire_animation);
+	}
+
+	/* draw it to the appropriate place */
+
+	cairo_set_source_surface(cr,source,creat->col*BLIPS_TILE_SIZE+creat->x_in_cell,creat->row*BLIPS_TILE_SIZE+creat->y_in_cell);
+	cairo_paint(cr);
+
 	return;
 }
 
 void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,projectile_media_set *pr_set,projectile *pr)
 {
-	/* UNFINISHED */
+/* UNFINISHED -- no support for rotation */
+	cairo_surface_t *source;
+
+	/* Get the appropriate animation frame */
+
+	if(pr->current_damage<0)  /* is it impacting? */
+		source=sprite_animation_cycle(pr_set->impact_animation);
+	else
+		source=sprite_animation_cycle(pr_set->fly_animation);
+
+	/* draw it to the appropriate place */
+
+	cairo_set_source_surface(cr,source,pr->col*BLIPS_TILE_SIZE+pr->x_in_cell,pr->row*BLIPS_TILE_SIZE+pr->y_in_cell);
+	cairo_paint(cr);
+
 	return;
 }
 

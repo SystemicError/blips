@@ -39,3 +39,6 @@
 	-Co
 	-Cr
 	-Pr
+
+
+-Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?

@@ -24,7 +24,7 @@ typedef struct projectile
 {
 	int row,col;
 	int x_in_cell,y_in_cell;
-	int current_damage;
+	int current_damage;  /* negative for countdown to removal/impacting */
 	double orientation;
 	int team;
 	projectile_type *type;
