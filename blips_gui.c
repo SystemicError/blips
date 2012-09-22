@@ -452,14 +452,10 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 
 	/*** Breakables ***/
 
-printf("Num breakables:  %d.\n",bgui->game->num_breakables);
-printf("breakable type:  %s.\n",bgui->game->breakables[0]->type->br_type_path);
 	for(i=0;i<bgui->game->num_breakables;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
 		string_map_string_to_pointer(bgui->br_map,bgui->game->breakables[i]->type->br_type_path,&ptr);
-printf("Precall, we have breakable map of %d entries.\n",bgui->br_map->size);
-printf("First string entry:  %s.\n",bgui->br_map->strings[0]);
 
 		/* render that media set according to the stat of this object instance */
 		if(ptr)
@@ -527,7 +523,6 @@ void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *sur
 
 	cairo_set_source_surface(cr,source,br->col*BLIPS_TILE_SIZE,br->row*BLIPS_TILE_SIZE);
 	cairo_paint(cr);
-printf("SHOULD SEE if rendering breakables.\n");
 
 	return;
 }
@@ -537,12 +532,9 @@ void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *s
 	cairo_surface_t *source;
 
 	/* Get animation frame */
-printf("Getting frame.\n");
 	source=sprite_animation_cycle(co_set->stand_animation);
-printf("sa has %d frames.\n",co_set->stand_animation->num_frames);
 
 	/* draw it to the appropriate place */
-printf("Drawing frame.\n");
 	cairo_set_source_surface(cr,source,co->col*BLIPS_TILE_SIZE,co->row*BLIPS_TILE_SIZE);
 	cairo_paint(cr);
 

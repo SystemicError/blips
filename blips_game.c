@@ -236,10 +236,7 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 	string[2]=0;
 
-printf("Size of br types map at spawn:  %d.\n",bgame->br_types_map->size);
-printf("First str of br types map at spawn:  %s.\n",bgame->br_types_map->strings[0]);
 	for(i=0;i<BLIPS_TILE_ROWS;i++)
-{
 		for(j=0;j<BLIPS_TILE_COLS;j++)
 		{
 			/* Fetch a string from the world tile  */
@@ -257,6 +254,10 @@ printf("First str of br types map at spawn:  %s.\n",bgame->br_types_map->strings
 			{
 				bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables+1));
 				bgame->breakables[bgame->num_breakables]=breakable_create(br_type);
+
+				bgame->breakables[bgame->num_breakables]->row=i;
+				bgame->breakables[bgame->num_breakables]->col=j;
+
 				bgame->num_breakables++;
 			}
 
@@ -267,6 +268,10 @@ printf("First str of br types map at spawn:  %s.\n",bgame->br_types_map->strings
 			{
 				bgame->collectibles=(collectible**)realloc(bgame->collectibles,sizeof(collectible*)*(bgame->num_collectibles+1));
 				bgame->collectibles[bgame->num_collectibles]=collectible_create(co_type);
+
+				bgame->collectibles[bgame->num_collectibles]->row=i;
+				bgame->collectibles[bgame->num_collectibles]->col=j;
+
 				bgame->num_collectibles++;
 			}
 
@@ -277,11 +282,13 @@ printf("First str of br types map at spawn:  %s.\n",bgame->br_types_map->strings
 			{
 				bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures+1));
 				bgame->creatures[bgame->num_creatures]=creature_create(cr_type);
+
+				bgame->creatures[bgame->num_creatures]->row=i;
+				bgame->creatures[bgame->num_creatures]->col=j;
+
 				bgame->num_creatures++;
 			}
 		}
-printf("\n");
-}
 
 	return;
 }
