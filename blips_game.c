@@ -187,6 +187,14 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 /* UNFINISHED -- write this code after AI, projectiles, etc. */
 
 	/* Spawn any necessary projectiles */
+		/* from non-player creatures */
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]->fire_cycle_state==0)
+			blips_game_spawn_projectile_from_creature(bgame,bgame->creatures[i]);
+		/* from player creatures */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]->fire_cycle_state==0)
+			blips_game_spawn_projectile_from_creature(bgame,bgame->players[i]);
 
 	/* Move any projectiles that need moving */
 
@@ -605,6 +613,31 @@ void blips_game_move_projectile(blips_game *bgame,projectile *pr)
 		pr->y_in_cell-=BLIPS_TILE_SIZE;
 		pr->row++;
 	}
+
+	return;
+}
+
+void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
+{
+	projectile *pr;
+	projectile_type *pr_type;
+
+	/* Get the type of projectile this creature creates */
+	string_map_string_to_pointer(bgame->pr_types_map,cr->type->pr_type_path,(void**)&pr_type);
+
+	/* create an instance of it */
+	pr=projectile_create(pr_type);
+
+	/* place and orient it according to creature */
+	pr->row=cr->row;
+	pr->col=cr->col;
+	pr->x_in_cell=cr->x_in_cell;
+	pr->y_in_cell=cr->y_in_cell;
+	pr->orientation=cr->aim_orientation;
+
+	/* add it to the projectile list */
+	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
+	bgame->projectiles[bgame->num_projectiles]=pr;
 
 	return;
 }

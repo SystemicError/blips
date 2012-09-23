@@ -3,7 +3,7 @@
 
 #include"projectile.h"
 
-projectile* projectile_preate(projectile_type *pt)
+projectile* projectile_create(projectile_type *pt)
 {
 	projectile *pr;
 	pr=(projectile*)malloc(sizeof(projectile));

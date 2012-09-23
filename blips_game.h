@@ -149,5 +149,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 void blips_game_move_creature(blips_game *bgame,creature *cr);
 void blips_game_move_projectile(blips_game *bgame,projectile *pr);
 
+	/* spawn the appropriate projectile from creature */
+void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr);
+
 #endif
 
