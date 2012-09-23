@@ -166,6 +166,12 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		bgame->players[i]->move_orientation=inputs[i]->move_angle;
 		bgame->players[i]->current_move_speed=inputs[i]->speed*bgame->players[i]->type->move_speed;
 		bgame->players[i]->aim_orientation=inputs[i]->aim_angle;
+
+		/* cycle fire if firing */
+		if(inputs[i]->firing)
+			bgame->players[i]->fire_cycle_state=(bgame->players[i]->fire_cycle_state+1)%(bgame->players[i]->type->fire_delay);
+		else
+			bgame->players[i]->fire_cycle_state=-1;
 	}
 
 	/* Move any creatures that need moving */

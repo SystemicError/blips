@@ -668,9 +668,10 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 			return 1;
 		break;
 		case SDL_JOYBUTTONDOWN:
-/* UNFINISHED */
+			inputs[0]->firing=1;
 		break;
 		case SDL_JOYBUTTONUP:
+			inputs[0]->firing=0;
 		break;
 	}
 
