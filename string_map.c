@@ -62,8 +62,8 @@ void string_map_string_to_pointer(string_map *smap,char *string,void **ret)
 
 	if(smap->size<=0)
 	{
-		fprintf(stderr,"Got binary search request on array of non-positive size!\n");
-		exit(1);
+		(*ret)=0;
+		return;
 	}
 
 	upper=smap->size;

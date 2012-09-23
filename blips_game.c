@@ -134,9 +134,9 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 {
 	bgame->campaign=blips_campaign_create(path);
 	blips_game_load_world_tiles(bgame);
+	blips_game_load_players(bgame);  /* has to come before object types for projectile loading */
 	blips_game_load_object_types(bgame);
 
-	blips_game_load_players(bgame);
 
 	/* for first tile spawn */
 	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
@@ -369,6 +369,7 @@ void blips_game_load_object_types(blips_game *bgame)
 	char *string;
 	char buffer[BUFFER_SIZE];
 	ai_type *ai_type_ptr;
+	projectile_type *pr_type;
 
 	if(!(fp=fopen(bgame->campaign->object_key_path,"r")))
 	{
@@ -450,8 +451,39 @@ printf("Loading projectiles types . . .\n");
 
 	/* These have to be loaded from creature AND player list, checked for duplicates. */
 
-printf("Loading of projectile types not implemented!\n");
-	/* UNFINISHED*/
+printf("Non-player projectile types.\n");
+		/* non-player */
+	for(i=0;i<bgame->cr_types_map->size;i++)
+	{
+		/* Get pr_type string from non-player creature array */
+		string=((creature_type*)(bgame->cr_types_map->pointers[i]))->pr_type_path;
+
+		/* See if we already have one of this type */
+		string_map_string_to_pointer(bgame->pr_types_map,string,(void**)&pr_type);
+
+		if(pr_type)  /* we don't, so add it */
+		{
+			pr_type=projectile_type_create(string);
+			string_map_add(bgame->pr_types_map,string,pr_type);
+		}
+	}
+
+printf("Player projectile types.\n");
+		/* player */
+	for(i=0;i<bgame->campaign->num_players;i++)
+	{
+		/* Get pr_type string from non-player creature array */
+		string=bgame->player_types[i]->pr_type_path;
+
+		/* See if we already have one of this type */
+		string_map_string_to_pointer(bgame->pr_types_map,string,(void**)&pr_type);
+
+		if(pr_type)  /* we don't, so add it */
+		{
+			pr_type=projectile_type_create(string);
+			string_map_add(bgame->pr_types_map,string,pr_type);
+		}
+	}
 
 	return;
 }
