@@ -28,9 +28,10 @@ blips_gui* blips_gui_create(blips_game *bgame)
 	}
 
 	/*** Input ***/
-	int num_joys=2;
-	for(i=0;i<num_joys;i++)
-		if(!(bgui->joy=SDL_JoystickOpen(i)))
+	bgui->num_joys=2; /* should be configurable */
+	bgui->joys=(SDL_Joystick**)malloc(sizeof(SDL_Joystick*)*bgui->num_joys);
+	for(i=0;i<bgui->num_joys;i++)
+		if(!(bgui->joys[i]=SDL_JoystickOpen(i)))
 			fprintf(stderr,"Couldn't open joystick %d; will not be enabled.\n",i);
 
 	/*** Audio ***/
@@ -123,7 +124,8 @@ printf("Freeing media.\n");
 
 printf("Closing audio.\n");
 	Mix_CloseAudio();
-	SDL_JoystickClose(bgui->joy);
+	for(i=0;i<bgui->num_joys;i++)
+		SDL_JoystickClose(bgui->joys[i]);
 	SDL_Quit();
 	free(bgui);
 	bgui=0;
@@ -629,6 +631,7 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 	 *** which the gui will use to inform the game of events while hiding
 	 *** how they are obtained. ***/
 	int i;
+	int joy_x,joy_y;
 
 	/* modify button/joystick states as necessary */
 	switch(event->type)
@@ -642,6 +645,22 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 		case SDL_JOYBUTTONUP:
 		break;
 	}
+
+	/* TEMPORARY -- assumes only one player.  All of this function will need to be text-configurable. */
+
+		/* move and speed */
+	joy_x=SDL_JoystickGetAxis(bgui->joys[0],0);
+	joy_y=SDL_JoystickGetAxis(bgui->joys[0],1);
+
+	inputs[0]->move_angle=atan2(joy_y,joy_x);
+	inputs[0]->speed=1;  /* really a bit silly */
+
+		/* aim */
+	joy_x=SDL_JoystickGetAxis(bgui->joys[1],0);
+	joy_y=SDL_JoystickGetAxis(bgui->joys[1],1);
+
+	inputs[0]->aim_angle=atan2(joy_y,joy_x);
+
 	return 0;
 }
 

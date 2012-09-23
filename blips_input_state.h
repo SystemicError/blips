@@ -21,7 +21,7 @@ typedef struct blips_input_state
 	int firing;
 	double move_angle;
 	double aim_angle;
-	double speed;
+	double speed;  /* ranges from 0 to 1 (a fraction of creature max speed).  */
 } blips_input_state;
 
 blips_input_state* blips_input_state_create(void);

@@ -80,7 +80,7 @@ typedef struct blips_gui
 	SDL_Surface *screen;
 
 	/* Joysticks */
-	SDL_Joystick *joy;
+	SDL_Joystick **joys;
 	int num_joys;
 
 	/* game data */
