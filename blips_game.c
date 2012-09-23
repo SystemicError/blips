@@ -161,6 +161,12 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 	/* Use inputs as commands for player creature */
 
+	for(i=0;i<bgame->campaign->num_players;i++)
+	{
+		bgame->players[i]->move_orientation=inputs[i]->move_angle;
+		bgame->players[i]->current_move_speed=inputs[i]->speed*bgame->players[i]->type->move_speed;
+	}
+
 	/* Move any creatures that need moving */
 
 		/* non-player */
@@ -168,6 +174,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		blips_game_move_creature(bgame,bgame->creatures[i]);
 
 		/* player */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		blips_game_move_creature(bgame,bgame->players[i]);
 
 	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
 
