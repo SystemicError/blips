@@ -17,10 +17,10 @@ projectile_type* projectile_type_create(char *path)
 	}
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",pr_type->damage);
+	fscanf(fp,"%d\n",&(pr_type->damage));
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",pr_type->move_speed);
+	fscanf(fp,"%d\n",&(pr_type->move_speed));
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp); 

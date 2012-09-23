@@ -265,12 +265,9 @@ printf("Got request to add world tile of path:  %s.\n",path);
 		if(!strcmp(bgame->world_tiles[i]->path,path))
 			return 0;
 
-printf("Passed duplicate search, is unique against extant %d tiles.\n",bgame->num_world_tiles);
 
 	bgame->world_tiles=(world_tile**)realloc(bgame->world_tiles,sizeof(world_tile*)*bgame->num_world_tiles+1);
-printf("Allocated ptr.  Creating.\n");
 	bgame->world_tiles[bgame->num_world_tiles]=world_tile_create(path);
-printf("Incrementing count.\n");
 	bgame->num_world_tiles++;
 	return 1;
 }
@@ -459,7 +456,6 @@ printf("Loading projectiles types . . .\n");
 
 	/* These have to be loaded from creature AND player list, checked for duplicates. */
 
-printf("Non-player projectile types.\n");
 		/* non-player */
 	for(i=0;i<bgame->cr_types_map->size;i++)
 	{
@@ -469,14 +465,13 @@ printf("Non-player projectile types.\n");
 		/* See if we already have one of this type */
 		string_map_string_to_pointer(bgame->pr_types_map,string,(void**)&pr_type);
 
-		if(pr_type)  /* we don't, so add it */
+		if(!pr_type)  /* we don't, so add it */
 		{
 			pr_type=projectile_type_create(string);
 			string_map_add(bgame->pr_types_map,string,pr_type);
 		}
 	}
 
-printf("Player projectile types.\n");
 		/* player */
 	for(i=0;i<bgame->campaign->num_players;i++)
 	{
@@ -486,7 +481,7 @@ printf("Player projectile types.\n");
 		/* See if we already have one of this type */
 		string_map_string_to_pointer(bgame->pr_types_map,string,(void**)&pr_type);
 
-		if(pr_type)  /* we don't, so add it */
+		if(!pr_type)  /* we don't, so add it */
 		{
 			pr_type=projectile_type_create(string);
 			string_map_add(bgame->pr_types_map,string,pr_type);
@@ -625,6 +620,13 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	/* Get the type of projectile this creature creates */
 	string_map_string_to_pointer(bgame->pr_types_map,cr->type->pr_type_path,(void**)&pr_type);
 
+	/* make sure its projectile type exists */
+	if(!pr_type)
+	{
+		fprintf(stderr,"Couldn't find projectile type of firing creature in pr_types_map!\n");
+		exit(1);
+	}
+
 	/* create an instance of it */
 	pr=projectile_create(pr_type);
 
@@ -638,6 +640,7 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	/* add it to the projectile list */
 	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
 	bgame->projectiles[bgame->num_projectiles]=pr;
+	bgame->num_projectiles++;
 
 	return;
 }
