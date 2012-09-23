@@ -59,6 +59,8 @@ printf("Initializing audio . . .\n");
 	bgui->cr_map=string_map_create();
 	bgui->pr_map=string_map_create();
 
+	bgui->player_map=string_map_create();
+
 	/* background map key */
 
 	bgui->background_map=string_map_create();
@@ -100,6 +102,10 @@ printf("Freeing media.\n");
 	for(i=0;i<bgui->pr_map->size;i++)
 		projectile_media_set_destroy((projectile_media_set*)(bgui->pr_map->pointers[i]));
 	string_map_destroy(bgui->pr_map);
+
+	for(i=0;i<bgui->player_map->size;i++)
+		creature_media_set_destroy((creature_media_set*)(bgui->player_map->pointers[i]));
+	string_map_destroy(bgui->player_map);
 
 	/* tile images -- somewhat unique in that the strings are instanced here, not elsewhere */
 	for(i=0;i<bgui->tile_map->size;i++)
@@ -310,11 +316,21 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 
 	/*** Creature Media Sets ***/
 
+		/* non-player */
 	for(i=0;i<bgui->game->cr_types_map->size;i++)
 	{
 		type_path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_type_path;
 		set_path=((creature_type*)(bgui->game->cr_types_map->pointers[i]))->cr_set_path;
 		string_map_add(bgui->cr_map,
+				type_path,
+				(void*)creature_media_set_create(set_path));
+	}
+		/* player */
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+	{
+		type_path=bgui->game->player_types[i]->cr_type_path;
+		set_path=bgui->game->player_types[i]->cr_set_path;
+		string_map_add(bgui->player_map,
 				type_path,
 				(void*)creature_media_set_create(set_path));
 	}
@@ -480,6 +496,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 
 	/*** Creatures ***/
 
+		/* non-player */
 	for(i=0;i<bgui->game->num_creatures;i++)
 	{
 		/* Find the media set which matches the object type for this object instance. */
@@ -490,6 +507,15 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 			blips_gui_render_creature(bgui,cr,surface,
 						  (creature_media_set*)ptr,
 						  bgui->game->creatures[i]);
+	}
+		/* player */
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+	{
+		string_map_string_to_pointer(bgui->player_map,bgui->game->players[i]->type->cr_type_path,&ptr);
+
+		blips_gui_render_creature(bgui,cr,surface,
+					  (creature_media_set*)ptr,
+					  bgui->game->players[i]);
 	}
 
 	/*** Projectiles ***/

@@ -449,6 +449,9 @@ void blips_game_load_players(blips_game *bgame)
 	{
 		bgame->player_types[i]=creature_type_create(bgame->campaign->player_type_file_paths[i]);
 		bgame->players[i]=creature_create(bgame->player_types[i]);
+
+		bgame->players[i]->row=bgame->campaign->player_starting_rows[i];
+		bgame->players[i]->col=bgame->campaign->player_starting_cols[i];
 	}
 
 	return;

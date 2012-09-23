@@ -92,6 +92,8 @@ typedef struct blips_gui
 	string_map *cr_map;
 	string_map *pr_map;
 
+	string_map *player_map;  /* like cr_map, but player creatures only */
+
 	/* tile image cache and key */
 	string_map *tile_map;
 
