@@ -140,7 +140,7 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,projectile_media_set *pr_set,projectile *pr);
 
 	/* events */
-int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *inputs);
+int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **inputs);
 
 #endif
 

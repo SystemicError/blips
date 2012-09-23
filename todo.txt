@@ -34,8 +34,6 @@
 -Test maze/barrier loading. (print it!)
 
 -Consider a blips_input_reader which is configured by a text file.
-+Finish input_state definition
-	-consider adding array of inputs?  Or will we do an array of input_states?
 
 -Get rendering of objects working.
 	+Br

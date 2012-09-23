@@ -137,11 +137,13 @@ printf("Closing audio.\n");
 void blips_gui_main_loop(blips_gui *bgui)
 {
 	SDL_Event event;
-	blips_input_state *inputs;
+	blips_input_state **inputs;
 	int i, quit;
 	quit=0;
 
-	inputs=blips_input_state_create();
+	inputs=(blips_input_state**)malloc(sizeof(blips_input_state*)*bgui->game->campaign->num_players);
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+		inputs[i]=blips_input_state_create();
 	while(!quit)
 	{
 		/* display stuff */
@@ -158,7 +160,9 @@ void blips_gui_main_loop(blips_gui *bgui)
 		/* iterate the game */
 		blips_game_step(bgui->game,inputs);
 	}
-	blips_input_state_destroy(inputs);
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+		blips_input_state_destroy(inputs[i]);
+	free(inputs);
 	return;
 }
 
@@ -619,9 +623,9 @@ void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *su
 
 /* events */
 
-int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state *inputs)
+int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **inputs)
 {
-	/*** This function will translate SDL events into a blips_input_state,
+	/*** This function will translate SDL events into an array of blips_input_states,
 	 *** which the gui will use to inform the game of events while hiding
 	 *** how they are obtained. ***/
 	int i;

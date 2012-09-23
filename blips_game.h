@@ -122,7 +122,7 @@ void blips_game_destroy(blips_game *bgame);
 
 void blips_game_load_campaign(blips_game *bgame,char *path);
 
-void blips_game_step(blips_game *bgame,blips_input_state *inputs);
+void blips_game_step(blips_game *bgame,blips_input_state **inputs);
 
 world_tile* blips_game_active_world_tile(blips_game *bgame);
 

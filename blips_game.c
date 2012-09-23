@@ -144,7 +144,7 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 	return;
 }
 
-void blips_game_step(blips_game *bgame,blips_input_state *inputs)
+void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 {
 	int i;
 	char *str;
