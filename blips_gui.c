@@ -580,7 +580,6 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	int xpos,ypos;
 
 	/* Get the appropriate animation frame */
-/*UNFINISHED -- no support for rotation yet! */
 
 	if(creat->fire_cycle_state==-1)  /* is it firing? */
 	{
@@ -603,6 +602,7 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	w=cairo_image_surface_get_width(source);
 	h=cairo_image_surface_get_height(source);
 
+	/* absolute position in pixels */
 	xpos=creat->x_in_cell+creat->col*BLIPS_TILE_SIZE;
 	ypos=creat->y_in_cell+creat->row*BLIPS_TILE_SIZE;
 
@@ -610,7 +610,6 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	cairo_rotate (cr,creat->aim_orientation);
 	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
 
-	/* END cairo transforms */
 	cairo_paint(cr);
 
 	cairo_identity_matrix(cr);  /* reset transformation */
@@ -620,8 +619,9 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 
 void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,projectile_media_set *pr_set,projectile *pr)
 {
-/* UNFINISHED -- no support for rotation */
 	cairo_surface_t *source;
+	double w,h;
+	int xpos,ypos;
 
 	/* Get the appropriate animation frame */
 
@@ -632,8 +632,21 @@ void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *su
 
 	/* draw it to the appropriate place */
 
-	cairo_set_source_surface(cr,source,pr->col*BLIPS_TILE_SIZE+pr->x_in_cell,pr->row*BLIPS_TILE_SIZE+pr->y_in_cell);
+	/* for brevity */
+	w=cairo_image_surface_get_width(source);
+	h=cairo_image_surface_get_height(source);
+
+	/* absolute position in pixels */
+	xpos=pr->x_in_cell+pr->col*BLIPS_TILE_SIZE;
+	ypos=pr->y_in_cell+pr->row*BLIPS_TILE_SIZE;
+
+	cairo_translate(cr,w/2.0+xpos,h/2.0+ypos);
+	cairo_rotate (cr,pr->orientation);
+	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
+
 	cairo_paint(cr);
+
+	cairo_identity_matrix(cr);  /* reset transformation */
 
 	return;
 }

@@ -38,8 +38,8 @@
 -Get rendering of objects working.
 	+Br
 	+Co
-	-Cr needs rotation support.
-	-Pr also needs rotation support, general testing.
+	+Cr
+	-Pr needs general testing.
 
 
 -Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
