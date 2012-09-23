@@ -102,8 +102,7 @@ typedef struct blips_game
 	/* keyed types not appearing as world tile symbols (keyed to their path strings) */
 	string_map *ai_types_map;
 
-	projectile_type **pr_types;
-	int num_pr_types;
+	string_map *pr_types_map;
 
 	/* keyed types (i.e. types that appear as symbols in world tile ascii maps) */
 	string_map *br_types_map;

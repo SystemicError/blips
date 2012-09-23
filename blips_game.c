@@ -34,8 +34,7 @@ blips_game* blips_game_create(void)
 		/* keyed to file path */
 	bgame->ai_types_map=string_map_create();
 
-	bgame->pr_types=0;
-	bgame->num_pr_types=0;
+	bgame->pr_types_map=string_map_create();
 
 		/* keyed to user-customized world tile symbol */
 
@@ -93,10 +92,10 @@ void blips_game_destroy(blips_game *bgame)
 		ai_type_destroy((ai_type*)(bgame->ai_types_map->pointers[i]));
 	string_map_destroy(bgame->ai_types_map);
 
-	for(i=0;i<bgame->num_pr_types;i++)
-		projectile_type_destroy(bgame->pr_types[i]);
-	if(bgame->num_pr_types)
-		free(bgame->pr_types);
+		/* pr_types_map strings are just pointers to a creature_type field (player or non-player) */
+	for(i=0;i<bgame->pr_types_map->size;i++)
+		projectile_type_destroy((projectile_type*)(bgame->pr_types_map->pointers[i]));
+	string_map_destroy(bgame->pr_types_map);
 
 	/*** Keys ***/
 
@@ -283,7 +282,6 @@ void blips_game_despawn(blips_game *bgame)
 		free(bgame->collectibles);
 	for(i=0;i<bgame->num_creatures;i++)
 		creature_destroy(bgame->creatures[i]);
-/* UNFINISHED -- player creature should be kept! */
 	if(bgame->num_creatures)
 		free(bgame->creatures);
 
@@ -450,10 +448,10 @@ printf("Loading ai_types . . .\n");
 	/*** Projectile Types ***/
 printf("Loading projectiles types . . .\n");
 
-	/* These have to be loaded from creature list, checked for duplicates. */
+	/* These have to be loaded from creature AND player list, checked for duplicates. */
 
-	/*UNFINISHED*/
 printf("Loading of projectile types not implemented!\n");
+	/* UNFINISHED*/
 
 	return;
 }

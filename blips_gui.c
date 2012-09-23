@@ -343,10 +343,14 @@ void blips_gui_load_media_sets(blips_gui *bgui)
 
 	/*** Projectile Media Sets ***/
 
-	for(i=0;i<bgui->game->num_pr_types;i++)
+	for(i=0;i<bgui->game->pr_types_map->size;i++)
+	{
+		type_path=((projectile_type*)(bgui->game->pr_types_map->pointers[i]))->pr_type_path;
+		set_path=((projectile_type*)(bgui->game->pr_types_map->pointers[i]))->pr_set_path;
 		string_map_add(bgui->pr_map,
-				bgui->game->pr_types[i]->pr_set_path,
-				(void*)projectile_media_set_create(bgui->game->pr_types[i]->pr_set_path));
+				type_path,
+				(void*)projectile_media_set_create(set_path));
+	}
 
 	return;
 }
