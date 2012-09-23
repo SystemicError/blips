@@ -18,6 +18,13 @@
 +Insert code for player creatures.
 	+give player creatures a special array in blips_game.
 	+Add code to remove special array in destructor, create it in constructor.
++Get rendering of objects working.
+	+Br
+	+Co
+	+Cr
+	+Pr needs general testing.
++Convert x_in_cell, y_in_cell to type double.
+
 
 +Write breakable,collectible,creature,projectile
 -Integrate these into game, gui.
@@ -38,11 +45,6 @@
 
 -Consider a blips_input_reader which is configured by a text file.
 
--Get rendering of objects working.
-	+Br
-	+Co
-	+Cr
-	-Pr needs general testing.
 
 
 -Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
@@ -57,3 +59,6 @@
 	-fire_goal
 
 -Add sound playback.
+
+
+-Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.

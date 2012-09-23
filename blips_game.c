@@ -187,6 +187,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 /* UNFINISHED -- write this code after AI, projectiles, etc. */
 
 	/* Spawn any necessary projectiles */
+
 		/* from non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
 		if(bgame->creatures[i]->fire_cycle_state==0)
@@ -542,10 +543,10 @@ cr->move_orientation=.5*M_PI;
 
 void blips_game_move_creature(blips_game *bgame,creature *cr)
 {
-	int delta_x,delta_y;
+	double delta_x,delta_y;
 
-	delta_x=(int)(cr->current_move_speed*cos(cr->move_orientation));
-	delta_y=(int)(cr->current_move_speed*sin(cr->move_orientation));
+	delta_x=cr->current_move_speed*cos(cr->move_orientation);
+	delta_y=cr->current_move_speed*sin(cr->move_orientation);
 
 	cr->x_in_cell+=delta_x;
 	cr->y_in_cell+=delta_y;
@@ -578,10 +579,10 @@ void blips_game_move_creature(blips_game *bgame,creature *cr)
 
 void blips_game_move_projectile(blips_game *bgame,projectile *pr)
 {
-	int delta_x,delta_y;
+	double delta_x,delta_y;
 
-	delta_x=(int)(pr->type->move_speed*cos(pr->orientation));
-	delta_y=(int)(pr->type->move_speed*sin(pr->orientation));
+	delta_x=pr->type->move_speed*cos(pr->orientation);
+	delta_y=pr->type->move_speed*sin(pr->orientation);
 
 	pr->x_in_cell+=delta_x;
 	pr->y_in_cell+=delta_y;
