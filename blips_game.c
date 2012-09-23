@@ -165,6 +165,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	{
 		bgame->players[i]->move_orientation=inputs[i]->move_angle;
 		bgame->players[i]->current_move_speed=inputs[i]->speed*bgame->players[i]->type->move_speed;
+		bgame->players[i]->aim_orientation=inputs[i]->aim_angle;
 	}
 
 	/* Move any creatures that need moving */

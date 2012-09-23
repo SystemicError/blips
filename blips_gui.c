@@ -576,6 +576,8 @@ void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *s
 void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,creature_media_set *cr_set,creature *creat)
 {
 	cairo_surface_t *source;
+	double w,h;
+	int xpos,ypos;
 
 	/* Get the appropriate animation frame */
 /*UNFINISHED -- no support for rotation yet! */
@@ -597,8 +599,21 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 
 	/* draw it to the appropriate place */
 
-	cairo_set_source_surface(cr,source,creat->col*BLIPS_TILE_SIZE+creat->x_in_cell,creat->row*BLIPS_TILE_SIZE+creat->y_in_cell);
+	/* for brevity */
+	w=cairo_image_surface_get_width(source);
+	h=cairo_image_surface_get_height(source);
+
+	xpos=creat->x_in_cell+creat->col*BLIPS_TILE_SIZE;
+	ypos=creat->y_in_cell+creat->row*BLIPS_TILE_SIZE;
+
+	cairo_translate(cr,w/2.0+xpos,h/2.0+ypos);
+	cairo_rotate (cr,creat->aim_orientation);
+	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
+
+	/* END cairo transforms */
 	cairo_paint(cr);
+
+	cairo_identity_matrix(cr);  /* reset transformation */
 
 	return;
 }
@@ -653,7 +668,7 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 	joy_y=SDL_JoystickGetAxis(bgui->joys[0],1);
 
 	inputs[0]->move_angle=atan2(joy_y,joy_x);
-	inputs[0]->speed=1;  /* really a bit silly */
+	inputs[0]->speed=sqrt(joy_x*joy_x+joy_y*joy_y)/32768.0;
 
 		/* aim */
 	joy_x=SDL_JoystickGetAxis(bgui->joys[1],0);
