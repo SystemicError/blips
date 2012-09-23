@@ -146,5 +146,9 @@ void blips_game_load_players(blips_game *bgame);
 	/* apply ai_type directives to given creature */
 void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
 
+	/* change object location based on speed, orientation */
+void blips_game_move_creature(blips_game *bgame,creature *cr);
+void blips_game_move_projectile(blips_game *bgame,projectile *pr);
+
 #endif
 

@@ -149,7 +149,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	int i;
 	char *str;
 	ai_type *ai_type_ptr;
-/*UNFINISHED*/
+
 	/* Compute AI's commands for each creature */
 
 	for(i=0;i<bgame->num_creatures;i++)
@@ -185,12 +185,17 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		blips_game_move_creature(bgame,bgame->players[i]);
 
 	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
+/* UNFINISHED -- write this code after AI, projectiles, etc. */
 
 	/* Spawn any necessary projectiles */
 
 	/* Move any projectiles that need moving */
 
+	for(i=0;i<bgame->num_projectiles;i++)
+		blips_game_move_projectile(bgame,bgame->projectiles[i]);
+
 	/* Handle any projectile/creature, projectile/barrier collisions */
+/* UNFINISHED -- write this code after AI, projectiles, etc. */
 
 	return;
 }
@@ -502,9 +507,8 @@ cr->move_orientation=.5*M_PI;
 	return;
 }
 
-blips_game_move_creature(blips_game *bgame,creature *cr)
+void blips_game_move_creature(blips_game *bgame,creature *cr)
 {
-/* UNFINISHED -- needs to take into account collisions */
 	int delta_x,delta_y;
 
 	delta_x=(int)(cr->current_move_speed*cos(cr->move_orientation));
@@ -534,6 +538,42 @@ blips_game_move_creature(blips_game *bgame,creature *cr)
 	{
 		cr->y_in_cell-=BLIPS_TILE_SIZE;
 		cr->row++;
+	}
+
+	return;
+}
+
+void blips_game_move_projectile(blips_game *bgame,projectile *pr)
+{
+	int delta_x,delta_y;
+
+	delta_x=(int)(pr->type->move_speed*cos(pr->orientation));
+	delta_y=(int)(pr->type->move_speed*sin(pr->orientation));
+
+	pr->x_in_cell+=delta_x;
+	pr->y_in_cell+=delta_y;
+
+	/* change cells */
+
+	if(pr->x_in_cell<0)
+	{
+		pr->x_in_cell+=BLIPS_TILE_SIZE;
+		pr->col--;
+	}
+	if(pr->x_in_cell>=BLIPS_TILE_SIZE)
+	{
+		pr->x_in_cell-=BLIPS_TILE_SIZE;
+		pr->col++;
+	}
+	if(pr->y_in_cell<0)
+	{
+		pr->y_in_cell+=BLIPS_TILE_SIZE;
+		pr->row--;
+	}
+	if(pr->y_in_cell>=BLIPS_TILE_SIZE)
+	{
+		pr->y_in_cell-=BLIPS_TILE_SIZE;
+		pr->row++;
 	}
 
 	return;
