@@ -24,6 +24,7 @@
 	+Cr
 	+Pr needs general testing.
 +Convert x_in_cell, y_in_cell to type double.
++Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.
 
 
 +Write breakable,collectible,creature,projectile
@@ -38,8 +39,6 @@
 
 
 
-
--Not to mention spawing projectiles.
 
 -Test maze/barrier loading. (print it!)
 
@@ -60,5 +59,4 @@
 
 -Add sound playback.
 
-
--Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.
+-Add a second world tile to test spawn/despawn/change_tile().

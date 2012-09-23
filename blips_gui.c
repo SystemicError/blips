@@ -610,7 +610,7 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	xpos=creat->x_in_cell+creat->col*BLIPS_TILE_SIZE;
 	ypos=creat->y_in_cell+creat->row*BLIPS_TILE_SIZE;
 
-	cairo_translate(cr,w/2.0+xpos,h/2.0+ypos);
+	cairo_translate(cr,xpos,ypos);
 	cairo_rotate (cr,creat->aim_orientation);
 	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
 
@@ -644,7 +644,7 @@ void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *su
 	xpos=pr->x_in_cell+pr->col*BLIPS_TILE_SIZE;
 	ypos=pr->y_in_cell+pr->row*BLIPS_TILE_SIZE;
 
-	cairo_translate(cr,w/2.0+xpos,h/2.0+ypos);
+	cairo_translate(cr,xpos,ypos);
 	cairo_rotate (cr,pr->orientation);
 	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
 
