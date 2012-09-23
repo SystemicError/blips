@@ -26,6 +26,9 @@ blips_game* blips_game_create(void)
 	bgame->projectiles=0;
 	bgame->num_projectiles=0;
 
+	bgame->players=0;
+	bgame->player_types=0;
+
 	/*** User-specified types ***/
 
 		/* keyed to file path */
@@ -71,6 +74,17 @@ void blips_game_destroy(blips_game *bgame)
 		free(bgame->ais);
 */
 	blips_game_despawn(bgame);
+
+	for(i=0;i<bgame->campaign->num_players;i++)
+	{
+		creature_destroy(bgame->players[i]);
+		creature_type_destroy(bgame->player_types[i]);
+	}
+	if(bgame->campaign->num_players)
+	{
+		free(bgame->players);
+		free(bgame->player_types);
+	}
 
 	/*** User-specified types ***/
 
@@ -122,6 +136,8 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 	bgame->campaign=blips_campaign_create(path);
 	blips_game_load_world_tiles(bgame);
 	blips_game_load_object_types(bgame);
+
+	blips_game_load_players(bgame);
 
 	/* for first tile spawn */
 	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
@@ -418,6 +434,22 @@ printf("Loading projectiles types . . .\n");
 
 	/*UNFINISHED*/
 printf("Loading of projectile types not implemented!\n");
+
+	return;
+}
+
+void blips_game_load_players(blips_game *bgame)
+{
+	int i;
+
+	bgame->players=(creature**)malloc(sizeof(creature*)*bgame->campaign->num_players);
+	bgame->player_types=(creature_type**)malloc(sizeof(creature_type*)*bgame->campaign->num_players);
+
+	for(i=0;i<bgame->campaign->num_players;i++)
+	{
+		bgame->player_types[i]=creature_type_create(bgame->campaign->player_type_file_paths[i]);
+		bgame->players[i]=creature_create(bgame->player_types[i]);
+	}
 
 	return;
 }
