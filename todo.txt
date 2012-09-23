@@ -43,4 +43,13 @@
 
 -Insert code for player creatures.
 
--Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?
+-Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
+
+-Collision control.  Also done with fptrs.
+
+
+IF players are like everyone else:
+-Rewrite despawn() to preserve player creature.
+-Add code in game_destroy to delete player creature.
+ELSE players have a special array:
+-Add code to remove special array in destructor, create it in constructor.

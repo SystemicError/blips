@@ -96,8 +96,8 @@ typedef struct blips_game
 	projectile **projectiles;
 	int num_projectiles;
 
-	ai_type **ai_types;
-	int num_ai_types;
+	/* keyed types not appearing as world tile symbols (keyed to their path strings) */
+	string_map *ai_types_map;
 
 	projectile_type **pr_types;
 	int num_pr_types;
@@ -136,6 +136,9 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger);
 
 	/* load object key specified by campaign */
 void blips_game_load_object_types(blips_game *bgame);
+
+	/* apply ai_type directives to given creature */
+void blips_game_apply_ai_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
 
 #endif
 

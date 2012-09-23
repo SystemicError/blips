@@ -28,13 +28,13 @@ blips_game* blips_game_create(void)
 
 	/*** User-specified types ***/
 
-	bgame->ai_types=0;
-	bgame->num_ai_types=0;
+		/* keyed to file path */
+	bgame->ai_types_map=string_map_create();
 
 	bgame->pr_types=0;
 	bgame->num_pr_types=0;
 
-	/*** Keyed user-specified types ***/
+		/* keyed to user-customized world tile symbol */
 
 	bgame->br_types_map=string_map_create();
 	bgame->co_types_map=string_map_create();
@@ -74,10 +74,10 @@ void blips_game_destroy(blips_game *bgame)
 
 	/*** User-specified types ***/
 
-	for(i=0;i<bgame->num_ai_types;i++)
-		ai_type_destroy(bgame->ai_types[i]);
-	if(bgame->num_ai_types)
-		free(bgame->ai_types);
+		/* ai_types_map strings are just pointers to the creature_type field */
+	for(i=0;i<bgame->ai_types_map->size;i++)
+		ai_type_destroy((ai_type*)(bgame->ai_types_map->pointers[i]));
+	string_map_destroy(bgame->ai_types_map);
 
 	for(i=0;i<bgame->num_pr_types;i++)
 		projectile_type_destroy(bgame->pr_types[i]);
@@ -130,7 +130,39 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 
 void blips_game_step(blips_game *bgame,blips_input_state *inputs)
 {
-	/*UNFINISHED*/
+	int i;
+	char *str;
+	ai_type *ai_type_ptr;
+/*UNFINISHED*/
+	/* Compute AI's commands for each creature */
+
+	for(i=0;i<bgame->num_creatures;i++)
+	{
+		str=bgame->creatures[i]->type->ai_type_path;
+		string_map_string_to_pointer(bgame->ai_types_map,str,(void**)&ai_type_ptr);
+		blips_game_apply_ai_to_creature(bgame,ai_type_ptr,bgame->creatures[i]);
+	}
+
+	/* Use inputs as commands for player creature */
+
+	/* Move any creatures that need moving */
+
+		/* non-player */
+	for(i=0;i<bgame->num_creatures;i++)
+	{
+		/* call some function to move this creature by its listed speed and direction */
+	}
+
+		/* player */
+
+	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
+
+	/* Spawn any necessary projectiles */
+
+	/* Move any projectiles that need moving */
+
+	/* Handle any projectile/creature, projectile/barrier collisions */
+
 	return;
 }
 
@@ -217,8 +249,10 @@ void blips_game_despawn(blips_game *bgame)
 		free(bgame->collectibles);
 	for(i=0;i<bgame->num_creatures;i++)
 		creature_destroy(bgame->creatures[i]);
+/* UNFINISHED -- player creature should be kept! */
 	if(bgame->num_creatures)
 		free(bgame->creatures);
+
 	for(i=0;i<bgame->num_projectiles;i++)
 		projectile_destroy(bgame->projectiles[i]);
 	if(bgame->num_projectiles)
@@ -302,6 +336,7 @@ void blips_game_load_object_types(blips_game *bgame)
 	int i,count;
 	char *string;
 	char buffer[BUFFER_SIZE];
+	ai_type *ai_type_ptr;
 
 	if(!(fp=fopen(bgame->campaign->object_key_path,"r")))
 	{
@@ -368,16 +403,30 @@ printf("Loading creature types . . .\n");
 
 	/*** AI Types ***/
 
-	/* These have to be loaded from creature list, checked for duplicates. */
+	/* These have to be loaded from creature types list. */
 
-	/*UNFINISHED */
+printf("Loading ai_types . . .\n");
+	for(i=0;i<bgame->cr_types_map->size;i++)
+	{
+		string=((creature_type*)(bgame->cr_types_map->pointers[i]))->ai_type_path;
+		ai_type_ptr=ai_type_create(string);
+		string_map_add(bgame->ai_types_map,string,ai_type_ptr);
+	}
 
 	/*** Projectile Types ***/
+printf("Loading projectiles types . . .\n");
 
 	/* These have to be loaded from creature list, checked for duplicates. */
 
 	/*UNFINISHED*/
+printf("Loading of projectile types not implemented!\n");
 
+	return;
+}
+
+void blips_game_apply_ai_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr)
+{
+	/* UNFINISHED*/
 	return;
 }
 
