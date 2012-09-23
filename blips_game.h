@@ -138,7 +138,7 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger);
 void blips_game_load_object_types(blips_game *bgame);
 
 	/* apply ai_type directives to given creature */
-void blips_game_apply_ai_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
+void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
 
 #endif
 

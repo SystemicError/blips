@@ -140,7 +140,7 @@ void blips_game_step(blips_game *bgame,blips_input_state *inputs)
 	{
 		str=bgame->creatures[i]->type->ai_type_path;
 		string_map_string_to_pointer(bgame->ai_types_map,str,(void**)&ai_type_ptr);
-		blips_game_apply_ai_to_creature(bgame,ai_type_ptr,bgame->creatures[i]);
+		blips_game_apply_ai_type_to_creature(bgame,ai_type_ptr,bgame->creatures[i]);
 	}
 
 	/* Use inputs as commands for player creature */
@@ -149,9 +149,7 @@ void blips_game_step(blips_game *bgame,blips_input_state *inputs)
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
-	{
-		/* call some function to move this creature by its listed speed and direction */
-	}
+		blips_game_move_creature(bgame,bgame->creatures[i]);
 
 		/* player */
 
@@ -424,9 +422,70 @@ printf("Loading of projectile types not implemented!\n");
 	return;
 }
 
-void blips_game_apply_ai_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr)
+void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr)
 {
-	/* UNFINISHED*/
+/*UNFINISHED*/
+	/* move goal affects creature's facing direction and speed */
+
+cr->current_move_speed=1;
+cr->move_orientation=.5*M_PI;
+	switch(ai_type_ptr->move_goal)
+	{
+		case AI_DODGE:
+		break;
+		case AI_FLEE:
+		break;
+		case AI_CLOSE:
+		break;
+		case AI_WANDER:
+		break;
+		case AI_PATROL_NS:
+		break;
+		case AI_PATROL_EW:
+		break;
+	}
+
+	/* aim goal affects creature's aim */
+
+	/* fire goal affects creature's fire_cycle_state */
+
+	return;
+}
+
+blips_game_move_creature(blips_game *bgame,creature *cr)
+{
+/* UNFINISHED -- needs to take into account collisions */
+	int delta_x,delta_y;
+
+	delta_x=(int)(cr->current_move_speed*cos(cr->move_orientation));
+	delta_y=(int)(cr->current_move_speed*sin(cr->move_orientation));
+
+	cr->x_in_cell+=delta_x;
+	cr->y_in_cell+=delta_y;
+
+	/* change cells */
+
+	if(cr->x_in_cell<0)
+	{
+		cr->x_in_cell+=BLIPS_TILE_SIZE;
+		cr->col--;
+	}
+	if(cr->x_in_cell>=BLIPS_TILE_SIZE)
+	{
+		cr->x_in_cell-=BLIPS_TILE_SIZE;
+		cr->col++;
+	}
+	if(cr->y_in_cell<0)
+	{
+		cr->y_in_cell+=BLIPS_TILE_SIZE;
+		cr->row--;
+	}
+	if(cr->y_in_cell>=BLIPS_TILE_SIZE)
+	{
+		cr->y_in_cell-=BLIPS_TILE_SIZE;
+		cr->row++;
+	}
+
 	return;
 }
 

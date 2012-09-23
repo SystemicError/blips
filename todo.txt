@@ -27,6 +27,8 @@
 
 
 -Get working on loading pr_types and ai_types in blips_game.
+	-pr_types
+	+ai_types
 -Not to mention spawing projectiles.
 
 -Test maze/barrier loading. (print it!)
@@ -41,15 +43,17 @@
 	-Cr needs rotation support.
 	-Pr also needs rotation support, general testing.
 
--Insert code for player creatures.
 
 -Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
 
 -Collision control.  Also done with fptrs.
 
 
-IF players are like everyone else:
--Rewrite despawn() to preserve player creature.
--Add code in game_destroy to delete player creature.
-ELSE players have a special array:
--Add code to remove special array in destructor, create it in constructor.
+-Insert code for player creatures.
+	-give player creatures a special array in blips_game.
+	-Add code to remove special array in destructor, create it in constructor.
+
+-Write blips_game_apply_ai_type_to_creature()
+	-move_goal
+	-aim_goal
+	-fire_goal
