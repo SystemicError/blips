@@ -678,6 +678,18 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 void blips_game_move_creature(blips_game *bgame,creature *cr)
 {
 	double delta_x,delta_y;
+	int i;
+	int old_row,old_col;
+	double old_x,old_y;
+
+	/* in case we have to reverse changes later */
+
+	old_col=cr->col;
+	old_row=cr->row;
+	old_x=cr->x_in_cell;
+	old_y=cr->y_in_cell;
+
+	/* calculate change we're going to make */
 
 	delta_x=cr->current_move_speed*cos(cr->move_orientation);
 	delta_y=cr->current_move_speed*sin(cr->move_orientation);
@@ -708,15 +720,20 @@ void blips_game_move_creature(blips_game *bgame,creature *cr)
 		cr->row++;
 	}
 
-	/* check if movement causes a collision.  If it does, shorten movement
-	 * or tweak orientation until it doesn't. */
+	/* check if movement causes a collision.  If it does,
+	 * reverse this movement. */
 
-	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
-/* UNFINISHED -- write this code after AI, projectiles, etc. */
-
-	/* creature/boundary collisions */
-
-	blips_game_enforce_boundaries_on_creature(bgame,cr);
+	if(blips_game_creature_intersects_creatures(bgame,cr) ||
+	   blips_game_creature_intersects_boundaries(bgame,cr) ||
+	   blips_game_creature_intersects_barriers(bgame,cr) ||
+	   blips_game_creature_intersects_breakables(bgame,cr))
+	{
+		/* reverse changes */
+		cr->col=old_col;
+		cr->row=old_row;
+		cr->x_in_cell=old_x;
+		cr->y_in_cell=old_y;
+	}
 
 	return;
 }
@@ -813,31 +830,31 @@ void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
 	return;
 }
 
-void blips_game_enforce_boundaries_on_creature(blips_game *bgame,creature *cr)
+int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 {
-	int i;
+/* UNFINISHED*/
+	return 0;
+}
 
-	if(cr->col<0)
-	{
-		cr->col=0;
-		cr->x_in_cell=0;
-	}
-	if(cr->col>=BLIPS_TILE_COLS)
-	{
-		cr->col=BLIPS_TILE_COLS-1;
-		cr->x_in_cell=BLIPS_TILE_SIZE-1;
-	}
-	if(cr->row<0)
-	{
-		cr->row=0;
-		cr->y_in_cell=0;
-	}
-	if(cr->row>=BLIPS_TILE_ROWS)
-	{
-		cr->row=BLIPS_TILE_ROWS-1;
-		cr->y_in_cell=BLIPS_TILE_SIZE-1;
-	}
+int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
+{
+	if(cr->col<0 ||
+	   cr->col>=BLIPS_TILE_COLS ||
+	   cr->row<0 ||
+	   cr->row>=BLIPS_TILE_ROWS)
+		return 1;
+	return 0;
+}
 
-	return;
+int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
+{
+/*UNFINISHED*/
+	return 0;
+}
+
+int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
+{
+/*UNFINISHED*/
+	return 0;
 }
 
