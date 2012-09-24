@@ -860,11 +860,21 @@ int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
 {
+	if((cr->col==0 && cr->x_in_cell<BLIPS_TILE_SIZE/3.0) ||
+	   (cr->col==BLIPS_TILE_COLS-1 && cr->x_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+	   (cr->row==0 && cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
+	   (cr->row==BLIPS_TILE_ROWS-1 && cr->y_in_cell>BLIPS_TILE_SIZE*2.0/3.0))
+		return 1;
+
 	if(cr->col<0 ||
 	   cr->col>=BLIPS_TILE_COLS ||
 	   cr->row<0 ||
 	   cr->row>=BLIPS_TILE_ROWS)
+	{
+		fprintf(stderr,"Creature is *far* outside boundaries!\n");
 		return 1;
+	}
+
 	return 0;
 }
 
