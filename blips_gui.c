@@ -663,7 +663,10 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 	 *** which the gui will use to inform the game of events while hiding
 	 *** how they are obtained. ***/
 	int i;
+	int deadzone;
 	int joy_x,joy_y;
+
+	deadzone=10;  /* How small joystick input has to be to be ignored */
 
 	/* modify button/joystick states as necessary */
 	switch(event->type)
@@ -692,7 +695,8 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 	joy_x=SDL_JoystickGetAxis(bgui->joys[1],0);
 	joy_y=SDL_JoystickGetAxis(bgui->joys[1],1);
 
-	inputs[0]->aim_angle=atan2(joy_y,joy_x);
+	if(joy_x*joy_x+joy_y*joy_y>deadzone*deadzone)
+		inputs[0]->aim_angle=atan2(joy_y,joy_x);
 
 	return 0;
 }
