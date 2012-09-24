@@ -20,3 +20,13 @@ void creature_destroy(creature *cr)
 	return;
 }
 
+double creature_absolute_x(creature *cr)
+{
+	return cr->col*BLIPS_TILE_SIZE+cr->x_in_cell;
+}
+
+double creature_absolute_y(creature *cr)
+{
+	return cr->row*BLIPS_TILE_SIZE+cr->y_in_cell;
+}
+

@@ -34,5 +34,8 @@ typedef struct creature
 creature* creature_create(creature_type *ct);
 void creature_destroy(creature *cr);
 
+double creature_absolute_x(creature *cr);
+double creature_absolute_y(creature *cr);
+
 #endif
 

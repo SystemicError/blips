@@ -832,7 +832,29 @@ void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
 
 int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 {
-/* UNFINISHED*/
+	int i;
+	double distance_squared;
+
+		/* non-player */
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]!=cr)  /* don't check creature against itself */
+		{
+			distance_squared=pow(creature_absolute_x(bgame->creatures[i])-creature_absolute_x(cr),2)+
+					 pow(creature_absolute_y(bgame->creatures[i])-creature_absolute_y(cr),2);
+			if(distance_squared<BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+				return 1;
+		}
+
+		/* player */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]!=cr)  /* don't check creature against itself */
+		{
+			distance_squared=pow(creature_absolute_x(bgame->players[i])-creature_absolute_x(cr),2)+
+					 pow(creature_absolute_y(bgame->players[i])-creature_absolute_y(cr),2);
+			if(distance_squared<BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+				return 1;
+		}
+
 	return 0;
 }
 
