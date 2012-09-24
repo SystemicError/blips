@@ -28,6 +28,7 @@
 +Add boundary behaviour for projectiles, non-player creatures
 +Figure out why aim defaults to right.  (Lack of deadzone, fixed.)
 +Add code to decrement breakable time_remaining and remove zeroed ones.
++Center breakable rendering as with creatures, projectiles, since breaking animations need to be centered.
 
 
 
@@ -76,4 +77,7 @@
 
 -Add stun timer to creatures.  This can absolutely be specified in creature stats file, since it has in-game reprecussions.  Also implement thos in-game reprecussions.
 
--Center breakable rendering as with creatures, projectiles, since breaking animations need to be centered.
+
+-Add code to check for collectible/player collisions
+
+-Add status bar code.

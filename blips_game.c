@@ -150,6 +150,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	ai_type *ai_type_ptr;
 
 	/*** Compute AI's commands for each creature ***/
+printf("Computing AI commands.\n");
 
 	for(i=0;i<bgame->num_creatures;i++)
 	{
@@ -159,6 +160,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	}
 
 	/*** Use inputs as commands for player creature ***/
+printf("Handling user inputs.\n");
 
 	for(i=0;i<bgame->campaign->num_players;i++)
 	{
@@ -174,6 +176,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	}
 
 	/*** Move any creatures that need moving ***/
+printf("Moving creatures.\n");
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -184,6 +187,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		blips_game_move_creature(bgame,bgame->players[i]);
 
 	/*** Spawn any necessary projectiles ***/
+printf("Spawning projectiles.\n");
 
 		/* from non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -195,24 +199,29 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 			blips_game_spawn_projectile_from_creature(bgame,bgame->players[i]);
 
 	/*** Move any projectiles that need moving ***/
+printf("Moving projectiles.\n");
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
 
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
+printf("Handling projectile collisions.\n");
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(blips_game_check_projectile_for_impact(bgame,bgame->projectiles[i]))
 		{
+printf("Removing projectile.\n");
 			/* We have permission to remove this projectile */
 			projectile_destroy(bgame->projectiles[i]);
 			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
 			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
 			bgame->num_projectiles--;
 			i--;
+printf("Removed.\n");
 		}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
+printf("Handling breakables.\n");
 
 	for(i=0;i<bgame->num_breakables;i++)
 		if(bgame->breakables[i]->time_remaining>=0)
@@ -229,6 +238,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 				bgame->breakables[i]->time_remaining--;
 
 	/*** Remove projectiles that have left the screen entirely ***/
+printf("Removing stray projectiles.\n");
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
 
@@ -983,7 +993,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 			return 0;
 		}
 
-		/* check to see if pr intersects and creatures and have them react appropriately */
+		/* check to see if pr intersect creatures and have them react appropriately */
 /*UNFINISHED*/
 
 		return 0;

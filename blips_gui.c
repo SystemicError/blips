@@ -711,8 +711,8 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 	inputs[0]->speed=sqrt(joy_x*joy_x+joy_y*joy_y)/32768.0;
 
 		/* aim */
-	joy_x=SDL_JoystickGetAxis(bgui->joys[1],0);
-	joy_y=SDL_JoystickGetAxis(bgui->joys[1],1);
+	joy_x=SDL_JoystickGetAxis(bgui->joys[0],3);
+	joy_y=SDL_JoystickGetAxis(bgui->joys[0],2);
 
 	if(joy_x*joy_x+joy_y*joy_y>deadzone*deadzone)
 		inputs[0]->aim_angle=atan2(joy_y,joy_x);
