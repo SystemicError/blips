@@ -5,7 +5,7 @@ example_campaign/stats/projectile_types/example_1.projectile
 Move Speed:
 5
 Fire Delay:
-2
+8
 AI Type:
 example_campaign/stats/ai_types/example.ai
 Spawn Trigger:
