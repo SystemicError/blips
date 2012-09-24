@@ -56,10 +56,6 @@
 #include"maze.h"
 #endif
 
-#define BLIPS_TILE_ROWS 11
-#define BLIPS_TILE_COLS 16
-#define BLIPS_TILE_SIZE 64
-
 typedef struct world_tile
 {
 	char object_strings[BLIPS_TILE_ROWS][BLIPS_TILE_COLS][2];

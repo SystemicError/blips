@@ -7,6 +7,7 @@ projectile* projectile_create(projectile_type *pt)
 {
 	projectile *pr;
 	pr=(projectile*)malloc(sizeof(projectile));
+	pr->current_damage=pt->damage;
 	pr->type=pt;
 	return pr;
 }

@@ -360,6 +360,7 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 				bgame->creatures[bgame->num_creatures]->row=i;
 				bgame->creatures[bgame->num_creatures]->col=j;
+				bgame->creatures[bgame->num_creatures]->team=1;
 
 				bgame->num_creatures++;
 			}
@@ -506,6 +507,7 @@ void blips_game_load_players(blips_game *bgame)
 
 		bgame->players[i]->row=bgame->campaign->player_starting_rows[i];
 		bgame->players[i]->col=bgame->campaign->player_starting_cols[i];
+		bgame->players[i]->team=0;
 	}
 
 	return;
@@ -513,14 +515,108 @@ void blips_game_load_players(blips_game *bgame)
 
 void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr)
 {
+	double distance_squared,candidate_distance_squared;
+	creature *enemy_cr;
+	projectile *enemy_pr;
+	double enemy_cr_abs_x,enemy_cr_abs_y;
+	double enemy_pr_abs_x,enemy_pr_abs_y;
+	double cr_abs_x,cr_abs_y;
+	double candidate_x,candidate_y;
+	int i;
+
 /*UNFINISHED*/
+
+	/* compute this creatures absolute position */
+
+	cr_abs_x=cr->col*BLIPS_TILE_SIZE+cr->x_in_cell;
+	cr_abs_y=cr->row*BLIPS_TILE_SIZE+cr->y_in_cell;
+
+	/* get nearest enemy creature */
+
+	distance_squared=10000000;
+
+		/* search non-player creatures */
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]->team!=cr->team)
+		{
+			candidate_x=bgame->creatures[i]->col*BLIPS_TILE_SIZE+bgame->creatures[i]->x_in_cell;
+			candidate_y=bgame->creatures[i]->row*BLIPS_TILE_SIZE+bgame->creatures[i]->y_in_cell;
+			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
+
+			/* if distance to this creatures is less than distance, change ptr */
+			if(distance_squared>candidate_distance_squared)
+			{
+				enemy_cr=bgame->creatures[i];
+				distance_squared=candidate_distance_squared;
+			}
+		}
+
+		/* search player creatures */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]->team!=cr->team)
+		{
+			candidate_x=bgame->players[i]->col*BLIPS_TILE_SIZE+bgame->players[i]->x_in_cell;
+			candidate_y=bgame->players[i]->row*BLIPS_TILE_SIZE+bgame->players[i]->y_in_cell;
+			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
+
+			/* if distance to this creatures is less than distance, change ptr */
+			if(distance_squared>candidate_distance_squared)
+			{
+				enemy_cr=bgame->players[i];
+				distance_squared=candidate_distance_squared;
+			}
+		}
+
+	if(distance_squared==10000000)
+		enemy_cr=0;
+
+	/* get nearest enemy projectile */
+
+	distance_squared=10000000;
+
+	for(i=0;i<bgame->num_projectiles;i++)
+		if(bgame->projectiles[i]->team!=cr->team)
+		{
+			candidate_x=bgame->projectiles[i]->col*BLIPS_TILE_SIZE+bgame->projectiles[i]->x_in_cell;
+			candidate_y=bgame->projectiles[i]->row*BLIPS_TILE_SIZE+bgame->projectiles[i]->y_in_cell;
+			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
+
+			/* if distance to this creatures is less than distance, change ptr */
+			if(distance_squared>candidate_distance_squared)
+			{
+				enemy_pr=bgame->projectiles[i];
+				distance_squared=candidate_distance_squared;
+			}
+		}
+
+	if(distance_squared==10000000)
+		enemy_pr=0;
+
+	/* compute absolute positions of the nearest enemy cr
+	 * and the nearest enemy pr */
+
+	if(enemy_cr)
+	{
+		enemy_cr_abs_x=enemy_cr->col*BLIPS_TILE_SIZE+enemy_cr->x_in_cell;
+		enemy_cr_abs_y=enemy_cr->row*BLIPS_TILE_SIZE+enemy_cr->y_in_cell;
+	}
+
+	if(enemy_pr)
+	{
+		enemy_pr_abs_x=enemy_pr->col*BLIPS_TILE_SIZE+enemy_pr->x_in_cell;
+		enemy_pr_abs_y=enemy_pr->row*BLIPS_TILE_SIZE+enemy_pr->y_in_cell;
+	}
+
 	/* move goal affects creature's facing direction and speed */
 
-cr->current_move_speed=1;
-cr->move_orientation=.5*M_PI;
+	cr->current_move_speed=cr->type->move_speed;
+
 	switch(ai_type_ptr->move_goal)
 	{
 		case AI_DODGE:
+			if(enemy_pr)
+				cr->move_orientation=atan2(enemy_pr_abs_y-enemy_pr_abs_y,
+							   enemy_pr_abs_x-enemy_pr_abs_x)+M_PI/2;
 		break;
 		case AI_FLEE:
 		break;
@@ -536,7 +632,32 @@ cr->move_orientation=.5*M_PI;
 
 	/* aim goal affects creature's aim */
 
+	switch(ai_type_ptr->aim_goal)
+	{
+		case AI_FACE:
+			if(enemy_cr)
+				cr->aim_orientation=atan2(enemy_cr_abs_y-cr_abs_y,
+							  enemy_cr_abs_x-cr_abs_x);
+		break;
+		case AI_SPIN:
+			cr->aim_orientation+=.01;
+		break;
+		case AI_LAG_FACE:
+		break;
+	}
+
 	/* fire goal affects creature's fire_cycle_state */
+
+	switch(ai_type_ptr->fire_goal)
+	{
+		case AI_SPAM:
+			cr->fire_cycle_state=(cr->fire_cycle_state+1)%(cr->type->fire_delay);
+		break;
+		case AI_SIGHT_FIRST:
+		break;
+		case AI_SPURT:
+		break;
+	}
 
 	return;
 }
@@ -637,6 +758,7 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	pr->x_in_cell=cr->x_in_cell;
 	pr->y_in_cell=cr->y_in_cell;
 	pr->orientation=cr->aim_orientation;
+	pr->team=cr->team;
 
 	/* add it to the projectile list */
 	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
