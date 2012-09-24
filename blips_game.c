@@ -966,7 +966,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 		 * have them react appropriately and reduce the damage of this projectile */
 
 		for(i=0;i<bgame->num_breakables;i++)
-			if(pr->col==bgame->breakables[i]->col && pr->row==bgame->breakables[i]->row)  /*TEMPORARY*/
+			if(pr->col==bgame->breakables[i]->col && pr->row==bgame->breakables[i]->row && bgame->breakables[i]->time_remaining==-1)  /*TEMPORARY*/
 			{
 				if(bgame->breakables[i]->type->toughness<=pr->current_damage)
 					bgame->breakables[i]->time_remaining=5;  /* TEMPORARY --should call bgui fptr */
