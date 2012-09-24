@@ -18,3 +18,13 @@ void projectile_destroy(projectile *pr)
 	return;
 }
 
+double projectile_absolute_x(projectile *pr)
+{
+	return pr->col*BLIPS_TILE_SIZE+pr->x_in_cell;
+}
+
+double projectile_absolute_y(projectile *pr)
+{
+	return pr->row*BLIPS_TILE_SIZE+pr->y_in_cell;
+}
+

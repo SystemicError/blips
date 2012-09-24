@@ -529,8 +529,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 	/* compute this creatures absolute position */
 
-	cr_abs_x=cr->col*BLIPS_TILE_SIZE+cr->x_in_cell;
-	cr_abs_y=cr->row*BLIPS_TILE_SIZE+cr->y_in_cell;
+	cr_abs_x=creature_absolute_x(cr);
+	cr_abs_y=creature_absolute_y(cr);
 
 	/* get nearest enemy creature */
 
@@ -540,8 +540,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 	for(i=0;i<bgame->num_creatures;i++)
 		if(bgame->creatures[i]->team!=cr->team)
 		{
-			candidate_x=bgame->creatures[i]->col*BLIPS_TILE_SIZE+bgame->creatures[i]->x_in_cell;
-			candidate_y=bgame->creatures[i]->row*BLIPS_TILE_SIZE+bgame->creatures[i]->y_in_cell;
+			candidate_x=creature_absolute_x(bgame->creatures[i]);
+			candidate_y=creature_absolute_y(bgame->creatures[i]);
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
@@ -556,8 +556,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 	for(i=0;i<bgame->campaign->num_players;i++)
 		if(bgame->players[i]->team!=cr->team)
 		{
-			candidate_x=bgame->players[i]->col*BLIPS_TILE_SIZE+bgame->players[i]->x_in_cell;
-			candidate_y=bgame->players[i]->row*BLIPS_TILE_SIZE+bgame->players[i]->y_in_cell;
+			candidate_x=creature_absolute_x(bgame->players[i]);
+			candidate_y=creature_absolute_y(bgame->players[i]);
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
@@ -578,8 +578,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(bgame->projectiles[i]->team!=cr->team)
 		{
-			candidate_x=bgame->projectiles[i]->col*BLIPS_TILE_SIZE+bgame->projectiles[i]->x_in_cell;
-			candidate_y=bgame->projectiles[i]->row*BLIPS_TILE_SIZE+bgame->projectiles[i]->y_in_cell;
+			candidate_x=projectile_absolute_x(bgame->projectiles[i]);
+			candidate_y=projectile_absolute_y(bgame->projectiles[i]);
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
@@ -598,14 +598,14 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 	if(enemy_cr)
 	{
-		enemy_cr_abs_x=enemy_cr->col*BLIPS_TILE_SIZE+enemy_cr->x_in_cell;
-		enemy_cr_abs_y=enemy_cr->row*BLIPS_TILE_SIZE+enemy_cr->y_in_cell;
+		enemy_cr_abs_x=creature_absolute_x(enemy_cr);
+		enemy_cr_abs_y=creature_absolute_y(enemy_cr);
 	}
 
 	if(enemy_pr)
 	{
-		enemy_pr_abs_x=enemy_pr->col*BLIPS_TILE_SIZE+enemy_pr->x_in_cell;
-		enemy_pr_abs_y=enemy_pr->row*BLIPS_TILE_SIZE+enemy_pr->y_in_cell;
+		enemy_pr_abs_x=projectile_absolute_x(enemy_pr);
+		enemy_pr_abs_y=projectile_absolute_y(enemy_pr);
 	}
 
 	/* move goal affects creature's facing direction and speed */

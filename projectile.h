@@ -33,5 +33,8 @@ typedef struct projectile
 projectile* projectile_create(projectile_type *ct);
 void projectile_destroy(projectile *cr);
 
+double projectile_absolute_x(projectile *pr);
+double projectile_absolute_y(projectile *pr);
+
 #endif
 
