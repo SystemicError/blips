@@ -70,3 +70,5 @@
 	-pr
 
 -Fix the "diagonal problem" with barriers and breakables.
+
+-Figure out why aim defaults to right.

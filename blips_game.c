@@ -149,7 +149,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	char *str;
 	ai_type *ai_type_ptr;
 
-	/* Compute AI's commands for each creature */
+	/*** Compute AI's commands for each creature ***/
 
 	for(i=0;i<bgame->num_creatures;i++)
 	{
@@ -158,7 +158,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		blips_game_apply_ai_type_to_creature(bgame,ai_type_ptr,bgame->creatures[i]);
 	}
 
-	/* Use inputs as commands for player creature */
+	/*** Use inputs as commands for player creature ***/
 
 	for(i=0;i<bgame->campaign->num_players;i++)
 	{
@@ -173,7 +173,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 			bgame->players[i]->fire_cycle_state=-1;
 	}
 
-	/* Move any creatures that need moving */
+	/*** Move any creatures that need moving ***/
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -183,7 +183,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	for(i=0;i<bgame->campaign->num_players;i++)
 		blips_game_move_creature(bgame,bgame->players[i]);
 
-	/* Spawn any necessary projectiles */
+	/*** Spawn any necessary projectiles ***/
 
 		/* from non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -194,15 +194,25 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		if(bgame->players[i]->fire_cycle_state==0)
 			blips_game_spawn_projectile_from_creature(bgame,bgame->players[i]);
 
-	/* Move any projectiles that need moving */
+	/*** Move any projectiles that need moving ***/
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
 
-	/* Handle any projectile/creature, projectile/barrier collisions */
-/* UNFINISHED -- write this code after AI, projectiles, etc. */
+	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
 
-	/* projectile/boundary collisions */
+	for(i=0;i<bgame->num_projectiles;i++)
+		if(blips_game_check_projectile_for_impact(bgame,bgame->projectiles[i]))
+		{
+			/* We have permission to remove this projectile */
+			projectile_destroy(bgame->projectiles[i]);
+			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
+			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
+			bgame->num_projectiles--;
+			i--;
+		}
+
+	/*** Remove projectiles that have left the screen entirely ***/
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
 
@@ -740,6 +750,7 @@ void blips_game_move_creature(blips_game *bgame,creature *cr)
 
 void blips_game_move_projectile(blips_game *bgame,projectile *pr)
 {
+	int i;
 	double delta_x,delta_y;
 
 	delta_x=pr->type->move_speed*cos(pr->orientation);
@@ -910,5 +921,32 @@ int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
 			return 1;
 	}
 	return 0;
+}
+
+int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
+{
+/*UNFINISHED*/
+	/* Returns nonzero iff this projectile has already impacted and is due for removal */
+
+	if(pr->current_damage<0)  /* if it's already awaiting removal */
+	{
+		pr->current_damage++;
+		return 0;
+	}
+	if(pr->current_damage>0)  /* if it's still flying */
+	{
+		/* check to see if it intersects any barriers; if it has, impact it */
+
+		/* check to see if it intersects any creatures/breakables; if it has,
+		 * have them react appropriately and reduce the damage of this projectile */
+
+		/* If the projectile now has damage<=0, impact it */
+
+		return 0;
+	}
+
+	/* it's at current_damage==0, which means it's time to get rid of it */
+
+	return 1;
 }
 
