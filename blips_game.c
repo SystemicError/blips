@@ -753,6 +753,9 @@ void blips_game_move_projectile(blips_game *bgame,projectile *pr)
 	int i;
 	double delta_x,delta_y;
 
+	if(pr->current_damage<=0)  /* don't move those that are already impacted */
+		return;
+
 	delta_x=pr->type->move_speed*cos(pr->orientation);
 	delta_y=pr->type->move_speed*sin(pr->orientation);
 
@@ -937,6 +940,9 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 	{
 		/* check to see if it intersects any barriers; if it has, impact it */
 
+		if(blips_game_projectile_intersects_barriers(bgame,pr))
+			pr->current_damage=-10;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+
 		/* check to see if it intersects any creatures/breakables; if it has,
 		 * have them react appropriately and reduce the damage of this projectile */
 
@@ -948,5 +954,20 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 	/* it's at current_damage==0, which means it's time to get rid of it */
 
 	return 1;
+}
+
+int blips_game_projectile_intersects_barriers(blips_game *bgame,projectile *pr)
+{
+/* UNFINISHED -- this doesn't solve approach from a diagonal */
+	if((maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_NORTH) &&
+	    pr->y_in_cell<BLIPS_TILE_SIZE*.1) ||
+	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_EAST) &&
+	    pr->x_in_cell>BLIPS_TILE_SIZE*.9) ||
+	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_SOUTH) &&
+	    pr->y_in_cell>BLIPS_TILE_SIZE*.9) ||
+	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_WEST) &&
+	    pr->x_in_cell<BLIPS_TILE_SIZE*.1))
+		return 1;
+	return 0;
 }
 

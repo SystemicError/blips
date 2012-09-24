@@ -26,6 +26,7 @@
 +Convert x_in_cell, y_in_cell to type double.
 +Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.
 +Add boundary behaviour for projectiles, non-player creatures
++Figure out why aim defaults to right.  (Lack of deadzone, fixed.)
 
 
 
@@ -71,4 +72,3 @@
 
 -Fix the "diagonal problem" with barriers and breakables.
 
--Figure out why aim defaults to right.
