@@ -163,6 +163,7 @@ int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr);
 
 	/* when projectiles impact things */
 int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr);
+int blips_game_projectile_intersects_barriers(blips_game *bgame,projectile *pr);
 
 #endif
 

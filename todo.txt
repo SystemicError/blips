@@ -27,6 +27,7 @@
 +Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.
 +Add boundary behaviour for projectiles, non-player creatures
 +Figure out why aim defaults to right.  (Lack of deadzone, fixed.)
++Add code to decrement breakable time_remaining and remove zeroed ones.
 
 
 
@@ -72,4 +73,7 @@
 
 -Fix the "diagonal problem" with barriers and breakables.
 
--Add code to decrement breakable time_remaining and remove zeroed ones.
+
+-Add stun timer to creatures.  This can absolutely be specified in creature stats file, since it has in-game reprecussions.  Also implement thos in-game reprecussions.
+
+-Center breakable rendering as with creatures, projectiles, since breaking animations need to be centered.

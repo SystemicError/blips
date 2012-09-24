@@ -547,6 +547,7 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,breakable_media_set *br_set,breakable *br)
 {
 	cairo_surface_t *source;
+	int w,h;
 
 	/* Get the appropriate animation frame */
 
@@ -555,10 +556,18 @@ void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *sur
 	else
 		source=sprite_animation_cycle(br_set->break_animation);
 
+	/* for brevity */
+	w=cairo_image_surface_get_width(source);
+	h=cairo_image_surface_get_height(source);
+
 	/* draw it to the appropriate place */
 
-	cairo_set_source_surface(cr,source,br->col*BLIPS_TILE_SIZE,br->row*BLIPS_TILE_SIZE);
+	cairo_translate(cr,(br->col+.5)*BLIPS_TILE_SIZE,(br->row+.5)*BLIPS_TILE_SIZE);
+	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
+
 	cairo_paint(cr);
+
+	cairo_identity_matrix(cr);
 
 	return;
 }
@@ -566,13 +575,23 @@ void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *sur
 void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,collectible_media_set *co_set,collectible *co)
 {
 	cairo_surface_t *source;
+	int w,h;
 
 	/* Get animation frame */
 	source=sprite_animation_cycle(co_set->stand_animation);
 
+	/* for brevity */
+	w=cairo_image_surface_get_width(source);
+	h=cairo_image_surface_get_height(source);
+
 	/* draw it to the appropriate place */
-	cairo_set_source_surface(cr,source,co->col*BLIPS_TILE_SIZE,co->row*BLIPS_TILE_SIZE);
+
+	cairo_translate(cr,(co->col+.5)*BLIPS_TILE_SIZE,(co->row+.5)*BLIPS_TILE_SIZE);
+	cairo_set_source_surface(cr,source,-w/2.0,-h/2.0);
+
 	cairo_paint(cr);
+
+	cairo_identity_matrix(cr);
 
 	return;
 }
@@ -607,8 +626,8 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	h=cairo_image_surface_get_height(source);
 
 	/* absolute position in pixels */
-	xpos=creat->x_in_cell+creat->col*BLIPS_TILE_SIZE;
-	ypos=creat->y_in_cell+creat->row*BLIPS_TILE_SIZE;
+	xpos=creature_absolute_x(creat);
+	ypos=creature_absolute_y(creat);
 
 	cairo_translate(cr,xpos,ypos);
 	cairo_rotate (cr,creat->aim_orientation);
