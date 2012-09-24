@@ -880,7 +880,7 @@ int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 {
-/*UNFINISHED*/
+/* UNFINISHED -- this doesn't solve approach from a diagonal */
 	if((maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_NORTH) &&
 	    cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
 	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_EAST) &&
@@ -895,7 +895,20 @@ int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
 {
-/*UNFINISHED*/
+/* UNFINISHED -- this doesn't solve approach from a diagonal */
+	int i;
+	for(i=0;i<bgame->num_breakables;i++)
+	{
+		if((bgame->breakables[i]->col==cr->col && bgame->breakables[i]->row==cr->row-1 &&
+		    cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
+		   (bgame->breakables[i]->col==cr->col+1 && bgame->breakables[i]->row==cr->row &&
+		    cr->x_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+		   (bgame->breakables[i]->col==cr->col && bgame->breakables[i]->row==cr->row+1 &&
+		    cr->y_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+		   (bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row &&
+		    cr->x_in_cell<BLIPS_TILE_SIZE/3.0))
+			return 1;
+	}
 	return 0;
 }
 

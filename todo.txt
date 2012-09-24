@@ -66,3 +66,7 @@
 
 
 -Add barrier behaviour for projectiles, creatures
+	+cr
+	-pr
+
+-Fix the "diagonal problem" with barriers and breakables.
