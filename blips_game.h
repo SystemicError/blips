@@ -155,5 +155,8 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr);
 	/* remove projectiles which have left the tile */
 void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame);
 
+	/* keep creature in boundaries */
+void blips_game_enforce_boundaries_on_creature(blips_game *bgame,creature *cr);
+
 #endif
 

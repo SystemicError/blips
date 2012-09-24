@@ -183,10 +183,6 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	for(i=0;i<bgame->campaign->num_players;i++)
 		blips_game_move_creature(bgame,bgame->players[i]);
 
-	/* Handle any creature/barrier, creature/breakable, creature/creature,
-	 * creature/boundary collisions */
-/* UNFINISHED -- write this code after AI, projectiles, etc. */
-
 	/* Spawn any necessary projectiles */
 
 		/* from non-player creatures */
@@ -203,9 +199,10 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
 
-	/* Handle any projectile/creature, projectile/barrier,
-	 *  projectile/boundary collisions */
+	/* Handle any projectile/creature, projectile/barrier collisions */
 /* UNFINISHED -- write this code after AI, projectiles, etc. */
+
+	/* projectile/boundary collisions */
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
 
@@ -711,6 +708,16 @@ void blips_game_move_creature(blips_game *bgame,creature *cr)
 		cr->row++;
 	}
 
+	/* check if movement causes a collision.  If it does, shorten movement
+	 * or tweak orientation until it doesn't. */
+
+	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
+/* UNFINISHED -- write this code after AI, projectiles, etc. */
+
+	/* creature/boundary collisions */
+
+	blips_game_enforce_boundaries_on_creature(bgame,cr);
+
 	return;
 }
 
@@ -792,9 +799,9 @@ void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(bgame->projectiles[i]->col<-1 ||
-		   bgame->projectiles[i]->col>BLIPS_TILE_COLS+1 ||
+		   bgame->projectiles[i]->col>=BLIPS_TILE_COLS+1 ||
 		   bgame->projectiles[i]->row<-1 ||
-		   bgame->projectiles[i]->row>BLIPS_TILE_ROWS+1)
+		   bgame->projectiles[i]->row>=BLIPS_TILE_ROWS+1)
 		{
 			projectile_destroy(bgame->projectiles[i]);
 			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
@@ -802,6 +809,34 @@ void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
 			bgame->num_projectiles--;
 			i--;
 		}
+
+	return;
+}
+
+void blips_game_enforce_boundaries_on_creature(blips_game *bgame,creature *cr)
+{
+	int i;
+
+	if(cr->col<0)
+	{
+		cr->col=0;
+		cr->x_in_cell=0;
+	}
+	if(cr->col>=BLIPS_TILE_COLS)
+	{
+		cr->col=BLIPS_TILE_COLS-1;
+		cr->x_in_cell=BLIPS_TILE_SIZE-1;
+	}
+	if(cr->row<0)
+	{
+		cr->row=0;
+		cr->y_in_cell=0;
+	}
+	if(cr->row>=BLIPS_TILE_ROWS)
+	{
+		cr->row=BLIPS_TILE_ROWS-1;
+		cr->y_in_cell=BLIPS_TILE_SIZE-1;
+	}
 
 	return;
 }

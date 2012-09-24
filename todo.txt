@@ -25,20 +25,20 @@
 	+Pr needs general testing.
 +Convert x_in_cell, y_in_cell to type double.
 +Center creature, projectile images on their location.  This will solve the spawn offset problem with projectile rendering.
++Add boundary behaviour for projectiles, non-player creatures
+
+
 
 
 +Write breakable,collectible,creature,projectile
 -Integrate these into game, gui.
 	+Give game a function called spawn() or something, which causes current world tile's list of objects to be entered into present br/co/cr lists.
-	-Give game a function called despawn() or something, which removes all non-player objects in preparation for spawn().
+	+Give game a function called despawn() or something, which removes all non-player objects in preparation for spawn().
 	-Have both spawn() and despawn() called by change_tile(maze_direction).
 	-Have change_tile(maze_direction) triggered by [bool] player_leaving_tile().
--Create control scheme (AI/player).
+
 
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, wander.
-
-
-
 
 -Test maze/barrier loading. (print it!)
 
@@ -64,6 +64,5 @@
 -Consider having creature team specified in creature_type file, not defaulted to player/non-player.
 
 
--Add boundary behaviour for projectiles, non-player creatures
 
 -Add barrier behaviour for projectiles, creatures
