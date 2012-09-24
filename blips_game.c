@@ -881,6 +881,15 @@ int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
 int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 {
 /*UNFINISHED*/
+	if((maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_NORTH) &&
+	    cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
+	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_EAST) &&
+	    cr->x_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_SOUTH) &&
+	    cr->y_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_WEST) &&
+	    cr->x_in_cell<BLIPS_TILE_SIZE/3.0))
+		return 1;
 	return 0;
 }
 
