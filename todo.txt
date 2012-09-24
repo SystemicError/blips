@@ -72,3 +72,4 @@
 
 -Fix the "diagonal problem" with barriers and breakables.
 
+-Add code to decrement breakable time_remaining and remove zeroed ones.

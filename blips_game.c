@@ -212,6 +212,22 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 			i--;
 		}
 
+	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
+
+	for(i=0;i<bgame->num_breakables;i++)
+		if(bgame->breakables[i]->time_remaining>=0)
+			if(bgame->breakables[i]->time_remaining==0)
+			{
+				/* We have permission to remove this breakable */
+				breakable_destroy(bgame->breakables[i]);
+				bgame->breakables[i]=bgame->breakables[bgame->num_breakables-1];
+				bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables-1));
+				bgame->num_breakables--;
+				i--;
+			}
+			else
+				bgame->breakables[i]->time_remaining--;
+
 	/*** Remove projectiles that have left the screen entirely ***/
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
@@ -928,8 +944,8 @@ int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
 
 int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 {
-/*UNFINISHED*/
 	/* Returns nonzero iff this projectile has already impacted and is due for removal */
+	int i;
 
 	if(pr->current_damage<0)  /* if it's already awaiting removal */
 	{
@@ -941,12 +957,34 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 		/* check to see if it intersects any barriers; if it has, impact it */
 
 		if(blips_game_projectile_intersects_barriers(bgame,pr))
-			pr->current_damage=-10;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+		{
+			pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+			return 0;
+		}
 
-		/* check to see if it intersects any creatures/breakables; if it has,
+		/* check to see if it intersects any breakables; if it has,
 		 * have them react appropriately and reduce the damage of this projectile */
 
+		for(i=0;i<bgame->num_breakables;i++)
+			if(pr->col==bgame->breakables[i]->col && pr->row==bgame->breakables[i]->row)  /*TEMPORARY*/
+			{
+				if(bgame->breakables[i]->type->toughness<=pr->current_damage)
+					bgame->breakables[i]->time_remaining=5;  /* TEMPORARY --should call bgui fptr */
+
+				/* decrement the pr's current damage */
+				pr->current_damage-=bgame->breakables[i]->type->toughness;
+			}
+
 		/* If the projectile now has damage<=0, impact it */
+
+		if(pr->current_damage<=0)
+		{
+			pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+			return 0;
+		}
+
+		/* check to see if pr intersects and creatures and have them react appropriately */
+/*UNFINISHED*/
 
 		return 0;
 	}
