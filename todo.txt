@@ -62,3 +62,8 @@
 -Add a second world tile to test spawn/despawn/change_tile().
 
 -Consider having creature team specified in creature_type file, not defaulted to player/non-player.
+
+
+-Add boundary behaviour for projectiles, non-player creatures
+
+-Add barrier behaviour for projectiles, creatures

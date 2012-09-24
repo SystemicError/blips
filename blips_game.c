@@ -183,7 +183,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	for(i=0;i<bgame->campaign->num_players;i++)
 		blips_game_move_creature(bgame,bgame->players[i]);
 
-	/* Handle any creature/barrier, creature/breakable, creature/creature collisions */
+	/* Handle any creature/barrier, creature/breakable, creature/creature,
+	 * creature/boundary collisions */
 /* UNFINISHED -- write this code after AI, projectiles, etc. */
 
 	/* Spawn any necessary projectiles */
@@ -202,8 +203,11 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
 
-	/* Handle any projectile/creature, projectile/barrier collisions */
+	/* Handle any projectile/creature, projectile/barrier,
+	 *  projectile/boundary collisions */
 /* UNFINISHED -- write this code after AI, projectiles, etc. */
+
+	blips_game_remove_projectiles_outside_boundaries(bgame);
 
 	return;
 }
@@ -776,6 +780,28 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
 	bgame->projectiles[bgame->num_projectiles]=pr;
 	bgame->num_projectiles++;
+
+	return;
+}
+
+void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
+{
+	/*** This will remove projectiles that have thoroughly left the screen */
+
+	int i;
+
+	for(i=0;i<bgame->num_projectiles;i++)
+		if(bgame->projectiles[i]->col<-1 ||
+		   bgame->projectiles[i]->col>BLIPS_TILE_COLS+1 ||
+		   bgame->projectiles[i]->row<-1 ||
+		   bgame->projectiles[i]->row>BLIPS_TILE_ROWS+1)
+		{
+			projectile_destroy(bgame->projectiles[i]);
+			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
+			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
+			bgame->num_projectiles--;
+			i--;
+		}
 
 	return;
 }

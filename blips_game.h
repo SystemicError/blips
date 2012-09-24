@@ -152,5 +152,8 @@ void blips_game_move_projectile(blips_game *bgame,projectile *pr);
 	/* spawn the appropriate projectile from creature */
 void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr);
 
+	/* remove projectiles which have left the tile */
+void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame);
+
 #endif
 
