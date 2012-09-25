@@ -194,7 +194,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 		/* player */
 	for(i=0;i<bgame->campaign->num_players;i++)
-		blips_game_move_creature(bgame,bgame->players[i]);
+		if(bgame->players[i]->current_health>0)
+			blips_game_move_creature(bgame,bgame->players[i]);
 
 	/*** Spawn any necessary projectiles ***/
 
