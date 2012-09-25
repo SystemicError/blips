@@ -87,3 +87,5 @@
 -Decide how to react to player death.
 
 -Decide how to trigger world tile change when two or more players present.
+
+-Find out why the creature inside the barrier box is disappearing.

@@ -262,6 +262,7 @@ printf("Removing dead creature.\n");
 	/*** Check if any player has died ***/
 /*UNFINISHED*/
 
+
 	return;
 }
 
