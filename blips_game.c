@@ -1029,12 +1029,15 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 					{
 						pr->current_damage-=bgame->creatures[i]->current_health;
 						bgame->creatures[i]->current_health=0;
+						if(pr->current_damage<=0)
+							pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
 					}
 					else
 					{
 						bgame->creatures[i]->current_health-=pr->current_damage;
 						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
 					}
+					return 0;
 				}
 
 			/* player */
@@ -1050,12 +1053,15 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 					{
 						pr->current_damage-=bgame->players[i]->current_health;
 						bgame->players[i]->current_health=0;
+						if(pr->current_damage<=0)
+							pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
 					}
 					else
 					{
 						bgame->players[i]->current_health-=pr->current_damage;
 						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
 					}
+					return 0;
 				}
 
 

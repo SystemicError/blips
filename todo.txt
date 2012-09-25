@@ -30,6 +30,9 @@
 +Add code to decrement breakable time_remaining and remove zeroed ones.
 +Center breakable rendering as with creatures, projectiles, since breaking animations need to be centered.
 +Add stun timer to creatures.  This can absolutely be specified in creature stats file, since it has in-game reprecussions.  Also implement thos in-game reprecussions.
++Add barrier behaviour for projectiles, creatures
+	+cr
+	+pr
 
 
 
@@ -69,9 +72,6 @@
 
 
 
--Add barrier behaviour for projectiles, creatures
-	+cr
-	-pr
 
 -Fix the "diagonal problem" with barriers and breakables.
 
@@ -84,4 +84,6 @@
 
 -Add death animation separate from stun animation to creatures.
 
--Sometimes enemies don't exhibit stun animations when they die.  Find out why.
+-Decide how to react to player death.
+
+-Decide how to trigger world tile change when two or more players present.
