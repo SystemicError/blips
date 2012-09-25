@@ -702,32 +702,35 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 	/* aim goal affects creature's aim */
 
-	switch(ai_type_ptr->aim_goal)
-	{
-		case AI_FACE:
-			if(enemy_cr)
+	if(enemy_cr)
+		switch(ai_type_ptr->aim_goal)
+		{
+			case AI_FACE:
 				cr->aim_orientation=atan2(enemy_cr_abs_y-cr_abs_y,
-							  enemy_cr_abs_x-cr_abs_x);
-		break;
-		case AI_SPIN:
-			cr->aim_orientation+=.01;
-		break;
-		case AI_LAG_FACE:
-		break;
-	}
+						  	enemy_cr_abs_x-cr_abs_x);
+			break;
+			case AI_SPIN:
+				cr->aim_orientation+=.01;
+			break;
+			case AI_LAG_FACE:
+			break;
+		}
 
 	/* fire goal affects creature's fire_cycle_state */
 
-	switch(ai_type_ptr->fire_goal)
-	{
-		case AI_SPAM:
-			cr->fire_cycle_state=(cr->fire_cycle_state+1)%(cr->type->fire_delay);
-		break;
-		case AI_SIGHT_FIRST:
-		break;
-		case AI_SPURT:
-		break;
-	}
+	if(enemy_cr)
+		switch(ai_type_ptr->fire_goal)
+		{
+			case AI_SPAM:
+				cr->fire_cycle_state=(cr->fire_cycle_state+1)%(cr->type->fire_delay);
+			break;
+			case AI_SIGHT_FIRST:
+			break;
+			case AI_SPURT:
+			break;
+		}
+	else
+		cr->fire_cycle_state=-1;
 
 	return;
 }
