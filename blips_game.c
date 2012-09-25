@@ -149,6 +149,18 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	char *str;
 	ai_type *ai_type_ptr;
 
+	/*** Decrement creature stun counters ***/
+
+		/* non-player */
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]->stun_count)
+			bgame->creatures[i]->stun_count--;
+
+		/* player */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]->stun_count)
+			bgame->players[i]->stun_count--;
+
 	/*** Compute AI's commands for each creature ***/
 
 	for(i=0;i<bgame->num_creatures;i++)
@@ -233,18 +245,6 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	/*** Remove projectiles that have left the screen entirely ***/
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
-
-	/*** Decrement creature stun counters ***/
-
-		/* non-player */
-	for(i=0;i<bgame->num_creatures;i++)
-		if(bgame->creatures[i]->stun_count)
-			bgame->creatures[i]->stun_count--;
-
-		/* player */
-	for(i=0;i<bgame->campaign->num_players;i++)
-		if(bgame->players[i]->stun_count)
-			bgame->players[i]->stun_count--;
 
 	/*** Remove any non-player creatures who have died ***/
 
