@@ -213,7 +213,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
-//printf("Step G.\n");
+printf("Step G.\n");
 
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
 
@@ -229,7 +229,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
-//printf("Step H.\n");
+printf("Step H.\n");
 
 	for(i=0;i<bgame->num_breakables;i++)
 		if(bgame->breakables[i]->time_remaining>=0)
@@ -949,16 +949,47 @@ int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 {
-/* UNFINISHED -- this doesn't solve approach from a diagonal */
+/* UNFINISHED -- this doesn't solve prevent a very close approach from a diagonal */
+	double margin;
+
+	margin=BLIPS_TILE_SIZE/4.0;
+
 	if((maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_NORTH) &&
-	    cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
+	    cr->y_in_cell<margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_EAST) &&
-	    cr->x_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+	    cr->x_in_cell>BLIPS_TILE_SIZE-margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_SOUTH) &&
-	    cr->y_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+	    cr->y_in_cell>BLIPS_TILE_SIZE-margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col,MAZE_WEST) &&
-	    cr->x_in_cell<BLIPS_TILE_SIZE/3.0))
+	    cr->x_in_cell<margin))
 		return 1;
+
+	/* corners */
+
+		/* northeast */
+	if(maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col+1,MAZE_NORTH) &&
+	   maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row-1,cr->col,MAZE_EAST) &&
+	   pow(BLIPS_TILE_SIZE-cr->x_in_cell,2)+pow(cr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* southeast */
+	if(maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col+1,MAZE_SOUTH) &&
+	   maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row+1,cr->col,MAZE_EAST) &&
+	   pow(BLIPS_TILE_SIZE-cr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-cr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* southwest */
+	if(maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col-1,MAZE_SOUTH) &&
+	   maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row+1,cr->col,MAZE_WEST) &&
+	   pow(cr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-cr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* northwest */
+	if(maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row,cr->col-1,MAZE_NORTH) &&
+	   maze_contains_wall(bgame->active_world_tile->creature_barriers,cr->row-1,cr->col,MAZE_WEST) &&
+	   pow(cr->x_in_cell,2)+pow(cr->y_in_cell,2)<margin*margin)
+		return 1;
+
 	return 0;
 }
 
@@ -985,7 +1016,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 {
 	/* Returns nonzero iff this projectile has already impacted and is due for removal */
 	int i;
-//printf("Current projectile is %d,%d.\n",pr->row,pr->col);
+printf("Current projectile is %d,%d.\n",pr->row,pr->col);
 
 	if(pr->current_damage<0)  /* if it's already awaiting removal */
 	{

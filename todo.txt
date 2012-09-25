@@ -33,6 +33,11 @@
 +Add barrier behaviour for projectiles, creatures
 	+cr
 	+pr
++GUI needs to keep track of animation index for EACH instance of an object, otherwise they cycle one another's animations.
+	+Give each of br/co/cr/pr its own "animation timer" fields for each of the different animations.  Have them initialize to zero.  This will be our ONE EXCEPTION to the gui/game separation rule.
+	+Charge bgui with changing these timers as necessary.
+	+Change all instances of sprite_animation_cycle() in bgui to references to the appropriate frame.
++Find out why the creature inside the barrier box is disappearing.  (Lack of initialization.)
 
 
 
@@ -74,6 +79,8 @@
 
 
 -Fix the "diagonal problem" with barriers and breakables.
+	+barriers
+	-breakables
 
 
 
@@ -88,9 +95,6 @@
 
 -Decide how to trigger world tile change when two or more players present.
 
--Find out why the creature inside the barrier box is disappearing.
+-Figure out why AI occasionally runs from creature rather than projectile.
 
--GUI needs to keep track of animation index for EACH instance of an object, otherwise they cycle one another's animations.
-	-Give each of br/co/cr/pr its own "animation timer" fields for each of the different animations.  Have them initialize to zero.  This will be our ONE EXCEPTION to the gui/game separation rule.
-	-Charge bgui with changing these timers as necessary.
-	-Change all instances of sprite_animation_cycle() in bgui to references to the appropriate frame.
+-Figure out segfault?
