@@ -177,7 +177,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
-		blips_game_move_creature(bgame,bgame->creatures[i]);
+		if(bgame->creatures[i]->stun_count==0)
+			blips_game_move_creature(bgame,bgame->creatures[i]);
 
 		/* player */
 	for(i=0;i<bgame->campaign->num_players;i++)
@@ -187,7 +188,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 		/* from non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
-		if(bgame->creatures[i]->fire_cycle_state==0)
+		if(bgame->creatures[i]->fire_cycle_state==0 &&
+		   bgame->creatures[i]->stun_count==0)
 			blips_game_spawn_projectile_from_creature(bgame,bgame->creatures[i]);
 		/* from player creatures */
 	for(i=0;i<bgame->campaign->num_players;i++)
