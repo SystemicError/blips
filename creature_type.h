@@ -26,6 +26,7 @@ typedef struct creature_type
 	char *pr_type_path;
 	int move_speed;
 	int fire_delay;
+	int stun_delay;
 	char *ai_type_path;
 	spawn_trigger trigger;
 	int respawn;

@@ -604,20 +604,19 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 
 	/* Get the appropriate animation frame */
 
-	if(creat->fire_cycle_state==-1)  /* is it firing? */
-	{
-		if(creat->current_move_speed)
-			source=sprite_animation_cycle(cr_set->walk_animation);
-		else
-			source=sprite_animation_cycle(cr_set->stand_animation);
-	}
+	if(creat->stun_count)  /* is it stunned? */
+		source=sprite_animation_cycle(cr_set->stun_animation);
 	else
-	{
-		if(creat->current_move_speed)
-			source=sprite_animation_cycle(cr_set->walk_and_fire_animation);
+		if(creat->fire_cycle_state==-1)  /* is it firing? */
+			if(creat->current_move_speed)
+				source=sprite_animation_cycle(cr_set->walk_animation);
+			else
+				source=sprite_animation_cycle(cr_set->stand_animation);
 		else
-			source=sprite_animation_cycle(cr_set->fire_animation);
-	}
+			if(creat->current_move_speed)
+				source=sprite_animation_cycle(cr_set->walk_and_fire_animation);
+			else
+				source=sprite_animation_cycle(cr_set->fire_animation);
 
 	/* draw it to the appropriate place */
 

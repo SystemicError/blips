@@ -150,7 +150,6 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	ai_type *ai_type_ptr;
 
 	/*** Compute AI's commands for each creature ***/
-printf("Computing AI commands.\n");
 
 	for(i=0;i<bgame->num_creatures;i++)
 	{
@@ -160,7 +159,6 @@ printf("Computing AI commands.\n");
 	}
 
 	/*** Use inputs as commands for player creature ***/
-printf("Handling user inputs.\n");
 
 	for(i=0;i<bgame->campaign->num_players;i++)
 	{
@@ -176,7 +174,6 @@ printf("Handling user inputs.\n");
 	}
 
 	/*** Move any creatures that need moving ***/
-printf("Moving creatures.\n");
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -187,7 +184,6 @@ printf("Moving creatures.\n");
 		blips_game_move_creature(bgame,bgame->players[i]);
 
 	/*** Spawn any necessary projectiles ***/
-printf("Spawning projectiles.\n");
 
 		/* from non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -199,29 +195,24 @@ printf("Spawning projectiles.\n");
 			blips_game_spawn_projectile_from_creature(bgame,bgame->players[i]);
 
 	/*** Move any projectiles that need moving ***/
-printf("Moving projectiles.\n");
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
 
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
-printf("Handling projectile collisions.\n");
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(blips_game_check_projectile_for_impact(bgame,bgame->projectiles[i]))
 		{
-printf("Removing projectile.\n");
 			/* We have permission to remove this projectile */
 			projectile_destroy(bgame->projectiles[i]);
 			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
 			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
 			bgame->num_projectiles--;
 			i--;
-printf("Removed.\n");
 		}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
-printf("Handling breakables.\n");
 
 	for(i=0;i<bgame->num_breakables;i++)
 		if(bgame->breakables[i]->time_remaining>=0)
@@ -238,9 +229,36 @@ printf("Handling breakables.\n");
 				bgame->breakables[i]->time_remaining--;
 
 	/*** Remove projectiles that have left the screen entirely ***/
-printf("Removing stray projectiles.\n");
 
 	blips_game_remove_projectiles_outside_boundaries(bgame);
+
+	/*** Decrement creature stun counters ***/
+
+		/* non-player */
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]->stun_count)
+			bgame->creatures[i]->stun_count--;
+
+		/* player */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]->stun_count)
+			bgame->players[i]->stun_count--;
+
+	/*** Remove any non-player creatures who have died ***/
+
+	for(i=0;i<bgame->num_creatures;i++)
+		if(bgame->creatures[i]->current_health==0 &&
+		   bgame->creatures[i]->stun_count)
+		{
+printf("Removing dead creature.\n");
+			creature_destroy(bgame->creatures[i]);
+			bgame->creatures[i]=bgame->creatures[bgame->num_creatures-1];
+			bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1));
+			bgame->num_creatures--;
+		}
+
+	/*** Check if any player has died ***/
+/*UNFINISHED*/
 
 	return;
 }
@@ -993,7 +1011,32 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 			return 0;
 		}
 
-		/* check to see if pr intersect creatures and have them react appropriately */
+		/* check to see if pr intersect creatures and have them react
+		 * appropriately, i.e. set stun timer and take damage */
+
+			/* non-player */
+		for(i=0;i<bgame->num_creatures;i++)
+			if(bgame->creatures[i]->team!=pr->team)
+				/* The following line is TEMPORARY collision detection */
+				if(pow(creature_absolute_x(bgame->creatures[i])-projectile_absolute_x(pr),2)+
+				   pow(creature_absolute_y(bgame->creatures[i])-projectile_absolute_y(pr),2)<
+				   BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+				{
+printf("They're close!\n");
+					bgame->creatures[i]->stun_count=bgame->creatures[i]->type->stun_delay;
+					if(bgame->creatures[i]->current_health<=pr->current_damage)
+					{
+						pr->current_damage-=bgame->creatures[i]->current_health;
+						bgame->creatures[i]->current_health=0;
+					}
+					else
+					{
+						bgame->creatures[i]->current_health-=pr->current_damage;
+						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+					}
+				}
+
+			/* player */
 /*UNFINISHED*/
 
 		return 0;

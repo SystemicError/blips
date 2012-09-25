@@ -39,6 +39,11 @@ creature_type* creature_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(cr_type->fire_delay));
 
+	/*** Stun Delay ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(cr_type->stun_delay));
+
 	/*** AI Type ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */

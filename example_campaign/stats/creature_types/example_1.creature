@@ -1,11 +1,13 @@
 Max Health:
-2
+20
 Projectile Type:
 example_campaign/stats/projectile_types/example_1.projectile
 Move Speed:
 5
 Fire Delay:
 8
+Stun Delay:
+5
 AI Type:
 example_campaign/stats/ai_types/example.ai
 Spawn Trigger:

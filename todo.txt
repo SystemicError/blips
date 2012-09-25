@@ -81,3 +81,5 @@
 -Add code to check for collectible/player collisions
 
 -Add status bar code.
+
+-Add death animation separate from stun animation to creatures.
