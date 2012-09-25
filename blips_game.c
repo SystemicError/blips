@@ -205,7 +205,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 			blips_game_spawn_projectile_from_creature(bgame,bgame->creatures[i]);
 		/* from player creatures */
 	for(i=0;i<bgame->campaign->num_players;i++)
-		if(bgame->players[i]->fire_cycle_state==0)
+		if(bgame->players[i]->fire_cycle_state==0 && bgame->players[i]->current_health>0)
 			blips_game_spawn_projectile_from_creature(bgame,bgame->players[i]);
 
 	/*** Move any projectiles that need moving ***/
@@ -595,7 +595,7 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 		/* search non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
-		if(bgame->creatures[i]->team!=cr->team)
+		if(bgame->creatures[i]->team!=cr->team && bgame->creatures[i]->current_health>0)
 		{
 			candidate_x=creature_absolute_x(bgame->creatures[i]);
 			candidate_y=creature_absolute_y(bgame->creatures[i]);
@@ -611,7 +611,7 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 		/* search player creatures */
 	for(i=0;i<bgame->campaign->num_players;i++)
-		if(bgame->players[i]->team!=cr->team)
+		if(bgame->players[i]->team!=cr->team && bgame->players[i]->current_health>0)
 		{
 			candidate_x=creature_absolute_x(bgame->players[i]);
 			candidate_y=creature_absolute_y(bgame->players[i]);
