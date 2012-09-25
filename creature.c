@@ -16,6 +16,13 @@ creature* creature_create(creature_type *ct)
 	cr->fire_cycle_state=-1;
 	cr->stun_count=0;
 	cr->type=ct;
+
+	cr->stand_animation_index=0;
+	cr->walk_animation_index=0;
+	cr->walk_and_fire_animation_index=0;
+	cr->fire_animation_index=0;
+	cr->stun_animation_index=0;
+
 	return cr;
 }
 

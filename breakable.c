@@ -9,6 +9,10 @@ breakable* breakable_create(breakable_type *bt)
 	br=(breakable*)malloc(sizeof(breakable));
 	br->time_remaining=-1;
 	br->type=bt;
+
+	br->stand_animation_index=0;
+	br->break_animation_index=0;
+
 	return br;
 }
 

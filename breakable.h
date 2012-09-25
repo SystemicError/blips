@@ -25,6 +25,9 @@ typedef struct breakable
 	int row,col;
 	int time_remaining;  /* -1 indicates not breaking */
 	breakable_type *type;
+
+	int stand_animation_index;
+	int break_animation_index;
 } breakable;
 
 breakable* breakable_create(breakable_type *bt);

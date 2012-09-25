@@ -28,6 +28,9 @@ typedef struct projectile
 	double orientation;
 	int team;
 	projectile_type *type;
+
+	int fly_animation_index;
+	int impact_animation_index;
 } projectile;
 
 projectile* projectile_create(projectile_type *ct);

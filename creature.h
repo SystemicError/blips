@@ -30,6 +30,12 @@ typedef struct creature
 	int stun_count;  /* 0 indicates not stunned. */
 	int team;
 	creature_type *type;
+
+	int stand_animation_index;
+	int walk_animation_index;
+	int walk_and_fire_animation_index;
+	int fire_animation_index;
+	int stun_animation_index;
 } creature;
 
 creature* creature_create(creature_type *ct);

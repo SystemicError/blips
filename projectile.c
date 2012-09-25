@@ -9,6 +9,10 @@ projectile* projectile_create(projectile_type *pt)
 	pr=(projectile*)malloc(sizeof(projectile));
 	pr->current_damage=pt->damage;
 	pr->type=pt;
+
+	pr->fly_animation_index=0;
+	pr->impact_animation_index=0;
+
 	return pr;
 }
 

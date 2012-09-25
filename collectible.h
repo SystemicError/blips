@@ -24,6 +24,8 @@ typedef struct collectible
 {
 	int row,col;
 	collectible_type *type;
+
+	int stand_animation_index;
 } collectible;
 
 collectible* collectible_create(collectible_type *ct);
