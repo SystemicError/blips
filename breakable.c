@@ -14,6 +14,11 @@ breakable* breakable_create(breakable_type *bt)
 
 void breakable_destroy(breakable *br)
 {
+	if(!br)
+	{
+		fprintf(stderr,"Attempt to destroy null breakable!\n");
+		exit(1);
+	}
 	free(br);
 	return;
 }

@@ -213,6 +213,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
+//printf("Step G.\n");
 
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
 
@@ -228,6 +229,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 		}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
+//printf("Step H.\n");
 
 	for(i=0;i<bgame->num_breakables;i++)
 		if(bgame->breakables[i]->time_remaining>=0)
@@ -262,7 +264,6 @@ printf("Removing dead creature.\n");
 
 	/*** Check if any player has died ***/
 /*UNFINISHED*/
-
 
 	return;
 }
@@ -592,7 +593,7 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 	/* get nearest enemy creature */
 
-	distance_squared=10000000;
+	distance_squared=-1;
 
 		/* search non-player creatures */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -603,7 +604,8 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
-			if(distance_squared>candidate_distance_squared)
+			if(distance_squared>candidate_distance_squared ||
+			   distance_squared==-1)
 			{
 				enemy_cr=bgame->creatures[i];
 				distance_squared=candidate_distance_squared;
@@ -619,19 +621,20 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
-			if(distance_squared>candidate_distance_squared)
+			if(distance_squared>candidate_distance_squared ||
+			   distance_squared==-1)
 			{
 				enemy_cr=bgame->players[i];
 				distance_squared=candidate_distance_squared;
 			}
 		}
 
-	if(distance_squared==10000000)
+	if(distance_squared==-1)
 		enemy_cr=0;
 
 	/* get nearest enemy projectile */
 
-	distance_squared=10000000;
+	distance_squared=-1;
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(bgame->projectiles[i]->team!=cr->team)
@@ -641,14 +644,15 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 			candidate_distance_squared=pow(candidate_x-cr_abs_x,2)+pow(candidate_y-cr_abs_y,2);
 
 			/* if distance to this creatures is less than distance, change ptr */
-			if(distance_squared>candidate_distance_squared)
+			if(distance_squared>candidate_distance_squared ||
+			   distance_squared==-1)
 			{
 				enemy_pr=bgame->projectiles[i];
 				distance_squared=candidate_distance_squared;
 			}
 		}
 
-	if(distance_squared==10000000)
+	if(distance_squared==-1)
 		enemy_pr=0;
 
 	/* compute absolute positions of the nearest enemy cr
@@ -981,6 +985,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 {
 	/* Returns nonzero iff this projectile has already impacted and is due for removal */
 	int i;
+//printf("Current projectile is %d,%d.\n",pr->row,pr->col);
 
 	if(pr->current_damage<0)  /* if it's already awaiting removal */
 	{

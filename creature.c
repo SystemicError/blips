@@ -21,6 +21,11 @@ creature* creature_create(creature_type *ct)
 
 void creature_destroy(creature *cr)
 {
+	if(!cr)
+	{
+		fprintf(stderr,"Attempt to free null creature!\n");
+		exit(1);
+	}
 	free(cr);
 	return;
 }

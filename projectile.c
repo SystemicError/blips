@@ -14,6 +14,11 @@ projectile* projectile_create(projectile_type *pt)
 
 void projectile_destroy(projectile *pr)
 {
+	if(!pr)
+	{
+		fprintf(stderr,"Attempt to free null projectile!\n");
+		exit(1);
+	}
 	free(pr);
 	return;
 }

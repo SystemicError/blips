@@ -13,6 +13,11 @@ collectible* collectible_create(collectible_type *ct)
 
 void collectible_destroy(collectible *co)
 {
+	if(!co)
+	{
+		fprintf(stderr,"Attempt to destroy null collectible!\n");
+		exit(1);
+	}
 	free(co);
 	return;
 }
