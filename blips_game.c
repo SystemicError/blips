@@ -903,6 +903,9 @@ int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 {
 	int i;
 	double distance_squared;
+	double margin;
+
+	margin=BLIPS_TILE_SIZE/2.0;
 
 		/* non-player */
 	for(i=0;i<bgame->num_creatures;i++)
@@ -910,7 +913,7 @@ int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 		{
 			distance_squared=pow(creature_absolute_x(bgame->creatures[i])-creature_absolute_x(cr),2)+
 					 pow(creature_absolute_y(bgame->creatures[i])-creature_absolute_y(cr),2);
-			if(distance_squared<BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+			if(distance_squared<margin*margin)
 				return 1;
 		}
 
@@ -920,7 +923,7 @@ int blips_game_creature_intersects_creatures(blips_game *bgame,creature *cr)
 		{
 			distance_squared=pow(creature_absolute_x(bgame->players[i])-creature_absolute_x(cr),2)+
 					 pow(creature_absolute_y(bgame->players[i])-creature_absolute_y(cr),2);
-			if(distance_squared<BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+			if(distance_squared<margin*margin)
 				return 1;
 		}
 
@@ -949,7 +952,6 @@ int blips_game_creature_intersects_boundaries(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 {
-/* UNFINISHED -- this doesn't solve prevent a very close approach from a diagonal */
 	double margin;
 
 	margin=BLIPS_TILE_SIZE/4.0;
@@ -995,18 +997,43 @@ int blips_game_creature_intersects_barriers(blips_game *bgame,creature *cr)
 
 int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
 {
-/* UNFINISHED -- this doesn't solve approach from a diagonal */
 	int i;
+	double margin;
+
+	margin=BLIPS_TILE_SIZE/4.0;
+
 	for(i=0;i<bgame->num_breakables;i++)
 	{
 		if((bgame->breakables[i]->col==cr->col && bgame->breakables[i]->row==cr->row-1 &&
-		    cr->y_in_cell<BLIPS_TILE_SIZE/3.0) ||
+		    cr->y_in_cell<margin) ||
 		   (bgame->breakables[i]->col==cr->col+1 && bgame->breakables[i]->row==cr->row &&
-		    cr->x_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+		    cr->x_in_cell>BLIPS_TILE_SIZE-margin) ||
 		   (bgame->breakables[i]->col==cr->col && bgame->breakables[i]->row==cr->row+1 &&
-		    cr->y_in_cell>BLIPS_TILE_SIZE*2.0/3.0) ||
+		    cr->y_in_cell>BLIPS_TILE_SIZE-margin) ||
 		   (bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row &&
-		    cr->x_in_cell<BLIPS_TILE_SIZE/3.0))
+		    cr->x_in_cell<margin))
+			return 1;
+
+		/* corners */
+
+				/* northeast */
+		if(bgame->breakables[i]->col==cr->col+1 && bgame->breakables[i]->row==cr->row-1 &&
+		   pow(BLIPS_TILE_SIZE-cr->x_in_cell,2)+pow(cr->y_in_cell,2)<margin*margin)
+			return 1;
+
+				/* southeast */
+		if(bgame->breakables[i]->col==cr->col+1 && bgame->breakables[i]->row==cr->row+1 &&
+		   pow(BLIPS_TILE_SIZE-cr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-cr->y_in_cell,2)<margin*margin)
+			return 1;
+
+				/* southwest */
+		if(bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row-1 &&
+		   pow(cr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-cr->y_in_cell,2)<margin*margin)
+			return 1;
+
+				/* northwest */
+		if(bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row-1 &&
+		   pow(cr->x_in_cell,2)+pow(cr->y_in_cell,2)<margin*margin)
 			return 1;
 	}
 	return 0;
