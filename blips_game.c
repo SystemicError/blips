@@ -250,7 +250,7 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 	for(i=0;i<bgame->num_creatures;i++)
 		if(bgame->creatures[i]->current_health==0 &&
-		   bgame->creatures[i]->stun_count)
+		   bgame->creatures[i]->stun_count==0)
 		{
 printf("Removing dead creature.\n");
 			creature_destroy(bgame->creatures[i]);
@@ -1022,9 +1022,8 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 				/* The following line is TEMPORARY collision detection */
 				if(pow(creature_absolute_x(bgame->creatures[i])-projectile_absolute_x(pr),2)+
 				   pow(creature_absolute_y(bgame->creatures[i])-projectile_absolute_y(pr),2)<
-				   BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/4.0)
+				   BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/5.0)
 				{
-printf("They're close!\n");
 					bgame->creatures[i]->stun_count=bgame->creatures[i]->type->stun_delay;
 					if(bgame->creatures[i]->current_health<=pr->current_damage)
 					{
@@ -1039,7 +1038,26 @@ printf("They're close!\n");
 				}
 
 			/* player */
-/*UNFINISHED*/
+		for(i=0;i<bgame->campaign->num_players;i++)
+			if(bgame->players[i]->team!=pr->team)
+				/* The following line is TEMPORARY collision detection */
+				if(pow(creature_absolute_x(bgame->players[i])-projectile_absolute_x(pr),2)+
+				   pow(creature_absolute_y(bgame->players[i])-projectile_absolute_y(pr),2)<
+				   BLIPS_TILE_SIZE*BLIPS_TILE_SIZE/5.0)
+				{
+					bgame->players[i]->stun_count=bgame->players[i]->type->stun_delay;
+					if(bgame->players[i]->current_health<=pr->current_damage)
+					{
+						pr->current_damage-=bgame->players[i]->current_health;
+						bgame->players[i]->current_health=0;
+					}
+					else
+					{
+						bgame->players[i]->current_health-=pr->current_damage;
+						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+					}
+				}
+
 
 		return 0;
 	}
