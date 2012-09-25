@@ -1018,7 +1018,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 
 			/* non-player */
 		for(i=0;i<bgame->num_creatures;i++)
-			if(bgame->creatures[i]->team!=pr->team)
+			if(bgame->creatures[i]->team!=pr->team && bgame->creatures[i]->current_health>0)
 				/* The following line is TEMPORARY collision detection */
 				if(pow(creature_absolute_x(bgame->creatures[i])-projectile_absolute_x(pr),2)+
 				   pow(creature_absolute_y(bgame->creatures[i])-projectile_absolute_y(pr),2)<
@@ -1042,7 +1042,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 
 			/* player */
 		for(i=0;i<bgame->campaign->num_players;i++)
-			if(bgame->players[i]->team!=pr->team)
+			if(bgame->players[i]->team!=pr->team && bgame->players[i]->current_health>0)
 				/* The following line is TEMPORARY collision detection */
 				if(pow(creature_absolute_x(bgame->players[i])-projectile_absolute_x(pr),2)+
 				   pow(creature_absolute_y(bgame->players[i])-projectile_absolute_y(pr),2)<
