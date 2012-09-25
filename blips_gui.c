@@ -552,9 +552,15 @@ void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *sur
 	/* Get the appropriate animation frame */
 
 	if(br->time_remaining==-1)  /* is it breaking? */
-		source=sprite_animation_cycle(br_set->stand_animation);
+	{
+		source=br_set->stand_animation->frames[br->stand_animation_index];;
+		br->stand_animation_index=(br->stand_animation_index+1)%(br_set->stand_animation->num_frames);
+	}
 	else
-		source=sprite_animation_cycle(br_set->break_animation);
+	{
+		source=br_set->break_animation->frames[br->break_animation_index];
+		br->break_animation_index=(br->break_animation_index+1)%(br_set->break_animation->num_frames);
+	}
 
 	/* for brevity */
 	w=cairo_image_surface_get_width(source);
@@ -578,7 +584,8 @@ void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *s
 	int w,h;
 
 	/* Get animation frame */
-	source=sprite_animation_cycle(co_set->stand_animation);
+	source=co_set->stand_animation->frames[co->stand_animation_index];
+	co->stand_animation_index=(co->stand_animation_index+1)%(co_set->stand_animation->num_frames);
 
 	/* for brevity */
 	w=cairo_image_surface_get_width(source);
@@ -605,18 +612,33 @@ void blips_gui_render_creature(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surf
 	/* Get the appropriate animation frame */
 
 	if(creat->stun_count)  /* is it stunned? */
-		source=sprite_animation_cycle(cr_set->stun_animation);
+	{
+		source=cr_set->stun_animation->frames[creat->stun_animation_index];
+		creat->stun_animation_index=(creat->stun_animation_index+1)%(cr_set->stun_animation->num_frames);
+	}
 	else
 		if(creat->fire_cycle_state==-1)  /* is it firing? */
 			if(creat->current_move_speed)
-				source=sprite_animation_cycle(cr_set->walk_animation);
+			{
+				source=cr_set->walk_animation->frames[creat->walk_animation_index];
+				creat->walk_animation_index=(creat->walk_animation_index+1)%(cr_set->walk_animation->num_frames);
+			}
 			else
-				source=sprite_animation_cycle(cr_set->stand_animation);
+			{
+				source=cr_set->stand_animation->frames[creat->stand_animation_index];
+				creat->stand_animation_index=(creat->stand_animation_index+1)%(cr_set->stand_animation->num_frames);
+			}
 		else
 			if(creat->current_move_speed)
-				source=sprite_animation_cycle(cr_set->walk_and_fire_animation);
+			{
+				source=cr_set->walk_and_fire_animation->frames[creat->walk_and_fire_animation_index];
+				creat->walk_and_fire_animation_index=(creat->walk_and_fire_animation_index+1)%(cr_set->walk_and_fire_animation->num_frames);
+			}
 			else
-				source=sprite_animation_cycle(cr_set->fire_animation);
+			{
+				source=cr_set->fire_animation->frames[creat->fire_animation_index];
+				creat->fire_animation_index=(creat->fire_animation_index+1)%(cr_set->fire_animation->num_frames);
+			}
 
 	/* draw it to the appropriate place */
 
@@ -648,9 +670,15 @@ void blips_gui_render_projectile(blips_gui *bgui,cairo_t *cr,cairo_surface_t *su
 	/* Get the appropriate animation frame */
 
 	if(pr->current_damage<0)  /* is it impacting? */
-		source=sprite_animation_cycle(pr_set->impact_animation);
+	{
+		source=pr_set->impact_animation->frames[pr->impact_animation_index];
+		pr->impact_animation_index=(pr->impact_animation_index+1)%(pr_set->impact_animation->num_frames);
+	}
 	else
-		source=sprite_animation_cycle(pr_set->fly_animation);
+	{
+		source=pr_set->fly_animation->frames[pr->fly_animation_index];
+		pr->fly_animation_index=(pr->fly_animation_index+1)%(pr_set->fly_animation->num_frames);
+	}
 
 	/* draw it to the appropriate place */
 
