@@ -218,15 +218,22 @@ printf("Step G.\n");
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
 
 	for(i=0;i<bgame->num_projectiles;i++)
+{
+printf("About to reference number of projectiles.\n");
+printf("About to check projectile %d of %d for impact.\n",i,bgame->num_projectiles);
+printf("For kicks, extra line.\n");
 		if(blips_game_check_projectile_for_impact(bgame,bgame->projectiles[i]))
 		{
+printf("Removing projectile.\n");
 			/* We have permission to remove this projectile */
 			projectile_destroy(bgame->projectiles[i]);
 			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
 			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
 			bgame->num_projectiles--;
 			i--;
+printf("Removed.\n");
 		}
+}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
 printf("Step H.\n");
@@ -868,6 +875,9 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	pr->y_in_cell=cr->y_in_cell;
 	pr->orientation=cr->aim_orientation;
 	pr->team=cr->team;
+printf("Checking that newly created pr is working.\n");
+printf("Row,col, x,y, orientation, team, damage, fly_index, impact_index:\n");
+printf("%d,%d, %lf,%lf, %lf, %d, %d, %d, %d\n",pr->row,pr->col,pr->x_in_cell,pr->y_in_cell,pr->orientation,pr->team,pr->current_damage,pr->fly_animation_index,pr->impact_animation_index);
 
 	/* add it to the projectile list */
 	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
@@ -1027,7 +1037,7 @@ int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr)
 			return 1;
 
 				/* southwest */
-		if(bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row-1 &&
+		if(bgame->breakables[i]->col==cr->col-1 && bgame->breakables[i]->row==cr->row+1 &&
 		   pow(cr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-cr->y_in_cell,2)<margin*margin)
 			return 1;
 
@@ -1043,7 +1053,8 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 {
 	/* Returns nonzero iff this projectile has already impacted and is due for removal */
 	int i;
-printf("Current projectile is %d,%d.\n",pr->row,pr->col);
+printf("Current projectile is about to be referenced.\n");
+printf("Current projectile is at row/col %d,%d.\n",pr->row,pr->col);
 
 	if(pr->current_damage<0)  /* if it's already awaiting removal */
 	{
