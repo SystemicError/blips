@@ -149,6 +149,8 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 	char *str;
 	ai_type *ai_type_ptr;
 
+int j;
+
 	/*** Decrement creature stun counters ***/
 
 		/* non-player */
@@ -213,30 +215,18 @@ void blips_game_step(blips_game *bgame,blips_input_state **inputs)
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		blips_game_move_projectile(bgame,bgame->projectiles[i]);
-printf("Step G.\n");
 
 	/*** Handle any projectile/creature, projectile/barrier, projectile/breakable collisions ***/
 
 	for(i=0;i<bgame->num_projectiles;i++)
-{
-printf("About to reference number of projectiles.\n");
-printf("About to check projectile %d of %d for impact.\n",i,bgame->num_projectiles);
-printf("For kicks, extra line.\n");
 		if(blips_game_check_projectile_for_impact(bgame,bgame->projectiles[i]))
 		{
-printf("Removing projectile.\n");
 			/* We have permission to remove this projectile */
-			projectile_destroy(bgame->projectiles[i]);
-			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
-			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
-			bgame->num_projectiles--;
+			blips_game_remove_projectile_by_index(bgame,i);
 			i--;
-printf("Removed.\n");
 		}
-}
 
 	/*** Decrement time remaining of any breaking breakables, and remove ones that have broken */
-printf("Step H.\n");
 
 	for(i=0;i<bgame->num_breakables;i++)
 		if(bgame->breakables[i]->time_remaining>=0)
@@ -580,6 +570,16 @@ void blips_game_load_players(blips_game *bgame)
 	return;
 }
 
+void blips_game_remove_projectile_by_index(blips_game *bgame,int i)
+{
+	projectile_destroy(bgame->projectiles[i]);
+	bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
+	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
+	bgame->num_projectiles--;
+
+	return;
+}
+
 void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr)
 {
 	double distance_squared,candidate_distance_squared;
@@ -892,17 +892,13 @@ void blips_game_remove_projectiles_outside_boundaries(blips_game *bgame)
 	/*** This will remove projectiles that have thoroughly left the screen */
 
 	int i;
-
 	for(i=0;i<bgame->num_projectiles;i++)
 		if(bgame->projectiles[i]->col<-1 ||
 		   bgame->projectiles[i]->col>=BLIPS_TILE_COLS+1 ||
 		   bgame->projectiles[i]->row<-1 ||
 		   bgame->projectiles[i]->row>=BLIPS_TILE_ROWS+1)
 		{
-			projectile_destroy(bgame->projectiles[i]);
-			bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
-			bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
-			bgame->num_projectiles--;
+			blips_game_remove_projectile_by_index(bgame,i);
 			i--;
 		}
 
@@ -1053,8 +1049,6 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 {
 	/* Returns nonzero iff this projectile has already impacted and is due for removal */
 	int i;
-printf("Current projectile is about to be referenced.\n");
-printf("Current projectile is at row/col %d,%d.\n",pr->row,pr->col);
 
 	if(pr->current_damage<0)  /* if it's already awaiting removal */
 	{
@@ -1148,7 +1142,6 @@ printf("Current projectile is at row/col %d,%d.\n",pr->row,pr->col);
 	}
 
 	/* it's at current_damage==0, which means it's time to get rid of it */
-
 	return 1;
 }
 

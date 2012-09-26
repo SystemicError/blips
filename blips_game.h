@@ -142,6 +142,9 @@ void blips_game_load_object_types(blips_game *bgame);
 	/* load player creatures */
 void blips_game_load_players(blips_game *bgame);
 
+	/* remove projectile of this index */
+void blips_game_remove_projectile_by_index(blips_game *bgame,int i);
+
 	/* apply ai_type directives to given creature */
 void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
 

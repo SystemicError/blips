@@ -100,7 +100,7 @@ int maze_contains_wall(maze *m,int r,int c,int direction)
 		return 1;
 	if((direction==MAZE_WEST && c==0) || c<0)
 		return 1;
-	if((direction==MAZE_EAST && c==m->columns-1) || r>m->columns-1)
+	if((direction==MAZE_EAST && c==m->columns-1) || c>m->columns-1)
 		return 1;
 	return !(m->tiles[r*m->columns+c][direction]);
 }

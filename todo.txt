@@ -98,3 +98,5 @@
 
 
 -Figure out segfault?
+
+-Projectiles and creatures see a barrier at the edge of the world tile because the maze structur always returns one at the edge.  Fix?  Somehow?   We have the next world tile over available!  Use it to determine what can exit!
