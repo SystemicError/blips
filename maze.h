@@ -40,7 +40,7 @@ int maze_contains_wall(maze *m,int r,int c,int direction);
 
 int maze_partioned_by_wall(maze *m,int cell,int direction,int cell2,int direction2);
 
-void maze_get_opposing_link(int columns,int cell,int direction,int *cell2,int *direction2);
+void maze_get_opposing_link(maze *m,int cell,int direction,int *cell2,int *direction2);
 
 int maze_is_maximal(maze *m);
 

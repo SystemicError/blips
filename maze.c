@@ -30,10 +30,10 @@ printf("Created zero-dimensional maze.\n");
 	/* start with maximal linkage */
 	for(i=0;i<rows*columns;i++)
 	{
-		m->tiles[i][MAZE_NORTH]=(i>=columns);
-		m->tiles[i][MAZE_EAST]=((i+1)%columns!=0);
-		m->tiles[i][MAZE_SOUTH]=(i<rows*(columns-1));
-		m->tiles[i][MAZE_WEST]=(i%columns!=0);
+		m->tiles[i][MAZE_NORTH]=1;
+		m->tiles[i][MAZE_EAST]=1;
+		m->tiles[i][MAZE_SOUTH]=1;
+		m->tiles[i][MAZE_WEST]=1;
 	}
 	return m;
 }
@@ -51,7 +51,7 @@ void maze_generate(maze *m)
 			direction=rand()%4;
 		}while(!m->tiles[cell][direction]);
 			/* for convenience, record the other end of the link, too */
-		maze_get_opposing_link(m->columns,cell,direction,&cell2,&direction2);
+		maze_get_opposing_link(m,cell,direction,&cell2,&direction2);
 		/* will this partition the maze? */
 			/* if not, delete it */
 		if(!maze_partitioned_by_wall(m,cell,direction,cell2,direction2))
@@ -84,24 +84,25 @@ void maze_place_wall(maze *m,int r,int c,int direction)
 	int cell, cell2, direction2;
 	cell=r*m->columns+c;
 	m->tiles[cell][direction]=0;
-	maze_get_opposing_link(m->columns,cell,direction,&cell2,&direction2);
+	maze_get_opposing_link(m,cell,direction,&cell2,&direction2);
 
-	if(cell2<0 || cell2>=m->rows*m->columns)  /* opposing link could be outside maze */
+	if(direction2==-1)  /* opposing link could be outside maze */
 		return;
+
 	m->tiles[cell2][direction2]=0;
 	return;
 }
 
 int maze_contains_wall(maze *m,int r,int c,int direction)
 {
-	if((direction==MAZE_NORTH && r==0) || r<0)
-		return 1;
-	if((direction==MAZE_SOUTH && r==m->rows-1) || r>m->rows-1)
-		return 1;
-	if((direction==MAZE_WEST && c==0) || c<0)
-		return 1;
-	if((direction==MAZE_EAST && c==m->columns-1) || c>m->columns-1)
-		return 1;
+	if(r<0)
+		return maze_contains_wall(m,0,c,direction);
+	if(r>m->rows-1)
+		return maze_contains_wall(m,m->rows-1,c,direction);
+	if(c<0)
+		return maze_contains_wall(m,r,0,direction);
+	if(c>m->columns-1)
+		return maze_contains_wall(m,r,m->columns-1,direction);
 	return !(m->tiles[r*m->columns+c][direction]);
 }
 
@@ -144,25 +145,38 @@ int maze_partitioned_by_wall(maze *m,int cell,int direction,int cell2,int direct
 	return 0;
 }
 
-void maze_get_opposing_link(int columns,int cell,int direction,int *cell2,int *direction2)
+void maze_get_opposing_link(maze *m,int cell,int direction,int *cell2,int *direction2)
 {
+	/* sets direction2 to -1 if outside maze */
 	switch(direction)
 	{
 		case MAZE_NORTH:
-			*direction2=MAZE_SOUTH;
-			*cell2=cell-columns;
+			*cell2=cell-m->columns;
+			if(cell<m->columns)
+				*direction2=-1;
+			else
+				*direction2=MAZE_SOUTH;
 		break;
 		case MAZE_SOUTH:
-			*direction2=MAZE_NORTH;
-			*cell2=cell+columns;
+			*cell2=cell+m->columns;
+			if(cell>=m->columns*(m->rows-1))
+				*direction2=-1;
+			else
+				*direction2=MAZE_NORTH;
 		break;
 		case MAZE_EAST:
-			*direction2=MAZE_WEST;
 			*cell2=cell+1;
+			if(cell%m->columns==m->columns-1)
+				*direction2=-1;
+			else
+				*direction2=MAZE_WEST;
 		break;
 		case MAZE_WEST:
-			*direction2=MAZE_EAST;
 			*cell2=cell-1;
+			if(cell%m->columns==0)
+				*direction2=-1;
+			else
+				*direction2=MAZE_EAST;
 		break;
 	}
 	return;
@@ -175,7 +189,7 @@ int maze_is_maximal(maze *m)
 		for(j=0;j<4;j++)
 			if(m->tiles[i][j])
 			{
-				maze_get_opposing_link(m->columns,i,j,&k,&n);
+				maze_get_opposing_link(m,i,j,&k,&n);
 				if(!maze_partitioned_by_wall(m,i,j,k,n))
 					return 0;
 			}
@@ -203,7 +217,7 @@ int minimum_distance_between(maze *m,int start,int finish)
 				for(k=0;k<4;k++)
 					if(m->tiles[j][k])
 					{
-						maze_get_opposing_link(m->columns,j,k,&cell,&direction); /* direction not used */
+						maze_get_opposing_link(m,j,k,&cell,&direction); /* direction not used */
 						if(hits[cell]==-1)
 							hits[cell]=i+1;
 					}
