@@ -361,15 +361,17 @@ void blips_gui_load_background_images(blips_gui *bgui)
 	int i,j,updated,duplicate;
 	char *chtmp;
 	cairo_surface_t *surftmp;
+	world_tile *wt;
 
 	/* load bg images from game world tiles */
 
-	for(i=0;i<bgui->game->num_world_tiles;i++)
+	for(i=0;i<bgui->game->world_tile_map->size;i++)
 	{
-		if(strcmp(bgui->game->world_tiles[i]->background_image,"none"))
+		wt=(world_tile*)(bgui->game->world_tile_map->pointers[i]);
+		if(strcmp(wt->background_image,"none"))
 		{
 			for(j=0;j<bgui->background_map->size;j++)
-				if(!strcmp(bgui->game->world_tiles[i]->background_image,bgui->background_map->strings[j]))
+				if(!strcmp(wt->background_image,bgui->background_map->strings[j]))
 				{
 					/* This is a duplicate; skip it. */
 					j=bgui->background_map->size;
@@ -379,8 +381,8 @@ void blips_gui_load_background_images(blips_gui *bgui)
 			{
 				/* Something new!  Add it to both the image list and key list. */
 				string_map_add(bgui->background_map,
-					       bgui->game->world_tiles[i]->background_image,
-					       (void*)cairo_image_surface_create_from_png(bgui->game->world_tiles[i]->background_image));
+					       wt->background_image,
+					       (void*)cairo_image_surface_create_from_png(wt->background_image));
 			}
 		}
 	}

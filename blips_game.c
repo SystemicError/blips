@@ -10,8 +10,7 @@ blips_game* blips_game_create(void)
 
 	/*** World tiles ***/
 
-	bgame->world_tiles=0;
-	bgame->num_world_tiles=0;
+	bgame->world_tile_map=string_map_create();
 
 	/*** Instances of user-specified types ***/
 
@@ -60,10 +59,9 @@ void blips_game_destroy(blips_game *bgame)
 
 	/*** World Tiles ***/
 
-	for(i=0;i<bgame->num_world_tiles;i++)
-		world_tile_destroy(bgame->world_tiles[i]);
-	if(bgame->num_world_tiles)
-		free(bgame->world_tiles);
+	for(i=0;i<bgame->world_tile_map->size;i++)
+		world_tile_destroy((world_tile*)(bgame->world_tile_map->pointers[i]));
+	string_map_destroy(bgame->world_tile_map);
 
 	/*** Instances of user-specified types ***/
 
@@ -282,8 +280,10 @@ void blips_game_load_world_tiles(blips_game *bgame)
 	int i;
 	int updated;
 
+	world_tile *wt;
+
 printf("Loading world tiles . . .\n");
-	if(bgame->num_world_tiles)
+	if(bgame->world_tile_map->size)
 	{
 		fprintf(stderr,"Attempt to load world tile cache into already loaded game!\n");
 		exit(1);
@@ -292,21 +292,23 @@ printf("Loading world tiles . . .\n");
 printf("Adding first world tile . . .\n");
 	blips_game_add_world_tile(bgame,bgame->campaign->starting_world_tile_path);
 printf("First world tile added.\n");
-	bgame->active_world_tile=bgame->world_tiles[0];
 
 	/* Terribly inefficient, I know.  We only do this once.  */
 	do
 	{
 		updated=0;
-		for(i=0;i<bgame->num_world_tiles;i++)
+		for(i=0;i<bgame->world_tile_map->size;i++)
 		{
-			if((strcmp("none",bgame->world_tiles[i]->north_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->north_tile)) ||
-			   (strcmp("none",bgame->world_tiles[i]->east_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->east_tile)) ||
-			   (strcmp("none",bgame->world_tiles[i]->south_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->south_tile)) ||
-			   (strcmp("none",bgame->world_tiles[i]->west_tile) && blips_game_add_world_tile(bgame,bgame->world_tiles[i]->west_tile)))
+			wt=(world_tile*)(bgame->world_tile_map->pointers[i]);
+			if((strcmp("none",wt->north_tile) && blips_game_add_world_tile(bgame,wt->north_tile)) ||
+			   (strcmp("none",wt->east_tile) && blips_game_add_world_tile(bgame,wt->east_tile)) ||
+			   (strcmp("none",wt->south_tile) && blips_game_add_world_tile(bgame,wt->south_tile)) ||
+			   (strcmp("none",wt->west_tile) && blips_game_add_world_tile(bgame,wt->west_tile)))
 			updated=1;
 		}
 	}while(updated);
+
+	string_map_string_to_pointer(bgame->world_tile_map,bgame->campaign->starting_world_tile_path,(void**)&(bgame->active_world_tile));
 
 	return;
 }
@@ -317,16 +319,18 @@ int blips_game_add_world_tile(blips_game *bgame,char *path)
 	 *** non-zero if added, zero if a rejected duplicate.  */
 
 	int i;
+	void *ptr;
 
 	/* scan for duplication */
-	for(i=0;i<bgame->num_world_tiles;i++)
-		if(!strcmp(bgame->world_tiles[i]->path,path))
-			return 0;
+	string_map_string_to_pointer(bgame->world_tile_map,path,&ptr);
 
+	if(!ptr && bgame->world_tile_map->size)
+{
+printf("Rejecting %s; duplicate.\n",path);
+		return 0;
+}
 
-	bgame->world_tiles=(world_tile**)realloc(bgame->world_tiles,sizeof(world_tile*)*bgame->num_world_tiles+1);
-	bgame->world_tiles[bgame->num_world_tiles]=world_tile_create(path);
-	bgame->num_world_tiles++;
+	string_map_add(bgame->world_tile_map,path,(void*)world_tile_create(path));
 	return 1;
 }
 
