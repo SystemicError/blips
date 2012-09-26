@@ -13,4 +13,13 @@ Number of Players:
 	Player 0 Type File:
 example_campaign/stats/creature_types/example_0.creature
 Comments:
+
+
+	Player 1 Starting Row:
+1
+	Player 1 Starting Column:
+1
+	Player 1 Type File:
+example_campaign/stats/creature_types/example_0.creature
+Comments:
 Indented Player headers would repeat if num players>1.

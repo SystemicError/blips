@@ -261,6 +261,11 @@ int j;
 	/*** Check if any player has died ***/
 /*UNFINISHED*/
 
+	/*** Check if all players are trying to leave the tile for the same direction ***/
+	i=blips_game_players_leaving_world_tile(bgame);
+	if(i!=-1)
+		blips_game_change_active_world_tile(bgame,i);
+
 	return;
 }
 
@@ -292,7 +297,6 @@ printf("First world tile added.\n");
 	/* Terribly inefficient, I know.  We only do this once.  */
 	do
 	{
-printf("Entering loop.\n");
 		updated=0;
 		for(i=0;i<bgame->num_world_tiles;i++)
 		{
@@ -303,7 +307,6 @@ printf("Entering loop.\n");
 			updated=1;
 		}
 	}while(updated);
-printf("Left loop.\n");
 
 	return;
 }
@@ -314,8 +317,6 @@ int blips_game_add_world_tile(blips_game *bgame,char *path)
 	 *** non-zero if added, zero if a rejected duplicate.  */
 
 	int i;
-
-printf("Got request to add world tile of path:  %s.\n",path);
 
 	/* scan for duplication */
 	for(i=0;i<bgame->num_world_tiles;i++)
@@ -422,6 +423,74 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 			}
 		}
 
+	return;
+}
+
+int blips_game_players_leaving_world_tile(blips_game *bgame)
+{
+	/*** This function checks if all players are trying to leave the tile
+	 *** at a location where no barrier blocks them and in a direction
+	 *** that leads to another tile. */
+	int i;
+	int north,east,south,west;
+	double tolerance;
+
+	/* how small can the dot product of the orientation and coordinate
+	 * vectors be while still indicating a desire to change tile? */
+	tolerance=.9;
+
+	north=east=south=west=1;
+
+	/* First, let's make sure that everyone is at the edge of the screen. */
+	/* Also eliminate candidate directions everyone could be going. */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(bgame->players[i]->fire_cycle_state!=-1 ||
+		   (bgame->players[i]->row>0 && bgame->players[i]->row<BLIPS_TILE_ROWS-1 &&
+		    bgame->players[i]->col>0 && bgame->players[i]->col<BLIPS_TILE_COLS-1))
+			return -1;
+		else
+		{
+			/* record what side they're on and their orientation */
+			if(bgame->players[i]->row!=0 ||
+			   -sin(bgame->players[i]->aim_orientation)<tolerance)
+				north=0;
+
+			if(bgame->players[i]->col!=BLIPS_TILE_COLS-1 ||
+			   cos(bgame->players[i]->aim_orientation)<tolerance)
+				east=0;
+
+			if(bgame->players[i]->row!=BLIPS_TILE_ROWS-1 ||
+			   sin(bgame->players[i]->aim_orientation)<tolerance)
+				south=0;
+
+			if(bgame->players[i]->col!=0 ||
+			   -cos(bgame->players[i]->aim_orientation)<tolerance)
+				west=0;
+		}
+
+	/* If no one edge is agreed upon, return no direction */
+	if(!(north || east || south || west))
+		return -1;
+
+	if(north)
+		return MAZE_NORTH;
+	if(east)
+		return MAZE_EAST;
+	if(south)
+		return MAZE_SOUTH;
+	if(west)
+		return MAZE_SOUTH;
+
+	/* should never be reached */
+
+	fprintf(stderr,"Control flow error in blips_game_players_leaving_world_tile()!\n");
+	exit(1);
+
+	return -1;
+}
+
+void blips_game_change_active_world_tile(blips_game *bgame,int direction)
+{
 	return;
 }
 

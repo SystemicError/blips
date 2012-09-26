@@ -135,6 +135,10 @@ int blips_game_add_world_tile(blips_game *bgame,char *path);
 void blips_game_despawn(blips_game *bgame);
 	/* spawn objects which follow spawn_trigger trigger from active tile */
 void blips_game_spawn(blips_game *bgame,spawn_trigger trigger);
+	/* what direction, if any, are players trying to go? */
+int blips_game_players_leaving_world_tile(blips_game *bgame);
+	/* change to a new tile */
+void blips_game_change_active_world_tile(blips_game *bgame,int direction);
 
 	/* load object key specified by campaign */
 void blips_game_load_object_types(blips_game *bgame);
