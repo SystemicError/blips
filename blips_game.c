@@ -433,6 +433,7 @@ int blips_game_players_leaving_world_tile(blips_game *bgame)
 	 *** that leads to another tile. */
 	int i;
 	int north,east,south,west;
+	int direction;
 	double tolerance;
 
 	/* how small can the dot product of the orientation and coordinate
@@ -472,21 +473,26 @@ int blips_game_players_leaving_world_tile(blips_game *bgame)
 	if(!(north || east || south || west))
 		return -1;
 
+	/* Okay, now everyone is facing the right direction, in the right place,
+	 * and holding fire.  But is there a barrier in the way? */
+
 	if(north)
-		return MAZE_NORTH;
+		direction=MAZE_NORTH;
 	if(east)
-		return MAZE_EAST;
+		direction=MAZE_EAST;
 	if(south)
-		return MAZE_SOUTH;
+		direction=MAZE_SOUTH;
 	if(west)
-		return MAZE_SOUTH;
+		direction=MAZE_WEST;
 
-	/* should never be reached */
-
-	fprintf(stderr,"Control flow error in blips_game_players_leaving_world_tile()!\n");
-	exit(1);
-
-	return -1;
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(maze_contains_wall(bgame->active_world_tile->creature_barriers,
+				      bgame->players[i]->row,
+				      bgame->players[i]->col,
+				      direction))
+			return -1;
+printf("Agreed on direction %d.\n",direction);
+	return direction;
 }
 
 void blips_game_change_active_world_tile(blips_game *bgame,int direction)
