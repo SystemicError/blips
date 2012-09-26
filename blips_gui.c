@@ -714,6 +714,24 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 
 	deadzone=10;  /* How small joystick input has to be to be ignored */
 
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+	{
+		/* move and speed */
+		joy_x=SDL_JoystickGetAxis(bgui->joys[i],0);
+		joy_y=SDL_JoystickGetAxis(bgui->joys[i],1);
+
+		inputs[i]->move_angle=atan2(joy_y,joy_x);
+		inputs[i]->speed=sqrt(joy_x*joy_x+joy_y*joy_y)/32768.0;
+
+		/* aim */
+		joy_x=SDL_JoystickGetAxis(bgui->joys[i],3);
+		joy_y=SDL_JoystickGetAxis(bgui->joys[i],2);
+
+		if(joy_x*joy_x+joy_y*joy_y>deadzone*deadzone)
+			inputs[i]->aim_angle=atan2(joy_y,joy_x);
+
+	}
+
 	/* modify button/joystick states as necessary */
 	switch(event->type)
 	{
@@ -721,28 +739,14 @@ int blips_gui_fetch_inputs(blips_gui *bgui,SDL_Event *event,blips_input_state **
 			return 1;
 		break;
 		case SDL_JOYBUTTONDOWN:
-			inputs[0]->firing=1;
+			if(event->jbutton.which<bgui->game->campaign->num_players)
+				inputs[event->jbutton.which]->firing=1;
 		break;
 		case SDL_JOYBUTTONUP:
-			inputs[0]->firing=0;
+			if(event->jbutton.which<bgui->game->campaign->num_players)
+				inputs[event->jbutton.which]->firing=0;
 		break;
 	}
-
-	/* TEMPORARY -- assumes only one player.  All of this function will need to be text-configurable. */
-
-		/* move and speed */
-	joy_x=SDL_JoystickGetAxis(bgui->joys[0],0);
-	joy_y=SDL_JoystickGetAxis(bgui->joys[0],1);
-
-	inputs[0]->move_angle=atan2(joy_y,joy_x);
-	inputs[0]->speed=sqrt(joy_x*joy_x+joy_y*joy_y)/32768.0;
-
-		/* aim */
-	joy_x=SDL_JoystickGetAxis(bgui->joys[0],3);
-	joy_y=SDL_JoystickGetAxis(bgui->joys[0],2);
-
-	if(joy_x*joy_x+joy_y*joy_y>deadzone*deadzone)
-		inputs[0]->aim_angle=atan2(joy_y,joy_x);
 
 	return 0;
 }

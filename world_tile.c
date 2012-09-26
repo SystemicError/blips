@@ -35,9 +35,7 @@ printf("Reading object map.\n");
 printf("Reading Cr Barrier map.\n");
 
 	wt->creature_barriers=maze_create(BLIPS_TILE_ROWS,BLIPS_TILE_COLS);
-printf("Created maze.\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-printf("Comment line:  %s.\n",buffer);
 	world_tile_parse_barriers(fp,wt->creature_barriers);
 
 	/*** Projectile Barrier Map ***/
@@ -45,7 +43,6 @@ printf("Reading Pr Barrier map.\n");
 
 	wt->projectile_barriers=maze_create(BLIPS_TILE_ROWS,BLIPS_TILE_COLS);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-printf("Comment line:  %s.\n",buffer);
 	world_tile_parse_barriers(fp,wt->projectile_barriers);
 
 	/*** Image Map ***/

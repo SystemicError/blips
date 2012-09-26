@@ -252,7 +252,6 @@ int j;
 		if(bgame->creatures[i]->current_health==0 &&
 		   bgame->creatures[i]->stun_count==0)
 		{
-printf("Removing dead creature.\n");
 			creature_destroy(bgame->creatures[i]);
 			bgame->creatures[i]=bgame->creatures[bgame->num_creatures-1];
 			bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1));
@@ -875,9 +874,6 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	pr->y_in_cell=cr->y_in_cell;
 	pr->orientation=cr->aim_orientation;
 	pr->team=cr->team;
-printf("Checking that newly created pr is working.\n");
-printf("Row,col, x,y, orientation, team, damage, fly_index, impact_index:\n");
-printf("%d,%d, %lf,%lf, %lf, %d, %d, %d, %d\n",pr->row,pr->col,pr->x_in_cell,pr->y_in_cell,pr->orientation,pr->team,pr->current_damage,pr->fly_animation_index,pr->impact_animation_index);
 
 	/* add it to the projectile list */
 	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));

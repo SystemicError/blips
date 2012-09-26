@@ -42,6 +42,12 @@
 	+barriers
 	+breakables
 +Figure out why AI occasionally runs from creature rather than projectile.  (DODGE was calculating with wrong vector).
++Figure out segfault?  Maze out-of-bounds problem!  Thanks, gdb!
++Projectiles and creatures see a barrier at the edge of the world tile because the maze structure always returns one at the edge.  Fix?  Somehow?   We have the next world tile over available!  Use it to determine what can exit!
+	+No, simpler than that.  Just remove code that has maze always return edge as barrier.  But have to replace with call that keeps track of nearest edge is a barrier.
+
+
+
 
 
 
@@ -60,13 +66,9 @@
 
 -Consider a blips_input_reader which is configured by a text file.
 
-
-
 -Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
 
 -Collision control.  Also done with fptrs.
-
-
 
 -Write blips_game_apply_ai_type_to_creature()
 	-move_goal
@@ -79,13 +81,6 @@
 
 -Consider having creature team specified in creature_type file, not defaulted to player/non-player.
 
-
-
-
-
-
-
-
 -Add code to check for collectible/player collisions
 
 -Add status bar code.
@@ -95,8 +90,7 @@
 -Decide how to react to player death.
 
 -Decide how to trigger world tile change when two or more players present.
+	-Check at END of game_step() that all players are on the same side, facing the side (+/- some tolerance), and firing
+	-Call change_tile(), which calls despawn/spawn.
 
-
--Figure out segfault?
-
--Projectiles and creatures see a barrier at the edge of the world tile because the maze structur always returns one at the edge.  Fix?  Somehow?   We have the next world tile over available!  Use it to determine what can exit!
+-For now, give control scheme as 1st player, 1st joystick, 2nd joystick, 2nd player
