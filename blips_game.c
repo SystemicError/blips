@@ -499,9 +499,18 @@ int blips_game_players_leaving_world_tile(blips_game *bgame)
 			return -1;
 
 	/* Make sure there actually is a world tile in that direction */
-/*UNFINISHED*/
+
+	if(!strcmp(bgame->active_world_tile->north_tile,"none") && north)
+		return -1;
+	if(!strcmp(bgame->active_world_tile->east_tile,"none") && east)
+		return -1;
+	if(!strcmp(bgame->active_world_tile->south_tile,"none") && south)
+		return -1;
+	if(!strcmp(bgame->active_world_tile->west_tile,"none") && west)
+		return -1;
 
 	/* Finally, check if they're actually bumping up against the edge. */
+
 	for(i=0;i<bgame->campaign->num_players;i++)
 		if(!blips_game_move_creature(bgame,bgame->players[i]))
 			return -1;
@@ -547,7 +556,8 @@ void blips_game_change_active_world_tile(blips_game *bgame,int direction)
 /*UNFINISHED*/
 
 	/* add new objects */
-	//blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
+	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
+
 	return;
 }
 

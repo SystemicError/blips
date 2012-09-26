@@ -84,6 +84,8 @@ typedef struct blips_game
 {
 	world_tile **world_tiles;
 	int num_world_tiles;
+	/* world tiles keyed to their paths */
+	//world_til
 
 //	ai **ais;
 	int num_ais;

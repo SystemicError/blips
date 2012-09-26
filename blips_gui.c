@@ -396,6 +396,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 	cairo_surface_t *surface;
 	SDL_Surface *next_screen;
 
+printf("Call to Render.\n");
 	next_screen=SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,
 					 bgui->screen->w,
 					 bgui->screen->h,
@@ -405,6 +406,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 					 0x000000FF,
 					 0);
 
+printf("Locking.\n");
 	if(SDL_MUSTLOCK(next_screen))
 		if(SDL_LockSurface(next_screen)<0)
 		{
@@ -412,6 +414,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 			exit(1);
 		}
 
+printf("Surface create.\n");
 	surface=cairo_image_surface_create_for_data((unsigned char*)(next_screen->pixels),
 						    CAIRO_FORMAT_RGB24,
 						    next_screen->w,
