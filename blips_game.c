@@ -681,11 +681,11 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 			{
 				/* if the cross product of the pr's vel and
 				 * the vector from pr to cr has positive z,
-				 * then we should ADD M_PI/2 from orientation */
+				 * then we should SUBTRACT M_PI/2 from orientation */
 
 				/* compute cross product's z */
-				if(cos(enemy_pr->orientation)*(cr_abs_y-enemy_cr_abs_y)-
-				   sin(enemy_pr->orientation)*(cr_abs_x-enemy_cr_abs_x)>0)
+				if(cos(enemy_pr->orientation)*(enemy_pr_abs_y-cr_abs_y)-
+				   sin(enemy_pr->orientation)*(enemy_pr_abs_x-cr_abs_x)<0)
 					cr->move_orientation=enemy_pr->orientation+M_PI/2.0;
 				else
 					cr->move_orientation=enemy_pr->orientation-M_PI/2.0;
