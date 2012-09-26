@@ -339,19 +339,25 @@ void blips_game_despawn(blips_game *bgame)
 		breakable_destroy(bgame->breakables[i]);
 	if(bgame->num_breakables)
 		free(bgame->breakables);
+	bgame->num_breakables=0;
+
 	for(i=0;i<bgame->num_collectibles;i++)
 		collectible_destroy(bgame->collectibles[i]);
 	if(bgame->num_collectibles)
 		free(bgame->collectibles);
+	bgame->num_collectibles=0;
+
 	for(i=0;i<bgame->num_creatures;i++)
 		creature_destroy(bgame->creatures[i]);
 	if(bgame->num_creatures)
 		free(bgame->creatures);
+	bgame->num_creatures=0;
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		projectile_destroy(bgame->projectiles[i]);
 	if(bgame->num_projectiles)
 		free(bgame->projectiles);
+	bgame->num_projectiles=0;
 
 	return;
 }
@@ -473,7 +479,7 @@ int blips_game_players_leaving_world_tile(blips_game *bgame)
 	if(!(north || east || south || west))
 		return -1;
 
-	/* Okay, now everyone is facing the right direction, in the right place,
+	/* Okay, now everyone is facing the right direction, in the right cell,
 	 * and holding fire.  But is there a barrier in the way? */
 
 	if(north)
@@ -491,12 +497,57 @@ int blips_game_players_leaving_world_tile(blips_game *bgame)
 				      bgame->players[i]->col,
 				      direction))
 			return -1;
+
+	/* Make sure there actually is a world tile in that direction */
+/*UNFINISHED*/
+
+	/* Finally, check if they're actually bumping up against the edge. */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		if(!blips_game_move_creature(bgame,bgame->players[i]))
+			return -1;
+
 printf("Agreed on direction %d.\n",direction);
 	return direction;
 }
 
 void blips_game_change_active_world_tile(blips_game *bgame,int direction)
 {
+	/*** This function is called when the game has detected that all players
+	 *** are leaving one tile for the next in the direction given.
+	 *** It must remove current objects and add the correct new ones. */
+
+	int i;
+
+	/* get rid of old objects */
+	blips_game_despawn(bgame);
+
+	/* place players in the correct position on new screen */
+	for(i=0;i<bgame->campaign->num_players;i++)
+		switch(direction)
+		{
+			case MAZE_NORTH:
+				bgame->players[i]->row=BLIPS_TILE_ROWS-1;
+				bgame->players[i]->y_in_cell=BLIPS_TILE_SIZE-bgame->players[i]->y_in_cell;
+			break;
+			case MAZE_EAST:
+				bgame->players[i]->col=0;
+				bgame->players[i]->x_in_cell=BLIPS_TILE_SIZE-bgame->players[i]->x_in_cell;
+			break;
+			case MAZE_SOUTH:
+				bgame->players[i]->row=0;
+				bgame->players[i]->y_in_cell=BLIPS_TILE_SIZE-bgame->players[i]->y_in_cell;
+			break;
+			case MAZE_WEST:
+				bgame->players[i]->col=BLIPS_TILE_COLS-1;
+				bgame->players[i]->x_in_cell=BLIPS_TILE_SIZE-bgame->players[i]->x_in_cell;
+			break;
+		}
+
+	/* change active world tile */
+/*UNFINISHED*/
+
+	/* add new objects */
+	//blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
 	return;
 }
 
@@ -821,8 +872,12 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 	return;
 }
 
-void blips_game_move_creature(blips_game *bgame,creature *cr)
+int blips_game_move_creature(blips_game *bgame,creature *cr)
 {
+	/*** Moves creature according to its orientation, speed.  If
+	 *** doing so would cause a collision, it undoes it and returns
+	 *** non-zero. */
+
 	double delta_x,delta_y;
 	int i;
 	int old_row,old_col;
@@ -879,9 +934,10 @@ void blips_game_move_creature(blips_game *bgame,creature *cr)
 		cr->row=old_row;
 		cr->x_in_cell=old_x;
 		cr->y_in_cell=old_y;
+		return 1;
 	}
 
-	return;
+	return 0;
 }
 
 void blips_game_move_projectile(blips_game *bgame,projectile *pr)

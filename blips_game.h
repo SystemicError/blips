@@ -153,7 +153,7 @@ void blips_game_remove_projectile_by_index(blips_game *bgame,int i);
 void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr,creature *cr);
 
 	/* change object location based on speed, orientation */
-void blips_game_move_creature(blips_game *bgame,creature *cr);
+int blips_game_move_creature(blips_game *bgame,creature *cr);
 void blips_game_move_projectile(blips_game *bgame,projectile *pr);
 
 	/* spawn the appropriate projectile from creature */
