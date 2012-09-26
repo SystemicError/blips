@@ -1143,16 +1143,46 @@ printf("Current projectile is %d,%d.\n",pr->row,pr->col);
 
 int blips_game_projectile_intersects_barriers(blips_game *bgame,projectile *pr)
 {
-/* UNFINISHED -- this doesn't solve approach from a diagonal */
+	double margin;
+
+	margin=.1*BLIPS_TILE_SIZE;
+
 	if((maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_NORTH) &&
-	    pr->y_in_cell<BLIPS_TILE_SIZE*.1) ||
+	    pr->y_in_cell<margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_EAST) &&
-	    pr->x_in_cell>BLIPS_TILE_SIZE*.9) ||
+	    pr->x_in_cell>BLIPS_TILE_SIZE-margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_SOUTH) &&
-	    pr->y_in_cell>BLIPS_TILE_SIZE*.9) ||
+	    pr->y_in_cell>BLIPS_TILE_SIZE-margin) ||
 	   (maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col,MAZE_WEST) &&
-	    pr->x_in_cell<BLIPS_TILE_SIZE*.1))
+	    pr->x_in_cell<margin))
 		return 1;
+
+	/* corners */
+
+		/* northeast */
+	if(maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col+1,MAZE_NORTH) &&
+	   maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row-1,pr->col,MAZE_EAST) &&
+	   pow(BLIPS_TILE_SIZE-pr->x_in_cell,2)+pow(pr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* southeast */
+	if(maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col+1,MAZE_SOUTH) &&
+	   maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row+1,pr->col,MAZE_EAST) &&
+	   pow(BLIPS_TILE_SIZE-pr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-pr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* southwest */
+	if(maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col-1,MAZE_SOUTH) &&
+	   maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row+1,pr->col,MAZE_WEST) &&
+	   pow(pr->x_in_cell,2)+pow(BLIPS_TILE_SIZE-pr->y_in_cell,2)<margin*margin)
+		return 1;
+
+		/* northeast */
+	if(maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row,pr->col-1,MAZE_NORTH) &&
+	   maze_contains_wall(bgame->active_world_tile->projectile_barriers,pr->row-1,pr->col,MAZE_WEST) &&
+	   pow(pr->x_in_cell,2)+pow(pr->y_in_cell,2)<margin*margin)
+		return 1;
+
 	return 0;
 }
 
