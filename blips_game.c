@@ -915,13 +915,13 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 
 	/* move goal affects creature's facing direction and speed */
 
-	cr->current_move_speed=cr->type->move_speed;
-
 	switch(ai_type_ptr->move_goal)
 	{
 		case AI_DODGE:
 			if(enemy_pr)
 			{
+				cr->current_move_speed=cr->type->move_speed;
+
 				/* if the cross product of the pr's vel and
 				 * the vector from pr to cr has positive z,
 				 * then we should SUBTRACT M_PI/2 from orientation */
@@ -939,12 +939,37 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 		case AI_FLEE:
 		break;
 		case AI_CLOSE:
+			if(enemy_pr)
+			{
+				cr->current_move_speed=cr->type->move_speed;
+				cr->move_orientation=atan2(enemy_cr_abs_y-cr_abs_y,
+							   enemy_cr_abs_x-cr_abs_x);
+			}
+			else
+				cr->current_move_speed=0;
 		break;
 		case AI_WANDER:
+			if(cr->current_move_speed==0)
+			{
+				cr->current_move_speed=cr->type->move_speed;
+				cr->move_orientation=((double)rand())/RAND_MAX*2.0*M_PI;
+			}
+			else
+				cr->current_move_speed--;
 		break;
 		case AI_PATROL_NS:
+			if(cos(cr->move_orientation))
+				cr->move_orientation=M_PI/2.0;
+			cr->current_move_speed=cr->type->move_speed/2;
+			if(blips_game_move_creature(bgame,cr))
+				cr->move_orientation+=M_PI;
 		break;
 		case AI_PATROL_EW:
+			if(sin(cr->move_orientation))
+				cr->move_orientation=M_PI;
+			cr->current_move_speed=cr->type->move_speed/2;
+			if(blips_game_move_creature(bgame,cr))
+				cr->move_orientation+=M_PI;
 		break;
 	}
 
@@ -1303,7 +1328,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 
 		if(blips_game_projectile_intersects_barriers(bgame,pr))
 		{
-			pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+			pr->current_damage=-pr->type->despawn_delay;
 			return 0;
 		}
 
@@ -1314,7 +1339,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 			if(pr->col==bgame->breakables[i]->col && pr->row==bgame->breakables[i]->row && bgame->breakables[i]->time_remaining==-1)  /*TEMPORARY*/
 			{
 				if(bgame->breakables[i]->type->toughness<=pr->current_damage)
-					bgame->breakables[i]->time_remaining=5;  /* TEMPORARY --should call bgui fptr */
+					bgame->breakables[i]->time_remaining=bgame->breakables[i]->type->despawn_delay;
 
 				/* decrement the pr's current damage */
 				pr->current_damage-=bgame->breakables[i]->type->toughness;
@@ -1324,7 +1349,7 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 
 		if(pr->current_damage<=0)
 		{
-			pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+			pr->current_damage=-pr->type->despawn_delay;
 			return 0;
 		}
 
@@ -1345,12 +1370,12 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 						pr->current_damage-=bgame->creatures[i]->current_health;
 						bgame->creatures[i]->current_health=0;
 						if(pr->current_damage<=0)
-							pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+							pr->current_damage=-pr->type->despawn_delay;
 					}
 					else
 					{
 						bgame->creatures[i]->current_health-=pr->current_damage;
-						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+						pr->current_damage=-pr->type->despawn_delay;
 					}
 					return 0;
 				}
@@ -1369,12 +1394,12 @@ int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr)
 						pr->current_damage-=bgame->players[i]->current_health;
 						bgame->players[i]->current_health=0;
 						if(pr->current_damage<=0)
-							pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+							pr->current_damage=-pr->type->despawn_delay;
 					}
 					else
 					{
 						bgame->players[i]->current_health-=pr->current_damage;
-						pr->current_damage=-5;  /*TEMPORARY -- should be determined by ptr to gui-supplied function  of pr type */
+						pr->current_damage=-pr->type->despawn_delay;
 					}
 					return 0;
 				}
