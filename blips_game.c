@@ -617,7 +617,9 @@ printf("Loading breakable types . . .\n");
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
-		fscanf(fp,"=%s\n",buffer);
+		fgetc(fp);  /* the '=' symbol */
+		fgets(buffer,BUFFER_SIZE,fp);
+		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 		string_map_add(bgame->br_types_map,
 				string,
 				(void*)breakable_type_create(buffer));
@@ -635,7 +637,9 @@ printf("Loading collectible types . . .\n");
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
-		fscanf(fp,"=%s\n",buffer);
+		fgetc(fp);  /* the '=' symbol */
+		fgets(buffer,BUFFER_SIZE,fp);
+		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 		string_map_add(bgame->co_types_map,
 				string,
 				(void*)collectible_type_create(buffer));
@@ -653,7 +657,9 @@ printf("Loading creature types . . .\n");
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
-		fscanf(fp,"=%s\n",buffer);
+		fgetc(fp);  /* the '=' symbol */
+		fgets(buffer,BUFFER_SIZE,fp);
+		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 		string_map_add(bgame->cr_types_map,
 				string,
 				(void*)creature_type_create(buffer));

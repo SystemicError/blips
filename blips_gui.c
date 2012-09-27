@@ -208,7 +208,9 @@ void blips_gui_fill_cache(blips_gui *bgui)
 		chs[0]=fgetc(fp);
 		chs[1]=fgetc(fp);
 		chs[2]=0;  /* null terminator */
-		fscanf(fp,"=%s\n",path);
+		fgetc(fp);  /* the '=' symbol */
+		fgets(path,BUFFER_SIZE,fp);
+		path[strlen(path)-1]=0;  /* replace endline with null terminator */
 printf("Reading tile: %s.\n",path);
 		surface=cairo_image_surface_create_from_png(path);
 
@@ -398,6 +400,9 @@ void blips_gui_render_screen(blips_gui *bgui)
 	cairo_surface_t *surface;
 	SDL_Surface *next_screen;
 
+if(!strcmp(bgui->game->active_world_tile->path,"example_campaign/world_tiles/example_0x1.world_tile"))
+return;
+
 printf("Call to Render.\n");
 	next_screen=SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,
 					 bgui->screen->w,
@@ -408,7 +413,6 @@ printf("Call to Render.\n");
 					 0x000000FF,
 					 0);
 
-printf("Locking.\n");
 	if(SDL_MUSTLOCK(next_screen))
 		if(SDL_LockSurface(next_screen)<0)
 		{
@@ -416,7 +420,6 @@ printf("Locking.\n");
 			exit(1);
 		}
 
-printf("Surface create.\n");
 	surface=cairo_image_surface_create_for_data((unsigned char*)(next_screen->pixels),
 						    CAIRO_FORMAT_RGB24,
 						    next_screen->w,
