@@ -237,7 +237,7 @@ int j;
 				/* We have permission to remove this breakable */
 				breakable_destroy(bgame->breakables[i]);
 				bgame->breakables[i]=bgame->breakables[bgame->num_breakables-1];
-				if(!(bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables-1))))
+				if(!(bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables-1))) && bgame->num_breakables>1)
 				{
 					fprintf(stderr,"Couldn't realloc bgame->breakables.\n");
 					exit(1);
@@ -260,7 +260,7 @@ int j;
 		{
 			creature_destroy(bgame->creatures[i]);
 			bgame->creatures[i]=bgame->creatures[bgame->num_creatures-1];
-			if(!(bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1))))
+			if(!(bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1))) && bgame->num_creatures>1)
 			{
 				fprintf(stderr,"Couldn't realloc bgame->creatures.\n");
 				exit(1);
@@ -787,7 +787,7 @@ void blips_game_remove_projectile_by_index(blips_game *bgame,int i)
 {
 	projectile_destroy(bgame->projectiles[i]);
 	bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
-	if(!(bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1))))
+	if(!(bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1))) && bgame->num_projectiles>1)
 	{
 		fprintf(stderr,"Couldn't realloc bgame->projectiles.\n");
 		exit(1);
