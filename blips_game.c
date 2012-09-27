@@ -242,6 +242,11 @@ int j;
 					fprintf(stderr,"Couldn't realloc bgame->breakables.\n");
 					exit(1);
 				}
+				if(bgame->breakables && bgame->num_breakables==0)
+				{
+					fprintf(stderr,"bgame->breakables is non-NULL while bgame->breakables==0.\n");
+					exit(1);
+				}
 				bgame->num_breakables--;
 				i--;
 			}
@@ -263,6 +268,11 @@ int j;
 			if(!(bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1))) && bgame->num_creatures>1)
 			{
 				fprintf(stderr,"Couldn't realloc bgame->creatures.\n");
+				exit(1);
+			}
+			if(bgame->creatures && bgame->num_creatures==0)
+			{
+				fprintf(stderr,"bgame->creatures is non-NULL while bgame->creatures==0.\n");
 				exit(1);
 			}
 			bgame->num_creatures--;
@@ -355,24 +365,29 @@ void blips_game_despawn(blips_game *bgame)
 		breakable_destroy(bgame->breakables[i]);
 	if(bgame->num_breakables)
 		free(bgame->breakables);
+	bgame->breakables=0;
 	bgame->num_breakables=0;
 
 	for(i=0;i<bgame->num_collectibles;i++)
 		collectible_destroy(bgame->collectibles[i]);
 	if(bgame->num_collectibles)
 		free(bgame->collectibles);
+	bgame->collectibles=0;
 	bgame->num_collectibles=0;
+printf("Despawned collectibles.  Address %d, count %d.\n",bgame->collectibles,bgame->num_collectibles);
 
 	for(i=0;i<bgame->num_creatures;i++)
 		creature_destroy(bgame->creatures[i]);
 	if(bgame->num_creatures)
 		free(bgame->creatures);
+	bgame->creatures=0;
 	bgame->num_creatures=0;
 
 	for(i=0;i<bgame->num_projectiles;i++)
 		projectile_destroy(bgame->projectiles[i]);
 	if(bgame->num_projectiles)
 		free(bgame->projectiles);
+	bgame->projectiles=0;
 	bgame->num_projectiles=0;
 
 	return;
@@ -790,6 +805,11 @@ void blips_game_remove_projectile_by_index(blips_game *bgame,int i)
 	if(!(bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1))) && bgame->num_projectiles>1)
 	{
 		fprintf(stderr,"Couldn't realloc bgame->projectiles.\n");
+		exit(1);
+	}
+	if(bgame->projectiles && bgame->num_projectiles==0)
+	{
+		fprintf(stderr,"bgame->projectiles is non-NULL while bgame->projectiles==0.\n");
 		exit(1);
 	}
 	bgame->num_projectiles--;

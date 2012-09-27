@@ -50,6 +50,13 @@
 +Write breakable,collectible,creature,projectile
 +Test maze/barrier loading. (print it!)
 +Remove all the remaining strcpys.
++Fix current segfault.
+NOTES:
+	Doesn't occur if you destroy all breakables, clear room before moving to next.
+	Claims invalid old size for vector.  GDB confirms that collectibles has nonzero, while num_collectibles=0;
+SOLUTION:
+	free() doesn't reset pointer address to zero!  Despawn wasn't doing this, so realloc() was getting confused and thinking the still non-zero pointer had a size.
++Error check all remaining allocs.
 
 
 
@@ -101,5 +108,3 @@
 	-Have bgui animate the change of tile between steps.
 
 -players_leaving_world_tiles() also need to check that next world tile over doesn't have barrier where players would be entering.
-
--Error check all remaining allocs.

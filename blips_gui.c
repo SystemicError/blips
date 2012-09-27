@@ -160,7 +160,6 @@ void blips_gui_main_loop(blips_gui *bgui)
 		inputs[i]=blips_input_state_create();
 	while(!quit)
 	{
-printf("Iter.\n");
 		/* display stuff */
 		blips_gui_render_screen(bgui);
 
@@ -418,10 +417,6 @@ void blips_gui_render_screen(blips_gui *bgui)
 	cairo_surface_t *surface;
 	SDL_Surface *next_screen;
 
-//if(!strcmp(bgui->game->active_world_tile->path,"example_campaign/world_tiles/example_0x1.world_tile"))
-//return;
-
-printf("Call to Render.\n");
 	next_screen=SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,
 					 bgui->screen->w,
 					 bgui->screen->h,
