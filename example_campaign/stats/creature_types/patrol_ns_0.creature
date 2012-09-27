@@ -9,7 +9,7 @@ Fire Delay:
 Stun Delay:
 5
 AI Type:
-example_campaign/stats/ai_types/example.ai
+example_campaign/stats/ai_types/patrol_ns_0.ai
 Spawn Trigger:
 enter
 Respawn:

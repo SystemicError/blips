@@ -7,6 +7,11 @@ Number of Collectible Strings:
 Collectible Strings:
 +h=example_campaign/stats/collectible_types/example.collectible
 Number of Creature Strings:
-1
+6
 Creature Strings:
-aa=example_campaign/stats/creature_types/example_1.creature
+do=example_campaign/stats/creature_types/dodge_0.creature
+fl=example_campaign/stats/creature_types/flee_0.creature
+cl=example_campaign/stats/creature_types/close_0.creature
+wa=example_campaign/stats/creature_types/wander_0.creature
+ns=example_campaign/stats/creature_types/patrol_ns_0.creature
+ew=example_campaign/stats/creature_types/patrol_ew_0.creature

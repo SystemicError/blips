@@ -67,6 +67,8 @@ SOLUTION:
 	+Have change_tile(maze_direction) triggered by [bool] player_leaving_tile().
 +Consider a blips_input_reader which is configured by a text file.
 	+For now, give control scheme as 1st player, 1st joystick, 2nd joystick, 2nd player
++Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
+	+Or, give _types a field for remain_time.  Since they act as creature barriers during this time, this is actually game-relevant.
 
 
 
@@ -80,20 +82,16 @@ SOLUTION:
 
 -Map out ai structure.  Does a type called ai ever get instantiated beyond ai_type?  Seems necessary for patrol_ns/ew, wander.
 
--Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
-	-Or, give _types a field for remain_time.  Since they act as creature barriers during this time, this is actually game-relevant.
-
 -Collision control.  Also done with fptrs.
 	-We *could* include a "hitbox_radius" field in creatures and/or projectiles.  It's game-relevant, not gui-exclusive.
 	-We could also have bgui do an images_intersect type method, which would be slower.
 
 -Write blips_game_apply_ai_type_to_creature()
-	-move_goal
+	+move_goal
 	-aim_goal
 	-fire_goal
 
 -Add sound playback.
-
 
 -Consider having creature team specified in creature_type file, not defaulted to player/non-player.
 
@@ -106,7 +104,6 @@ SOLUTION:
 -Add death animation separate from stun animation to creatures.
 
 -Decide how to react to player death.
-
 
 -Have bgui animate the change of tile between steps.
 

@@ -937,9 +937,18 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 				cr->current_move_speed=0;
 		break;
 		case AI_FLEE:
+			if(enemy_cr)
+			{
+				cr->current_move_speed=cr->type->move_speed;
+				cr->move_orientation=atan2(enemy_cr_abs_y-cr_abs_y,
+							   enemy_cr_abs_x-cr_abs_x)+
+						     M_PI;
+			}
+			else
+				cr->current_move_speed=0;
 		break;
 		case AI_CLOSE:
-			if(enemy_pr)
+			if(enemy_cr)
 			{
 				cr->current_move_speed=cr->type->move_speed;
 				cr->move_orientation=atan2(enemy_cr_abs_y-cr_abs_y,
@@ -949,23 +958,19 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 				cr->current_move_speed=0;
 		break;
 		case AI_WANDER:
-			if(cr->current_move_speed==0)
-			{
-				cr->current_move_speed=cr->type->move_speed;
-				cr->move_orientation=((double)rand())/RAND_MAX*2.0*M_PI;
-			}
-			else
-				cr->current_move_speed--;
+			cr->current_move_speed=cr->type->move_speed/2;
+			if(blips_game_move_creature(bgame,cr))
+				cr->move_orientation=rand();
 		break;
 		case AI_PATROL_NS:
-			if(cos(cr->move_orientation))
+			if(abs(cos(cr->move_orientation))>.01)
 				cr->move_orientation=M_PI/2.0;
 			cr->current_move_speed=cr->type->move_speed/2;
 			if(blips_game_move_creature(bgame,cr))
 				cr->move_orientation+=M_PI;
 		break;
 		case AI_PATROL_EW:
-			if(sin(cr->move_orientation))
+			if(abs(sin(cr->move_orientation))>.01)
 				cr->move_orientation=M_PI;
 			cr->current_move_speed=cr->type->move_speed/2;
 			if(blips_game_move_creature(bgame,cr))

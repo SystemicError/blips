@@ -1,0 +1,23 @@
+Max Health:
+20
+Projectile Type:
+example_campaign/stats/projectile_types/example_1.projectile
+Move Speed:
+5
+Fire Delay:
+8
+Stun Delay:
+5
+AI Type:
+example_campaign/stats/ai_types/close_0.ai
+Spawn Trigger:
+enter
+Respawn:
+1
+Despawn Delay:
+3
+Creature Media Set:
+example_campaign/media_sets/creatures/example_1.creature_media_set
+Comments:
+
+A simple enemy
