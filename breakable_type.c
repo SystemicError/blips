@@ -39,6 +39,11 @@ breakable_type* breakable_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(br_type->respawn));
 
+	/*** Respawn ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(br_type->despawn_delay));
+
 	/*** Media Set ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */

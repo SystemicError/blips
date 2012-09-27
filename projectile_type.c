@@ -20,11 +20,22 @@ projectile_type* projectile_type_create(char *path)
 		exit(1);
 	}
 
+	/*** Damage ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(pr_type->damage));
 
+	/*** Move Speed ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&(pr_type->move_speed));
+
+	/*** Despawn Delay ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fscanf(fp,"%d\n",&(pr_type->despawn_delay));
+
+	/*** Media Set ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp); 
@@ -36,6 +47,8 @@ projectile_type* projectile_type_create(char *path)
 	}
 	strncpy(pr_type->pr_set_path,buffer,strlen(buffer)+1);
 	pr_type->pr_set_path[strlen(buffer)]=0;
+
+	/*** Path ***/
 
 	if(!(pr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
 	{

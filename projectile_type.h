@@ -24,6 +24,7 @@ typedef struct projectile_type
 {
 	int damage;
 	int move_speed;
+	int despawn_delay;  /* how much time we let it stick around while it impacts */
 	char *pr_set_path;
 	char *pr_type_path;
 } projectile_type;

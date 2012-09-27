@@ -27,6 +27,7 @@ typedef struct breakable_type
 	char *br_type_path;
 	spawn_trigger trigger;
 	int respawn;
+	int despawn_delay;  /* how much time we let it stick around while it breaks */
 } breakable_type;
 
 breakable_type* breakable_type_create(char *path);

@@ -14,6 +14,8 @@ Spawn Trigger:
 enter
 Respawn:
 0
+Despawn Delay:
+3
 Creature Media Set:
 example_campaign/media_sets/creatures/example_0.creature_media_set
 Comments:

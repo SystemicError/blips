@@ -374,7 +374,6 @@ void blips_game_despawn(blips_game *bgame)
 		free(bgame->collectibles);
 	bgame->collectibles=0;
 	bgame->num_collectibles=0;
-printf("Despawned collectibles.  Address %d, count %d.\n",bgame->collectibles,bgame->num_collectibles);
 
 	for(i=0;i<bgame->num_creatures;i++)
 		creature_destroy(bgame->creatures[i]);

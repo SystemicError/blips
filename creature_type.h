@@ -30,6 +30,7 @@ typedef struct creature_type
 	char *ai_type_path;
 	spawn_trigger trigger;
 	int respawn;
+	int despawn_delay;  /* how much time we let it stick around while it dies */
 	char *cr_set_path;
 	char *cr_type_path;
 } creature_type;
