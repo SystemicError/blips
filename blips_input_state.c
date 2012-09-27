@@ -6,7 +6,11 @@
 blips_input_state* blips_input_state_create(void)
 {
 	blips_input_state *bis;
-	bis=(blips_input_state*)malloc(sizeof(blips_input_state));
+	if(!(bis=(blips_input_state*)malloc(sizeof(blips_input_state))))
+	{
+		fprintf(stderr,"Couldn't allocate blips_input_state.\n");
+		exit(1);
+	}
 	return bis;
 }
 

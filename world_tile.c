@@ -10,7 +10,11 @@ world_tile* world_tile_create(char *path)
 	char buffer[BUFFER_SIZE];
 	int i,j;
 
-	wt=(world_tile*)malloc(sizeof(world_tile));
+	if(!(wt=(world_tile*)malloc(sizeof(world_tile))))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open world_tile:  %s.\n",path);
@@ -63,47 +67,82 @@ printf("Reading Pr Barrier map.\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->background_image=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->background_image,buffer);
+	if(!(wt->background_image=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->background_image.\n");
+		exit(1);
+	}
+	strncpy(wt->background_image,buffer,BUFFER_SIZE);
+	wt->background_image[BUFFER_SIZE-1]=0;
 
 	/*** Neighboring tiles ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->north_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->north_tile,buffer);
+	if(!(wt->north_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->north_tile.\n");
+		exit(1);
+	}
+	strncpy(wt->north_tile,buffer,BUFFER_SIZE);
+	wt->north_tile[BUFFER_SIZE-1]=0;
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->east_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->east_tile,buffer);
+	if(!(wt->east_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->east_tile.\n");
+		exit(1);
+	}
+	strncpy(wt->east_tile,buffer,BUFFER_SIZE);
+	wt->east_tile[BUFFER_SIZE-1]=0;
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->south_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->south_tile,buffer);
+	if(!(wt->south_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->south_tile.\n");
+		exit(1);
+	}
+	strncpy(wt->south_tile,buffer,BUFFER_SIZE);
+	wt->south_tile[BUFFER_SIZE-1]=0;
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->west_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->west_tile,buffer);
+	if(!(wt->west_tile=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->west_tile.\n");
+		exit(1);
+	}
+	strncpy(wt->west_tile,buffer,BUFFER_SIZE);
+	wt->west_tile[BUFFER_SIZE-1]=0;
 
 	/*** Music ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	wt->music=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(wt->music,buffer);
+	if(!(wt->music=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->music.\n");
+		exit(1);
+	}
+	strncpy(wt->music,buffer,BUFFER_SIZE);
+	wt->music[BUFFER_SIZE-1]=0;
 
 	/*** Path ***/
 
-	wt->path=(char*)malloc(sizeof(char)*strlen(path));
-	strcpy(wt->path,path);
+	if(!(wt->path=(char*)malloc(sizeof(char)*strlen(path)+1)))
+	{
+		fprintf(stderr,"Couldn't allocate world_tile->path.\n");
+		exit(1);
+	}
+	strncpy(wt->path,path,strlen(path)+1);
+	wt->path[strlen(path)]=0;
 
 	fclose(fp);
 	return wt;

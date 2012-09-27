@@ -9,7 +9,11 @@ string_map* string_map_create(void)
 {
 	string_map *smap;
 
-	smap=(string_map*)malloc(sizeof(string_map));
+	if(!(smap=(string_map*)malloc(sizeof(string_map))))
+	{
+		fprintf(stderr,"Couldn't allocate string_map.\n");
+		exit(1);
+	}
 
 	smap->size=0;
 	smap->pointers=0;
@@ -41,8 +45,16 @@ void string_map_destroy(string_map *smap)
 
 void string_map_add(string_map *smap,char *string,void *ptr)
 {
-	smap->pointers=(void**)realloc(smap->pointers,sizeof(void*)*(smap->size+1));
-	smap->strings=(char**)realloc(smap->strings,sizeof(char*)*(smap->size+1));
+	if(!(smap->pointers=(void**)realloc(smap->pointers,sizeof(void*)*(smap->size+1))))
+	{
+		fprintf(stderr,"Couldn't allocate string_map->pointers.\n");
+		exit(1);
+	}
+	if(!(smap->strings=(char**)realloc(smap->strings,sizeof(char*)*(smap->size+1))))
+	{
+		fprintf(stderr,"Couldn't allocate string_map->strings.\n");
+		exit(1);
+	}
 
 	smap->pointers[smap->size]=ptr;
 	smap->strings[smap->size]=string;

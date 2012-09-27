@@ -6,7 +6,11 @@
 sprite_animation* sprite_animation_create(void)
 {
 	sprite_animation *sa;
-	sa=(sprite_animation*)malloc(sizeof(sprite_animation));
+	if(!(sa=(sprite_animation*)malloc(sizeof(sprite_animation))))
+	{
+		fprintf(stderr,"Couldn't allocate sprite_animation.\n");
+		exit(1);
+	}
 	sa->num_frames=0;
 	sa->count=0;
 	sa->frames=0;
@@ -46,7 +50,11 @@ void sprite_animation_add_frame(sprite_animation *sa,const char *path)
 {
 /*printf("Loading sprite animation frame from path %s.\n",complete_path);
 */
-	sa->frames=(cairo_surface_t**)realloc(sa->frames,sizeof(cairo_surface_t*)*(sa->num_frames+1));
+	if(!(sa->frames=(cairo_surface_t**)realloc(sa->frames,sizeof(cairo_surface_t*)*(sa->num_frames+1))))
+	{
+		fprintf(stderr,"Couldn't allocate sprite_animation->frames.\n");
+		exit(1);
+	}
 	sa->frames[sa->num_frames]=cairo_image_surface_create_from_png(path);
 	sa->num_frames++;
 

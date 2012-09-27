@@ -6,7 +6,11 @@
 blips_game* blips_game_create(void)
 {
 	blips_game *bgame;
-	bgame=(blips_game*)malloc(sizeof(blips_game));
+	if(!(bgame=(blips_game*)malloc(sizeof(blips_game))))
+	{
+		fprintf(stderr,"Couldn't allocate blips_game.\n");
+		exit(1);
+	}
 
 	/*** World tiles ***/
 
@@ -233,7 +237,11 @@ int j;
 				/* We have permission to remove this breakable */
 				breakable_destroy(bgame->breakables[i]);
 				bgame->breakables[i]=bgame->breakables[bgame->num_breakables-1];
-				bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables-1));
+				if(!(bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables-1))))
+				{
+					fprintf(stderr,"Couldn't realloc bgame->breakables.\n");
+					exit(1);
+				}
 				bgame->num_breakables--;
 				i--;
 			}
@@ -252,7 +260,11 @@ int j;
 		{
 			creature_destroy(bgame->creatures[i]);
 			bgame->creatures[i]=bgame->creatures[bgame->num_creatures-1];
-			bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1));
+			if(!(bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures-1))))
+			{
+				fprintf(stderr,"Couldn't realloc bgame->creatures.\n");
+				exit(1);
+			}
 			bgame->num_creatures--;
 		}
 
@@ -394,7 +406,11 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 			if(br_type && br_type->trigger==trigger)
 			{
-				bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables+1));
+				if(!(bgame->breakables=(breakable**)realloc(bgame->breakables,sizeof(breakable*)*(bgame->num_breakables+1))))
+				{
+					fprintf(stderr,"Couldn't realloc bgame->breakables.\n");
+					exit(1);
+				}
 				bgame->breakables[bgame->num_breakables]=breakable_create(br_type);
 
 				bgame->breakables[bgame->num_breakables]->row=i;
@@ -408,7 +424,11 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 			if(co_type && co_type->trigger==trigger)
 			{
-				bgame->collectibles=(collectible**)realloc(bgame->collectibles,sizeof(collectible*)*(bgame->num_collectibles+1));
+				if(!(bgame->collectibles=(collectible**)realloc(bgame->collectibles,sizeof(collectible*)*(bgame->num_collectibles+1))))
+				{
+					fprintf(stderr,"Couldn't realloc bgame->collectibles.\n");
+					exit(1);
+				}
 				bgame->collectibles[bgame->num_collectibles]=collectible_create(co_type);
 
 				bgame->collectibles[bgame->num_collectibles]->row=i;
@@ -422,7 +442,11 @@ void blips_game_spawn(blips_game *bgame,spawn_trigger trigger)
 
 			if(cr_type && cr_type->trigger==trigger)
 			{
-				bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures+1));
+				if(!(bgame->creatures=(creature**)realloc(bgame->creatures,sizeof(creature*)*(bgame->num_creatures+1))))
+				{
+					fprintf(stderr,"Couldn't realloc bgame->creatures.\n");
+					exit(1);
+				}
 				bgame->creatures[bgame->num_creatures]=creature_create(cr_type);
 
 				bgame->creatures[bgame->num_creatures]->row=i;
@@ -613,7 +637,11 @@ printf("Loading breakable types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		string=(char*)malloc(sizeof(char)*3);
+		if(!(string=(char*)malloc(sizeof(char)*3)))
+		{
+			fprintf(stderr,"Couldn't alloc br string in bgame_load_object_types().\n");
+			exit(1);
+		}
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
@@ -633,7 +661,11 @@ printf("Loading collectible types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		string=(char*)malloc(sizeof(char)*3);
+		if(!(string=(char*)malloc(sizeof(char)*3)))
+		{
+			fprintf(stderr,"Couldn't alloc co string in bgame_load_object_types().\n");
+			exit(1);
+		}
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
@@ -653,7 +685,11 @@ printf("Loading creature types . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		string=(char*)malloc(sizeof(char)*3);
+		if(!(string=(char*)malloc(sizeof(char)*3)))
+		{
+			fprintf(stderr,"Couldn't alloc cr string in bgame_load_object_types().\n");
+			exit(1);
+		}
 		string[0]=fgetc(fp);
 		string[1]=fgetc(fp);
 		string[2]=0;
@@ -723,8 +759,16 @@ void blips_game_load_players(blips_game *bgame)
 {
 	int i;
 
-	bgame->players=(creature**)malloc(sizeof(creature*)*bgame->campaign->num_players);
-	bgame->player_types=(creature_type**)malloc(sizeof(creature_type*)*bgame->campaign->num_players);
+	if(!(bgame->players=(creature**)malloc(sizeof(creature*)*bgame->campaign->num_players)))
+	{
+		fprintf(stderr,"Couldn't alloc bgame->players.\n");
+		exit(1);
+	}
+	if(!(bgame->player_types=(creature_type**)malloc(sizeof(creature_type*)*bgame->campaign->num_players)))
+	{
+		fprintf(stderr,"Couldn't alloc bgame->player_types.\n");
+		exit(1);
+	}
 
 	for(i=0;i<bgame->campaign->num_players;i++)
 	{
@@ -743,7 +787,11 @@ void blips_game_remove_projectile_by_index(blips_game *bgame,int i)
 {
 	projectile_destroy(bgame->projectiles[i]);
 	bgame->projectiles[i]=bgame->projectiles[bgame->num_projectiles-1];
-	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1));
+	if(!(bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles-1))))
+	{
+		fprintf(stderr,"Couldn't realloc bgame->projectiles.\n");
+		exit(1);
+	}
 	bgame->num_projectiles--;
 
 	return;
@@ -1051,7 +1099,11 @@ void blips_game_spawn_projectile_from_creature(blips_game *bgame,creature *cr)
 	pr->team=cr->team;
 
 	/* add it to the projectile list */
-	bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1));
+	if(!(bgame->projectiles=(projectile**)realloc(bgame->projectiles,sizeof(projectile*)*(bgame->num_projectiles+1))))
+	{
+		fprintf(stderr,"Couldn't realloc bgame->projectiles.\n");
+		exit(1);
+	}
 	bgame->projectiles[bgame->num_projectiles]=pr;
 	bgame->num_projectiles++;
 

@@ -10,7 +10,11 @@ collectible_media_set* collectible_media_set_create(char *path)
 	FILE *fp;
 	int i,count;
 
-	co_set=(collectible_media_set*)malloc(sizeof(collectible_media_set));
+	if(!(co_set=(collectible_media_set*)malloc(sizeof(collectible_media_set))))
+	{
+		fprintf(stderr,"Couldn't allocate collectible_media_set.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open collectible_media_set:  %s.\n",path);

@@ -11,7 +11,11 @@ blips_gui* blips_gui_create(blips_game *bgame)
 
 	printf("Initializing Blips GUI . . .\n");
 
-	bgui=(blips_gui*)malloc(sizeof(blips_gui));
+	if(!(bgui=(blips_gui*)malloc(sizeof(blips_gui))))
+	{
+		fprintf(stderr,"Couldn't allocate blips_gui.\n");
+		exit(1);
+	}
 
 	/*** Video ***/
 
@@ -29,7 +33,11 @@ blips_gui* blips_gui_create(blips_game *bgame)
 
 	/*** Input ***/
 	bgui->num_joys=2; /* should be configurable */
-	bgui->joys=(SDL_Joystick**)malloc(sizeof(SDL_Joystick*)*bgui->num_joys);
+	if(!(bgui->joys=(SDL_Joystick**)malloc(sizeof(SDL_Joystick*)*bgui->num_joys)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_gui->joys.\n");
+		exit(1);
+	}
 	for(i=0;i<bgui->num_joys;i++)
 		if(!(bgui->joys[i]=SDL_JoystickOpen(i)))
 			fprintf(stderr,"Couldn't open joystick %d; will not be enabled.\n",i);
@@ -143,11 +151,16 @@ void blips_gui_main_loop(blips_gui *bgui)
 	int i, quit;
 	quit=0;
 
-	inputs=(blips_input_state**)malloc(sizeof(blips_input_state*)*bgui->game->campaign->num_players);
+	if(!(inputs=(blips_input_state**)malloc(sizeof(blips_input_state*)*bgui->game->campaign->num_players)))
+	{
+		fprintf(stderr,"Couldn't allocate inputs in blips_gui_main_loop().\n");
+		exit(1);
+	}
 	for(i=0;i<bgui->game->campaign->num_players;i++)
 		inputs[i]=blips_input_state_create();
 	while(!quit)
 	{
+printf("Iter.\n");
 		/* display stuff */
 		blips_gui_render_screen(bgui);
 
@@ -204,7 +217,11 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		chs=(char*)malloc(sizeof(char)*3);
+		if(!(chs=(char*)malloc(sizeof(char)*3)))
+		{
+			fprintf(stderr,"Couldn't allocate chs in blips_gui_fill_cache().\n");
+			exit(1);
+		}
 		chs[0]=fgetc(fp);
 		chs[1]=fgetc(fp);
 		chs[2]=0;  /* null terminator */
@@ -265,7 +282,8 @@ void blips_gui_update_active_world_tile(blips_gui *bgui)
 
 printf("Copying new path . . .\n");
 	/* update the active world tile path */
-	strcpy(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path);
+	strncpy(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path,BUFFER_SIZE);
+	bgui->active_world_tile_path[BUFFER_SIZE-1]=0;
 
 	/* update the active background */
 

@@ -10,7 +10,11 @@ projectile_media_set* projectile_media_set_create(char *path)
 	FILE *fp;
 	int i,count;
 
-	pr_set=(projectile_media_set*)malloc(sizeof(projectile_media_set));
+	if(!(pr_set=(projectile_media_set*)malloc(sizeof(projectile_media_set))))
+	{
+		fprintf(stderr,"Couldn't allocate projectile_media_set.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open projectile_media_set:  %s.\n",path);

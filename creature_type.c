@@ -9,7 +9,11 @@ creature_type* creature_type_create(char *path)
 	creature_type *cr_type;
 	char buffer[BUFFER_SIZE];
 
-	cr_type=(creature_type*)malloc(sizeof(creature_type));
+	if(!(cr_type=(creature_type*)malloc(sizeof(creature_type))))
+	{
+		fprintf(stderr,"Couldn't allocate creature_type.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open creature_type file:  %s.\n",path);
@@ -26,8 +30,13 @@ creature_type* creature_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
-	strcpy(cr_type->pr_type_path,buffer);
+	if(!(cr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate creature_type->pr_type_path.\n");
+		exit(1);
+	}
+	strncpy(cr_type->pr_type_path,buffer,strlen(buffer)+1);
+	cr_type->pr_type_path[strlen(buffer)]=0;
 
 	/*** Move Speed ***/
 
@@ -49,8 +58,13 @@ creature_type* creature_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->ai_type_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
-	strcpy(cr_type->ai_type_path,buffer);
+	if(!(cr_type->ai_type_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate creature_type->ai_type_path.\n");
+		exit(1);
+	}
+	strncpy(cr_type->ai_type_path,buffer,strlen(buffer)+1);
+	cr_type->ai_type_path[strlen(buffer)]=0;
 
 	/*** Spawn Trigger ***/
 
@@ -71,11 +85,21 @@ creature_type* creature_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	cr_type->cr_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
-	strcpy(cr_type->cr_set_path,buffer);
+	if(!(cr_type->cr_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate creature_type->cr_set_path.\n");
+		exit(1);
+	}
+	strncpy(cr_type->cr_set_path,buffer,strlen(buffer)+1);
+	cr_type->cr_set_path[strlen(buffer)]=0;
 
-	cr_type->cr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
-	strcpy(cr_type->cr_type_path,path);
+	if(!(cr_type->cr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate creature_type->cr_type_path.\n");
+		exit(1);
+	}
+	strncpy(cr_type->cr_type_path,path,strlen(path)+1);
+	cr_type->cr_type_path[strlen(path)]=0;
 
 	fclose(fp);
 	return cr_type;

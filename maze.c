@@ -9,7 +9,11 @@ maze* maze_create(int rows,int columns)
 	maze *m;
 	int i;
 
-	m=(maze*)malloc(sizeof(maze));
+	if(!(m=(maze*)malloc(sizeof(maze))))
+	{
+		fprintf(stderr,"Couldn't allocate maze.\n");
+		exit(1);
+	}
 	m->rows=rows;
 	m->columns=columns;
 
@@ -23,9 +27,17 @@ printf("Created zero-dimensional maze.\n");
 
 	/* create maze tiles */
 	/* this is a 2d array, [rows*columns][4] in size.  The second index is a list of links to other tiles. */
-	m->tiles=(int**)malloc(sizeof(int*)*rows*columns);
+	if(!(m->tiles=(int**)malloc(sizeof(int*)*rows*columns)))
+	{
+		fprintf(stderr,"Couldn't allocate maze->tiles.\n");
+		exit(1);
+	}
 	for(i=0;i<rows*columns;i++)
-		m->tiles[i]=(int*)malloc(sizeof(int)*4);
+		if(!(m->tiles[i]=(int*)malloc(sizeof(int)*4)))
+		{
+			fprintf(stderr,"Couldn't allocate maze->tiles[%d].\n",i);
+			exit(1);
+		}
 
 	/* start with maximal linkage */
 	for(i=0;i<rows*columns;i++)
@@ -203,7 +215,11 @@ int minimum_distance_between(maze *m,int start,int finish)
 	int cell,direction;
 	int *hits;
 
-	hits=(int*)malloc(sizeof(int)*m->rows*m->columns);
+	if(!(hits=(int*)malloc(sizeof(int)*m->rows*m->columns)))
+	{
+		fprintf(stderr,"Couldn't allocate hits in maze_minimum_distance_between.\n");
+		exit(1);
+	}
 	/* each entry in hits corresponds to the number of steps to get there */
 	for(i=0;i<m->rows*m->columns;i++)
 		hits[i]=-1;

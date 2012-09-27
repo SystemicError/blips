@@ -9,7 +9,11 @@ collectible_type* collectible_type_create(char *path)
 	collectible_type *co_type;
 	char buffer[BUFFER_SIZE];
 
-	co_type=(collectible_type*)malloc(sizeof(collectible_type));
+	if(!(co_type=(collectible_type*)malloc(sizeof(collectible_type))))
+	{
+		fprintf(stderr,"Couldn't allocate collectible_type.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open collectible_type file:  %s.\n",path);
@@ -36,13 +40,23 @@ collectible_type* collectible_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 
-	co_type->co_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
-	strcpy(co_type->co_set_path,buffer);
+	if(!(co_type->co_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate collectible_type->co_set_path.\n");
+		exit(1);
+	}
+	strncpy(co_type->co_set_path,buffer,strlen(buffer)+1);
+	co_type->co_set_path[strlen(buffer)]=0;
 
 	/*** Collectible Type (self) Path ***/
 
-	co_type->co_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
-	strcpy(co_type->co_type_path,path);
+	if(!(co_type->co_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate collectible_type->co_type_path.\n");
+		exit(1);
+	}
+	strncpy(co_type->co_type_path,path,strlen(path)+1);
+	co_type->co_type_path[strlen(path)]=0;
 
 	fclose(fp);
 	return co_type;

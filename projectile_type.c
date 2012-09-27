@@ -9,7 +9,11 @@ projectile_type* projectile_type_create(char *path)
 	projectile_type *pr_type;
 	char buffer[BUFFER_SIZE];
 
-	pr_type=(projectile_type*)malloc(sizeof(projectile_type));
+	if(!(pr_type=(projectile_type*)malloc(sizeof(projectile_type))))
+	{
+		fprintf(stderr,"Couldn't allocate projectile_type.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open projectile_type file:  %s.\n",path);
@@ -25,11 +29,21 @@ projectile_type* projectile_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp); 
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
-	pr_type->pr_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1));
-	strcpy(pr_type->pr_set_path,buffer);
+	if(!(pr_type->pr_set_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate projectile_type->pr_set_path.\n");
+		exit(1);
+	}
+	strncpy(pr_type->pr_set_path,buffer,strlen(buffer)+1);
+	pr_type->pr_set_path[strlen(buffer)]=0;
 
-	pr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
-	strcpy(pr_type->pr_type_path,path);
+	if(!(pr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate projectile_type->pr_type_path.\n");
+		exit(1);
+	}
+	strncpy(pr_type->pr_type_path,path,strlen(path)+1);
+	pr_type->pr_type_path[strlen(path)]=0;
 
 	fclose(fp);
 	return pr_type;

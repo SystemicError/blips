@@ -10,7 +10,11 @@ breakable_media_set* breakable_media_set_create(char *path)
 	FILE *fp;
 	int i,count;
 
-	br_set=(breakable_media_set*)malloc(sizeof(breakable_media_set));
+	if(!(br_set=(breakable_media_set*)malloc(sizeof(breakable_media_set))))
+	{
+		fprintf(stderr,"Couldn't allocate breakable_media_set.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open breakable_media_set:  %s.\n",path);

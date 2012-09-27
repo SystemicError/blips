@@ -10,7 +10,11 @@ ai_type* ai_type_create(char *path)
 	FILE *fp;
 	char buffer[BUFFER_SIZE];
 
-	ait=(ai_type*)malloc(sizeof(ai_type));
+	if(!(ait=(ai_type*)malloc(sizeof(ai_type))))
+	{
+		fprintf(stderr,"Couldn't allocate ai_type.\n");
+		exit(1);
+	}
 	if(!(fp=fopen(path,"r")))
 	{
 		fprintf(stderr,"Couldn't open ai_type file:  %s.\n",path);
@@ -61,8 +65,13 @@ ai_type* ai_type_create(char *path)
 	else if(!strcmp(buffer,"spurt"))
 		ait->fire_goal=AI_SPURT;
 
-	ait->ai_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1));
-	strcpy(ait->ai_type_path,path);
+	if(!(ait->ai_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
+	{
+		fprintf(stderr,"Couldn't allocate ai_type->ai_type_path.\n");
+		exit(1);
+	}
+	strncpy(ait->ai_type_path,path,strlen(path)+1);
+	ait->ai_type_path[strlen(path)]=0;
 
 	fclose(fp);
 	return ait;
