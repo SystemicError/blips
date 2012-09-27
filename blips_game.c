@@ -324,7 +324,7 @@ int blips_game_add_world_tile(blips_game *bgame,char *path)
 	/* scan for duplication */
 	string_map_string_to_pointer(bgame->world_tile_map,path,&ptr);
 
-	if(!ptr && bgame->world_tile_map->size)
+	if(ptr && bgame->world_tile_map->size)
 {
 printf("Rejecting %s; duplicate.\n",path);
 		return 0;
@@ -557,7 +557,31 @@ void blips_game_change_active_world_tile(blips_game *bgame,int direction)
 		}
 
 	/* change active world tile */
-/*UNFINISHED*/
+printf("East path is: %s.\n",bgame->active_world_tile->east_tile);
+printf("Tile Map dump:\n");
+for(i=0;i<bgame->world_tile_map->size;i++)
+printf("path:  %s -- %d.\n",((world_tile*)(bgame->world_tile_map->pointers[i]))->path,bgame->world_tile_map->pointers[i]);
+	switch(direction)
+	{
+		case MAZE_NORTH:
+			string_map_string_to_pointer(bgame->world_tile_map,bgame->active_world_tile->north_tile,(void**)&(bgame->active_world_tile));
+		break;
+		case MAZE_EAST:
+			string_map_string_to_pointer(bgame->world_tile_map,bgame->active_world_tile->east_tile,(void**)&(bgame->active_world_tile));
+		break;
+		case MAZE_SOUTH:
+			string_map_string_to_pointer(bgame->world_tile_map,bgame->active_world_tile->south_tile,(void**)&(bgame->active_world_tile));
+		break;
+		case MAZE_WEST:
+			string_map_string_to_pointer(bgame->world_tile_map,bgame->active_world_tile->west_tile,(void**)&(bgame->active_world_tile));
+		break;
+	}
+
+	if(!(bgame->active_world_tile))
+	{
+		fprintf(stderr,"Couldn't find world tile of correct path!.\n");
+		exit(1);
+	}
 
 	/* add new objects */
 	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
