@@ -400,8 +400,8 @@ void blips_gui_render_screen(blips_gui *bgui)
 	cairo_surface_t *surface;
 	SDL_Surface *next_screen;
 
-if(!strcmp(bgui->game->active_world_tile->path,"example_campaign/world_tiles/example_0x1.world_tile"))
-return;
+//if(!strcmp(bgui->game->active_world_tile->path,"example_campaign/world_tiles/example_0x1.world_tile"))
+//return;
 
 printf("Call to Render.\n");
 	next_screen=SDL_CreateRGBSurface(SDL_SWSURFACE|SDL_SRCALPHA,

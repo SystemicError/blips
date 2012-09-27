@@ -6,7 +6,11 @@
 breakable* breakable_create(breakable_type *bt)
 {
 	breakable *br;
-	br=(breakable*)malloc(sizeof(breakable));
+	if(!(br=(breakable*)malloc(sizeof(breakable))))
+	{
+		fprintf(stderr,"Couldn't allocate memory for breakable.\n");
+		exit(1);
+	}
 	br->time_remaining=-1;
 	br->type=bt;
 

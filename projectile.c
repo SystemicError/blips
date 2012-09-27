@@ -6,7 +6,11 @@
 projectile* projectile_create(projectile_type *pt)
 {
 	projectile *pr;
-	pr=(projectile*)malloc(sizeof(projectile));
+	if(!(pr=(projectile*)malloc(sizeof(projectile))))
+	{
+		fprintf(stderr,"Couldn't allocate projectile.\n");
+		exit(1);
+	}
 	pr->current_damage=pt->damage;
 	pr->type=pt;
 

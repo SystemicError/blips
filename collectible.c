@@ -6,7 +6,11 @@
 collectible* collectible_create(collectible_type *ct)
 {
 	collectible *co;
-	co=(collectible*)malloc(sizeof(collectible));
+	if(!(co=(collectible*)malloc(sizeof(collectible))))
+	{
+		fprintf(stderr,"Couldn't allocate memory for collectible.\n");
+		exit(1);
+	}
 	co->type=ct;
 
 	co->stand_animation_index=0;

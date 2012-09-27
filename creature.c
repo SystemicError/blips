@@ -6,7 +6,11 @@
 creature* creature_create(creature_type *ct)
 {
 	creature *cr;
-	cr=(creature*)malloc(sizeof(creature));
+	if(!(cr=(creature*)malloc(sizeof(creature))))
+	{
+		fprintf(stderr,"Couldn't allocate memory for creature.\n");
+		exit(1);
+	}
 	cr->x_in_cell=BLIPS_TILE_SIZE/2.0;
 	cr->y_in_cell=BLIPS_TILE_SIZE/2.0;
 	cr->current_health=ct->max_health;

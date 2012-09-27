@@ -11,7 +11,11 @@ blips_campaign *blips_campaign_create(char *path)
 	int i;
 
 printf("Creating campaign . . .\n");
-	bc=(blips_campaign*)malloc(sizeof(blips_campaign));
+	if(!(bc=(blips_campaign*)malloc(sizeof(blips_campaign))))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign.\n");
+		exit(1);
+	}
 printf("Opening file . . .\n");
 	if(!(fp=fopen(path,"r")))
 	{
@@ -25,8 +29,13 @@ printf("Opening file . . .\n");
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 printf("Got object key path:  %s.\n",buffer);
-	bc->object_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(bc->object_key_path,buffer);
+	if(!(bc->object_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->object_key_path.\n");
+		exit(1);
+	}
+	strncpy(bc->object_key_path,buffer,BUFFER_SIZE);
+	bc->object_key_path[BUFFER_SIZE-1]=0;
 
 	/*** Tile Image Key ***/
 
@@ -34,8 +43,13 @@ printf("Got object key path:  %s.\n",buffer);
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 printf("Got tile image key path:  %s.\n",buffer);
-	bc->tile_image_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(bc->tile_image_key_path,buffer);
+	if(!(bc->tile_image_key_path=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->tile_image_key_path.\n");
+		exit(1);
+	}
+	strncpy(bc->tile_image_key_path,buffer,BUFFER_SIZE);
+	bc->tile_image_key_path[BUFFER_SIZE-1]=0;
 
 	/*** Starting World Tile ***/
 
@@ -43,8 +57,13 @@ printf("Got tile image key path:  %s.\n",buffer);
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 printf("Got starting world tile path:  %s.\n",buffer);
-	bc->starting_world_tile_path=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-	strcpy(bc->starting_world_tile_path,buffer);
+	if(!(bc->starting_world_tile_path=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->starting_world_tile_path.\n");
+		exit(1);
+	}
+	strncpy(bc->starting_world_tile_path,buffer,BUFFER_SIZE);
+	bc->starting_world_tile_path[BUFFER_SIZE-1]=0;
 
 	/*** Number of Players/Player Info ***/
 
@@ -52,9 +71,21 @@ printf("Got starting world tile path:  %s.\n",buffer);
 	fscanf(fp,"%d\n",&(bc->num_players));
 printf("Got number of players:  %d.\n",bc->num_players);
 
-	bc->player_starting_rows=(int*)malloc(sizeof(int)*bc->num_players);
-	bc->player_starting_cols=(int*)malloc(sizeof(int)*bc->num_players);
-	bc->player_type_file_paths=(char**)malloc(sizeof(char*)*bc->num_players);
+	if(!(bc->player_starting_rows=(int*)malloc(sizeof(int)*bc->num_players)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->player_starting_rows.\n");
+		exit(1);
+	}
+	if(!(bc->player_starting_cols=(int*)malloc(sizeof(int)*bc->num_players)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->player_starting_cols.\n");
+		exit(1);
+	}
+	if(!(bc->player_type_file_paths=(char**)malloc(sizeof(char*)*bc->num_players)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->player_type_file_paths.\n");
+		exit(1);
+	}
 
 	for(i=0;i<bc->num_players;i++)
 	{
@@ -69,8 +100,13 @@ printf("Got %d starting col:  %d.\n",i,bc->player_starting_cols[i]);
 		fgets(buffer,BUFFER_SIZE,fp);
 		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 printf("Got %d type file path:  %s.\n",i,buffer);
-		bc->player_type_file_paths[i]=(char*)malloc(sizeof(char)*BUFFER_SIZE);
-		strcpy(bc->player_type_file_paths[i],buffer);
+		if(!(bc->player_type_file_paths[i]=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+		{
+			fprintf(stderr,"Couldn't allocate blips_campaign->player_type_file_paths[%d].\n",i);
+			exit(1);
+		}
+		strncpy(bc->player_type_file_paths[i],buffer,BUFFER_SIZE);
+		bc->player_type_file_paths[i][BUFFER_SIZE-1]=0;
 	}
 
 printf("Done loading campaign.\n");
