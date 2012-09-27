@@ -25,7 +25,8 @@ breakable_media_set* breakable_media_set_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		fscanf(fp,"%s\n",buffer);
+		fgets(buffer,BUFFER_SIZE,fp);
+		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 		sprite_animation_add_frame(br_set->stand_animation,buffer);
 	}
 
@@ -34,7 +35,8 @@ breakable_media_set* breakable_media_set_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
-		fscanf(fp,"%s\n",buffer);
+		fgets(buffer,BUFFER_SIZE,fp);
+		buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 		sprite_animation_add_frame(br_set->break_animation,buffer);
 	}
 
