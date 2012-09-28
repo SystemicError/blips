@@ -110,6 +110,7 @@ typedef struct blips_game
 	string_map *cr_types_map;
 
 	world_tile *active_world_tile;
+	int active_world_tile_cleared;  /* has/have the player(s) cleared this tile yet? */
 
 	blips_campaign *campaign;
 } blips_game;

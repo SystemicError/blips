@@ -142,6 +142,7 @@ void blips_game_load_campaign(blips_game *bgame,char *path)
 
 	/* for first tile spawn */
 	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
+	bgame->active_world_tile_cleared=0;
 	return;
 }
 
@@ -276,6 +277,15 @@ int j;
 				exit(1);
 			}
 			bgame->num_creatures--;
+
+			/*** If we just ran out of creatures, spawn the ON_CLEAR
+			 *** ones. */
+
+			if(bgame->num_creatures==0 && bgame->active_world_tile_cleared==0)
+			{
+				blips_game_spawn(bgame,SPAWN_ON_CLEAR);
+				bgame->active_world_tile_cleared=1;
+			}
 		}
 
 	/*** Check if any player has died ***/
@@ -595,10 +605,6 @@ void blips_game_change_active_world_tile(blips_game *bgame,int direction)
 		}
 
 	/* change active world tile */
-printf("East path is: %s.\n",bgame->active_world_tile->east_tile);
-printf("Tile Map dump:\n");
-for(i=0;i<bgame->world_tile_map->size;i++)
-printf("path:  %s -- %d.\n",((world_tile*)(bgame->world_tile_map->pointers[i]))->path,bgame->world_tile_map->pointers[i]);
 	switch(direction)
 	{
 		case MAZE_NORTH:
@@ -623,6 +629,9 @@ printf("path:  %s -- %d.\n",((world_tile*)(bgame->world_tile_map->pointers[i]))-
 
 	/* add new objects */
 	blips_game_spawn(bgame,SPAWN_ON_ENTRANCE);
+
+	/* keep in mind that we haven't cleared this tile */
+	bgame->active_world_tile_cleared=0;
 
 	return;
 }
