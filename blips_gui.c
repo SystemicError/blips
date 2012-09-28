@@ -160,16 +160,16 @@ void blips_gui_main_loop(blips_gui *bgui)
 		inputs[i]=blips_input_state_create();
 	while(!quit)
 	{
+		/* check if world tile has changed */
+		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
+			blips_gui_update_active_world_tile(bgui);
+
 		/* display stuff */
 		blips_gui_render_screen(bgui);
 
 		/* listen for stuff */
 		while(SDL_PollEvent(&event))
 			quit=blips_gui_fetch_inputs(bgui,&event,inputs);
-
-		/* check if world tile has changed */
-		if(strcmp(bgui->active_world_tile_path,blips_game_active_world_tile(bgui->game)->path))
-			blips_gui_update_active_world_tile(bgui);
 
 		/* iterate the game */
 		blips_game_step(bgui->game,inputs);
@@ -211,7 +211,11 @@ void blips_gui_fill_cache(blips_gui *bgui)
 	}
 
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Error parsing number of image tiles in tile_image_key:  %s.\n",bgui->game->campaign->tile_image_key_path);
+		exit(1);
+	}
 
 	fgets(path,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)

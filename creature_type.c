@@ -26,7 +26,7 @@ printf("Loading creature type of path %s.\n",path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->max_health))!=1)
 	{
-		fprintf(stderr,"Couldn't parse max_health of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse max_health of creature_type:  %s.\n",path);
 		exit(1);
 	}
 
@@ -37,7 +37,7 @@ printf("Loading creature type of path %s.\n",path);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
 	if(!(cr_type->pr_type_path=(char*)malloc(sizeof(char)*(strlen(buffer)+1))))
 	{
-		fprintf(stderr,"Couldn't allocate creature_type->pr_type_path.\n");
+		fprintf(stderr,"Couldn't allocate creature_type->pr_type_path.\n",path);
 		exit(1);
 	}
 	strncpy(cr_type->pr_type_path,buffer,strlen(buffer));
@@ -48,7 +48,7 @@ printf("Loading creature type of path %s.\n",path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->move_speed))!=1)
 	{
-		fprintf(stderr,"Couldn't parse move_speed of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse move_speed of creature_type:  %s.\n",path);
 		exit(1);
 	}
 
@@ -57,7 +57,7 @@ printf("Loading creature type of path %s.\n",path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->fire_delay))!=1)
 	{
-		fprintf(stderr,"Couldn't parse fire_delay of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse fire_delay of creature_type:  %s.\n",path);
 		exit(1);
 	}
 
@@ -66,7 +66,7 @@ printf("Loading creature type of path %s.\n",path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->stun_delay))!=1)
 	{
-		fprintf(stderr,"Couldn't parse stun_delay of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse stun_delay of creature_type:  %s.\n",path);
 		exit(1);
 	}
 
@@ -95,7 +95,7 @@ printf("Got AI type path:  %s.\n",cr_type->ai_type_path);
 		cr_type->trigger=SPAWN_ON_CLEAR;
 	else
 	{
-		fprintf(stderr,"Couldn't parse spawn_trigger of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse spawn_trigger of creature_type:  %s.\n",path);
 		fprintf(stderr,"Read:  %s.\n",buffer);
 		exit(1);
 	}
@@ -105,7 +105,7 @@ printf("Got AI type path:  %s.\n",cr_type->ai_type_path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->respawn))!=1)
 	{
-		fprintf(stderr,"Couldn't parse respawn of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse respawn of creature_type:  %s.\n",path);
 		exit(1);
 	}
 
@@ -114,7 +114,7 @@ printf("Got AI type path:  %s.\n",cr_type->ai_type_path);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&(cr_type->despawn_delay))!=1)
 	{
-		fprintf(stderr,"Couldn't parse despawn_delay of creature_type:  %s.\n");
+		fprintf(stderr,"Couldn't parse despawn_delay of creature_type:  %s.\n",path);
 		exit(1);
 	}
 

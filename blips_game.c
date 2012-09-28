@@ -647,7 +647,11 @@ void blips_game_load_object_types(blips_game *bgame)
 printf("Loading breakable types . . .\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Error parsing number of breakable strings in object_key:  %s.\n",bgame->campaign->object_key_path);
+		exit(1);
+	}
 printf("Loading %d breakable types.\n",count);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
@@ -672,7 +676,11 @@ printf("Loading %d breakable types.\n",count);
 printf("Loading collectible types . . .\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Error parsing number of collectible strings in object_key:  %s.\n",bgame->campaign->object_key_path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -696,7 +704,11 @@ printf("Loading collectible types . . .\n");
 printf("Loading creature types . . .\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Error parsing number of creature strings in object_key:  %s.\n",bgame->campaign->object_key_path);
+		exit(1);
+	}
 printf("Reading %d creatures.\n",count);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)

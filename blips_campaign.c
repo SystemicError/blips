@@ -68,7 +68,11 @@ printf("Got starting world tile path:  %s.\n",buffer);
 	/*** Number of Players/Player Info ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(bc->num_players));
+	if(fscanf(fp,"%d\n",&(bc->num_players))!=1)
+	{
+		fprintf(stderr,"Error parsing number of players in campaign file:  %s.\n",path);
+		exit(1);
+	}
 printf("Got number of players:  %d.\n",bc->num_players);
 
 	if(!(bc->player_starting_rows=(int*)malloc(sizeof(int)*bc->num_players)))
@@ -90,10 +94,18 @@ printf("Got number of players:  %d.\n",bc->num_players);
 	for(i=0;i<bc->num_players;i++)
 	{
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-		fscanf(fp,"%d\n",bc->player_starting_rows+i);
+		if(fscanf(fp,"%d\n",bc->player_starting_rows+i)!=1)
+		{
+			fprintf(stderr,"Error parsing starting row of player %d in campaign file:  %s.\n",i,path);
+			exit(1);
+		}
 printf("Got %d starting row:  %d.\n",i,bc->player_starting_rows[i]);
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-		fscanf(fp,"%d\n",bc->player_starting_cols+i);
+		if(fscanf(fp,"%d\n",bc->player_starting_cols+i)!=1)
+		{
+			fprintf(stderr,"Error parsing starting col of player %d in campaign file:  %s.\n",i,path);
+			exit(1);
+		}
 printf("Got %d starting col:  %d.\n",i,bc->player_starting_cols[i]);
 
 		fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
