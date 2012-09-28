@@ -19,6 +19,7 @@ creature_type* creature_type_create(char *path)
 		fprintf(stderr,"Couldn't open creature_type file:  %s.\n",path);
 		exit(1);
 	}
+printf("Loading creature type of path %s.\n",path);
 
 	/*** Max Health ***/
 
@@ -65,6 +66,7 @@ creature_type* creature_type_create(char *path)
 	}
 	strncpy(cr_type->ai_type_path,buffer,strlen(buffer)+1);
 	cr_type->ai_type_path[strlen(buffer)]=0;
+printf("Got AI type path:  %s.\n",cr_type->ai_type_path);
 
 	/*** Spawn Trigger ***/
 
@@ -97,6 +99,7 @@ creature_type* creature_type_create(char *path)
 	}
 	strncpy(cr_type->cr_set_path,buffer,strlen(buffer)+1);
 	cr_type->cr_set_path[strlen(buffer)]=0;
+printf("Got media set path:  %s.\n",cr_type->cr_set_path);
 
 	if(!(cr_type->cr_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
 	{

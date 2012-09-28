@@ -20,6 +20,7 @@ ai_type* ai_type_create(char *path)
 		fprintf(stderr,"Couldn't open ai_type file:  %s.\n",path);
 		exit(1);
 	}
+printf("Loading ai_type of path:  %s.\n",path);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
@@ -57,6 +58,7 @@ ai_type* ai_type_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
 	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+printf("Fire behaviour input:  %s.\n",buffer);
 
 	if(!strcmp(buffer,"spam"))
 		ait->fire_goal=AI_SPAM;

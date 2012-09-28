@@ -1526,7 +1526,7 @@ void ai_directives_aim_face(blips_game *bgame,creature *cr,creature *enemy_cr)
 
 void ai_directives_aim_spin(blips_game *bgame,creature *cr)
 {
-	cr->aim_orientation+=.01;
+	cr->aim_orientation+=.1;
 	return;
 }
 
@@ -1541,10 +1541,10 @@ void ai_directives_aim_lag_face(blips_game *bgame,creature *cr,creature *enemy_c
 
 	sine_of=sin(cr->aim_orientation-target_angle);
 
-	if(sine_of<0)
-		cr->aim_orientation-=.01;
-	else if(sine_of>0)
-		cr->aim_orientation+=.01;
+	if(sine_of>0)
+		cr->aim_orientation-=.04;
+	else if(sine_of<0)
+		cr->aim_orientation+=.04;
 	return;
 }
 void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_cr)

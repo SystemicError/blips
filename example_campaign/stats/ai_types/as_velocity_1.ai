@@ -1,0 +1,13 @@
+Move Orientation Goal:
+patrol_ew
+Aim Orientation Goal:
+as_velocity
+Fire Goal:
+spam
+Comments:
+
+Move orientation goals (dodge,flee,close,wander,patrol_ns,patrol_ew) manage move_orientation, current_move_speed, and location of creature.
+
+Aim orientation goals (face,spin,lag_face,lead_face,as_vel) manage direction of fire.
+
+Fire goals (spam,sight_first,spurt) manage when to fire.
