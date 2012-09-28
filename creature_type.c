@@ -88,9 +88,10 @@ printf("Got AI type path:  %s.\n",cr_type->ai_type_path);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
-	if(strcmp(buffer,"enter"))
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+	if(!strcmp(buffer,"enter"))
 		cr_type->trigger=SPAWN_ON_ENTRANCE;
-	else if(strcmp(buffer,"clear"))
+	else if(!strcmp(buffer,"clear"))
 		cr_type->trigger=SPAWN_ON_CLEAR;
 	else
 	{

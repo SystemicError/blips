@@ -69,6 +69,7 @@ SOLUTION:
 	+For now, give control scheme as 1st player, 1st joystick, 2nd joystick, 2nd player
 +Answer this:  if animations are separate from function, how do we decide how long to allow them to persist in the game before deletion?  Give blips_game function ptrs projectile_released(), creature_released(), and breakable_released().  The gui will implement them and decide when to let go of them (when animations are done).
 	+Or, give _types a field for remain_time.  Since they act as creature barriers during this time, this is actually game-relevant.
++correct all strcmp misuse in parsers.
 
 
 
@@ -122,4 +123,4 @@ NOTES:
 	-Try double checking all strncpys, reallocs, allocs.
 	-Check array behaviours, too.
 
--correct all strcmp misuse in parsers.
+-Write spawn_on_clear code.  Make sure that objects do not spawn if something in the way.

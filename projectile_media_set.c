@@ -24,10 +24,14 @@ projectile_media_set* projectile_media_set_create(char *path)
 	pr_set->fly_animation=sprite_animation_create();
 	pr_set->impact_animation=sprite_animation_create();
 
-	/*** Animations ***/
+	/*** FLY Animation ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of FLY animation frames in projectile_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -36,8 +40,14 @@ projectile_media_set* projectile_media_set_create(char *path)
 		sprite_animation_add_frame(pr_set->fly_animation,buffer);
 	}
 
+	/*** IMPACT Animation ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of FLY animation frames in projectile_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{

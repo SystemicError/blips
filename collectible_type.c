@@ -19,6 +19,7 @@ collectible_type* collectible_type_create(char *path)
 		fprintf(stderr,"Couldn't open collectible_type file:  %s.\n",path);
 		exit(1);
 	}
+printf("Loading collectible_type of path:  %s.\n",path);
 
 	/*** Spawn Trigger ***/
 
