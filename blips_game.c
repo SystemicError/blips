@@ -991,6 +991,23 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 				cr->aim_orientation+=.01;
 			break;
 			case AI_LAG_FACE:
+				/* sine of difference in orientation and angle of vector to target
+				 * determines whether to add or subtract to current orientation. */
+				if(sin(cr->aim_orientation-
+				       atan2(enemy_cr_abs_y-cr_abs_y,
+					     enemy_cr_abs_x-cr_abs_x))<0)
+					cr->aim_orientation-=.01;
+				else
+					cr->aim_orientation+=.01;
+			break;
+			case AI_LEAD_FACE:
+				/* possible locations of fired projectile are a cone in hyperspace,
+				 * and projected location of enemy is a hyperline.  Aim where they
+				 * intersect. */
+				
+			break;
+			case AI_AS_VELOCITY:
+				cr->aim_orientation=cr->move_orientation;
 			break;
 		}
 
@@ -1003,6 +1020,16 @@ void blips_game_apply_ai_type_to_creature(blips_game *bgame,ai_type *ai_type_ptr
 				cr->fire_cycle_state=(cr->fire_cycle_state+1)%(cr->type->fire_delay);
 			break;
 			case AI_SIGHT_FIRST:
+				if(enemy_cr)
+				{
+					/* if dot product of vector to target and orientation is near 1,
+					 * fire */
+					if(cos(cr->aim_orientation)*cos(enemy_cr_abs_x-cr_abs_x)+
+					   sin(cr->aim_orientation)*sin(enemy_cr_abs_y-cr_abs_y)>.9)
+						cr->fire_cycle_state=(cr->fire_cycle_state+1)%(cr->type->fire_delay);
+				}
+				else
+					cr->fire_cycle_state=-1;
 			break;
 			case AI_SPURT:
 			break;

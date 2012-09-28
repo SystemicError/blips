@@ -1,5 +1,5 @@
-blips : main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o
-	gcc -g -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo
+blips : main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o ai_directives.o
+	gcc -g -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o ai_directives.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo
 breakable.o : breakable.h breakable.c
 	gcc -g -c breakable.c
 collectible.o : collectible.h collectible.c
@@ -38,6 +38,8 @@ blips_input_state.o : blips_input_state.h blips_input_state.c
 	gcc -g -c blips_input_state.c
 blips_campaign.o : blips_campaign.h blips_campaign.c
 	gcc -g -c blips_campaign.c
+ai_directives.o : ai_directives.h ai_directives.c
+	gcc -g -c ai_directives.c
 blips_game.o : blips_game.h blips_game.c
 	gcc -g -c blips_game.c `sdl-config --cflags` `pkg-config --cflags cairo`
 blips_gui.o : blips_gui.h blips_gui.c blips_game.h

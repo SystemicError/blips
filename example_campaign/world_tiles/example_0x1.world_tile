@@ -21,7 +21,7 @@ Creature barrier map:
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
-_______________________________|
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 Projectile barrier map:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
@@ -33,7 +33,7 @@ Projectile barrier map:
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
-_______________________________|
+.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.|
 Image map:
 .a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
 .a.a.a.a.a.a.a.a.a.a.a.a.a.a.a.a
@@ -53,7 +53,7 @@ none
 East Tile:
 none
 South Tile:
-none
+example_campaign/world_tiles/example_0x2.world_tile
 West Tile:
 example_campaign/world_tiles/example_0x0.world_tile
 Music:

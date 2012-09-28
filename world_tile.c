@@ -20,6 +20,7 @@ world_tile* world_tile_create(char *path)
 		fprintf(stderr,"Couldn't open world_tile:  %s.\n",path);
 		exit(1);
 	}
+printf("Reading world tile of path %s.\n",path);
 
 	/*** Object Map ***/
 printf("Reading object map.\n");
@@ -74,6 +75,7 @@ printf("Reading Pr Barrier map.\n");
 	}
 	strncpy(wt->background_image,buffer,BUFFER_SIZE);
 	wt->background_image[BUFFER_SIZE-1]=0;
+printf("Found background image %s.\n",wt->background_image);
 
 	/*** Neighboring tiles ***/
 
@@ -87,6 +89,7 @@ printf("Reading Pr Barrier map.\n");
 	}
 	strncpy(wt->north_tile,buffer,BUFFER_SIZE);
 	wt->north_tile[BUFFER_SIZE-1]=0;
+printf("Found north tile %s.\n",wt->north_tile);
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
