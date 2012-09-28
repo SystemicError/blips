@@ -1576,6 +1576,47 @@ void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_
 	/* possible locations of fired projectile are a cone in hyperspace,
 	 * and projected location of enemy is a hyperline.  Aim where they
 	 * intersect. */
+	double time;  /* when we expect to hit our target */
+	double vel_x,vel_y;  /* our target's velocity components */
+	double rel_x,rel_y;  /* our target's position relative to us */
+	double a,b,c;  /* some constants for brevity */
+	int i;
+	double f,fprime;
+	projectile_type *pr_type;  /* our projectile type */
+
+	string_map_string_to_pointer(bgame->pr_types_map,cr->type->pr_type_path,(void**)&pr_type);
+
+	if(!pr_type)
+	{
+		fprintf(stderr,"Couldn't find projectile_type for lead_face creature.\n");
+		exit(1);
+	}
+
+	vel_x=cos(enemy_cr->move_orientation)*enemy_cr->current_move_speed;
+	vel_y=sin(enemy_cr->move_orientation)*enemy_cr->current_move_speed;
+
+	rel_x=creature_absolute_x(enemy_cr)-creature_absolute_x(cr);
+	rel_y=creature_absolute_y(enemy_cr)-creature_absolute_y(cr);
+
+	a=vel_x*vel_x+vel_y*vel_y-pr_type->move_speed*pr_type->move_speed;
+	b=2*(rel_x*vel_x+rel_y*vel_y);
+	c=rel_x*rel_x+rel_y*rel_y;
+
+	time=0;
+
+	for(i=0;i<100;i++)
+	{
+		f=a*time*time+b*time+c;
+		fprime=b+2*a;
+		if(fprime)
+			time=time-f/fprime;
+	}
+
+	if(time>0 && time<10000000)
+		cr->aim_orientation=atan2(rel_y+vel_y*time,rel_x+vel_x*time);
+	else
+		ai_directives_aim_face(bgame,cr,enemy_cr);
+
 	return;
 }
 
