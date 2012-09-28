@@ -172,5 +172,26 @@ int blips_game_creature_intersects_breakables(blips_game *bgame,creature *cr);
 int blips_game_check_projectile_for_impact(blips_game *bgame,projectile *pr);
 int blips_game_projectile_intersects_barriers(blips_game *bgame,projectile *pr);
 
+	/* AI directives */
+creature* ai_directives_get_nearest_enemy_creature(blips_game *bgame,creature *cr);
+projectile* ai_directives_get_nearest_enemy_projectile(blips_game *bgame,creature *cr);
+
+void ai_directives_move_dodge(blips_game *bgame,creature *cr,projectile *enemy_pr);
+void ai_directives_move_flee(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_move_close(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_move_wander(blips_game *bgame,creature *cr);
+void ai_directives_move_patrol_ns(blips_game *bgame,creature *cr);
+void ai_directives_move_patrol_ew(blips_game *bgame,creature *cr);
+
+void ai_directives_aim_face(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_aim_spin(blips_game *bgame,creature *cr);
+void ai_directives_aim_lag_face(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_aim_as_velocity(blips_game *bgame,creature *cr);
+
+void ai_directives_fire_spam(blips_game *bgame,creature *cr);
+void ai_directives_fire_sight_first(blips_game *bgame,creature *cr,creature *enemy_cr);
+void ai_directives_fire_spurt(blips_game *bgame,creature *cr,creature *enemy_cr);
+
 #endif
 
