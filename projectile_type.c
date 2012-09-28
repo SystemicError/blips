@@ -23,17 +23,29 @@ projectile_type* projectile_type_create(char *path)
 	/*** Damage ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(pr_type->damage));
+	if(fscanf(fp,"%d\n",&(pr_type->damage))!=1)
+	{
+		fprintf(stderr,"Couldn't parse damage of projectile_type:  %s.\n");
+		exit(1);
+	}
 
 	/*** Move Speed ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(pr_type->move_speed));
+	if(fscanf(fp,"%d\n",&(pr_type->move_speed))!=1)
+	{
+		fprintf(stderr,"Couldn't parse move_speed of projectile_type:  %s.\n");
+		exit(1);
+	}
 
 	/*** Despawn Delay ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(pr_type->despawn_delay));
+	if(fscanf(fp,"%d\n",&(pr_type->despawn_delay))!=1)
+	{
+		fprintf(stderr,"Couldn't parse despawn_delay of projectile_type:  %s.\n");
+		exit(1);
+	}
 
 	/*** Media Set ***/
 
@@ -45,7 +57,7 @@ projectile_type* projectile_type_create(char *path)
 		fprintf(stderr,"Couldn't allocate projectile_type->pr_set_path.\n");
 		exit(1);
 	}
-	strncpy(pr_type->pr_set_path,buffer,strlen(buffer)+1);
+	strncpy(pr_type->pr_set_path,buffer,strlen(buffer));
 	pr_type->pr_set_path[strlen(buffer)]=0;
 
 	/*** Path ***/
@@ -55,7 +67,7 @@ projectile_type* projectile_type_create(char *path)
 		fprintf(stderr,"Couldn't allocate projectile_type->pr_type_path.\n");
 		exit(1);
 	}
-	strncpy(pr_type->pr_type_path,path,strlen(path)+1);
+	strncpy(pr_type->pr_type_path,path,strlen(path));
 	pr_type->pr_type_path[strlen(path)]=0;
 
 	fclose(fp);

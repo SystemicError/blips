@@ -24,8 +24,15 @@ breakable_media_set* breakable_media_set_create(char *path)
 	br_set->stand_animation=sprite_animation_create();
 	br_set->break_animation=sprite_animation_create();
 
+	/*** STAND animation ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf("Couldn't parse number of STAND animation frames in breakable_media_set of path:  %s.\n",path);
+		exit(1);
+	}
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -34,8 +41,14 @@ breakable_media_set* breakable_media_set_create(char *path)
 		sprite_animation_add_frame(br_set->stand_animation,buffer);
 	}
 
+	/*** BREAK animation ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf("Couldn't parse number of BREAK animation frames in breakable_media_set of path:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{

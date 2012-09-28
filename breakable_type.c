@@ -19,30 +19,51 @@ breakable_type* breakable_type_create(char *path)
 		fprintf(stderr,"Couldn't open breakable_type file:  %s.\n",path);
 		exit(1);
 	}
+printf("Loading breakable_type from path %s.\n",path);
 
 	/*** Toughness ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(br_type->toughness));
+	if(fscanf(fp,"%d\n",&(br_type->toughness))!=1)
+	{
+		fprintf(stderr,"Couldn't parse toughness of breakable_type:  %s.\n",path);
+		exit(1);
+	}
 
 	/*** Spawn Trigger ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
-	if(strcmp(buffer,"enter"))
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+
+	if(!strcmp(buffer,"enter"))
 		br_type->trigger=SPAWN_ON_ENTRANCE;
-	else if(strcmp(buffer,"clear"))
+	else if(!strcmp(buffer,"clear"))
 		br_type->trigger=SPAWN_ON_CLEAR;
+	else
+	{
+		fprintf(stderr,"Couldn't parse spawn trigger of breakable_type:  %s.\n",path);
+		fprintf(stderr,"Read:  %s.\n",buffer);
+		exit(1);
+	}
 
 	/*** Respawn ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(br_type->respawn));
+	if(fscanf(fp,"%d\n",&(br_type->respawn))!=1)
+	{
+		fprintf(stderr,"Couldn't parse respawn of breakable_type:  %s.\n",path);
+		exit(1);
+	}
 
-	/*** Respawn ***/
+	/*** Despawn delay ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(br_type->despawn_delay));
+	if(fscanf(fp,"%d\n",&(br_type->despawn_delay))!=1)
+	{
+		fprintf(stderr,"Couldn't parse despawn_delay of breakable_type:  %s.\n",path);
+		exit(1);
+	}
 
 	/*** Media Set ***/
 
@@ -66,7 +87,7 @@ breakable_type* breakable_type_create(char *path)
 		fprintf(stderr,"Couldn't allocate br_type->br_type_path.\n");
 		exit(1);
 	}
-	strncpy(br_type->br_type_path,path,strlen(path)+1);
+	strncpy(br_type->br_type_path,path,strlen(path));
 	br_type->br_type_path[strlen(path)]=0;
 
 	return br_type;

@@ -27,10 +27,14 @@ creature_media_set* creature_media_set_create(char *path)
 	cr_set->fire_animation=sprite_animation_create();
 	cr_set->stun_animation=sprite_animation_create();
 
-	/*** Animations ***/
+	/*** STAND animations ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of STAND animations in creature_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -39,8 +43,14 @@ creature_media_set* creature_media_set_create(char *path)
 		sprite_animation_add_frame(cr_set->stand_animation,buffer);
 	}
 
+	/*** WALK animations ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of WALK animations in creature_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -49,8 +59,14 @@ creature_media_set* creature_media_set_create(char *path)
 		sprite_animation_add_frame(cr_set->walk_animation,buffer);
 	}
 
+	/*** WALK_AND_FIRE animations ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of WALK_AND_FIRE animations in creature_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -59,8 +75,14 @@ creature_media_set* creature_media_set_create(char *path)
 		sprite_animation_add_frame(cr_set->walk_and_fire_animation,buffer);
 	}
 
+	/*** FIRE animations ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of FIRE animations in creature_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -69,8 +91,14 @@ creature_media_set* creature_media_set_create(char *path)
 		sprite_animation_add_frame(cr_set->fire_animation,buffer);
 	}
 
+	/*** STUN animations ***/
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of STUN animations in creature_media_set:  %s.\n",path);
+		exit(1);
+	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{

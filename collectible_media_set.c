@@ -24,7 +24,12 @@ collectible_media_set* collectible_media_set_create(char *path)
 	co_set->stand_animation=sprite_animation_create();
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&count);
+	if(fscanf(fp,"%d\n",&count)!=1)
+	{
+		fprintf(stderr,"Couldn't parse number of STAND animation frames in collectible_media_set:  %s.\n",path);
+		exit(1);
+	}
+
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{

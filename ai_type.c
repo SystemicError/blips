@@ -38,6 +38,12 @@ printf("Loading ai_type of path:  %s.\n",path);
 		ait->move_goal=AI_PATROL_NS;
 	else if(!strcmp(buffer,"patrol_ew"))
 		ait->move_goal=AI_PATROL_EW;
+	else
+	{
+		fprintf(stderr,"Couldn't parse move_goal of ai_type:  %s.\n",path);
+		fprintf(stderr,"Read:  %s.\n",buffer);
+		exit(1);
+	}
 
 	
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
@@ -54,6 +60,12 @@ printf("Loading ai_type of path:  %s.\n",path);
 		ait->aim_goal=AI_LEAD_FACE;
 	else if(!strcmp(buffer,"as_velocity"))
 		ait->aim_goal=AI_AS_VELOCITY;
+	else
+	{
+		fprintf(stderr,"Couldn't parse aim_goal of ai_type:  %s.\n",path);
+		fprintf(stderr,"Read:  %s.\n",buffer);
+		exit(1);
+	}
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
@@ -66,13 +78,19 @@ printf("Fire behaviour input:  %s.\n",buffer);
 		ait->fire_goal=AI_SIGHT_FIRST;
 	else if(!strcmp(buffer,"spurt"))
 		ait->fire_goal=AI_SPURT;
+	else
+	{
+		fprintf(stderr,"Couldn't parse aim_goal of ai_type:  %s.\n",path);
+		fprintf(stderr,"Read:  %s.\n",buffer);
+		exit(1);
+	}
 
 	if(!(ait->ai_type_path=(char*)malloc(sizeof(char)*(strlen(path)+1))))
 	{
 		fprintf(stderr,"Couldn't allocate ai_type->ai_type_path.\n");
 		exit(1);
 	}
-	strncpy(ait->ai_type_path,path,strlen(path)+1);
+	strncpy(ait->ai_type_path,path,strlen(path));
 	ait->ai_type_path[strlen(path)]=0;
 
 	fclose(fp);

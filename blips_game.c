@@ -648,6 +648,7 @@ printf("Loading breakable types . . .\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
+printf("Loading %d breakable types.\n",count);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{
@@ -696,6 +697,7 @@ printf("Loading creature types . . .\n");
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fscanf(fp,"%d\n",&count);
+printf("Reading %d creatures.\n",count);
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	for(i=0;i<count;i++)
 	{

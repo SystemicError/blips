@@ -24,15 +24,26 @@ collectible_type* collectible_type_create(char *path)
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	fgets(buffer,BUFFER_SIZE,fp);
-	if(strcmp(buffer,"enter"))
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+	if(!strcmp(buffer,"enter"))
 		co_type->trigger=SPAWN_ON_ENTRANCE;
-	else if(strcmp(buffer,"clear"))
+	else if(!strcmp(buffer,"clear"))
 		co_type->trigger=SPAWN_ON_CLEAR;
+	else
+	{
+		fprintf(stderr,"Couldn't parse spawn trigger of collectible_type:  %s.\n",path);
+		fprintf(stderr,"Read:  %s.\n",buffer);
+		exit(1);
+	}
 
 	/*** Respawn ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
-	fscanf(fp,"%d\n",&(co_type->respawn));
+	if(fscanf(fp,"%d\n",&(co_type->respawn))!=1)
+	{
+		fprintf(stderr,"Couldn't parse respawn of collectible_type:  %s.\n",path);
+		exit(1);
+	}
 
 	/*** Media Set ***/
 
@@ -45,7 +56,7 @@ collectible_type* collectible_type_create(char *path)
 		fprintf(stderr,"Couldn't allocate collectible_type->co_set_path.\n");
 		exit(1);
 	}
-	strncpy(co_type->co_set_path,buffer,strlen(buffer)+1);
+	strncpy(co_type->co_set_path,buffer,strlen(buffer));
 	co_type->co_set_path[strlen(buffer)]=0;
 
 	/*** Collectible Type (self) Path ***/
@@ -55,7 +66,7 @@ collectible_type* collectible_type_create(char *path)
 		fprintf(stderr,"Couldn't allocate collectible_type->co_type_path.\n");
 		exit(1);
 	}
-	strncpy(co_type->co_type_path,path,strlen(path)+1);
+	strncpy(co_type->co_type_path,path,strlen(path));
 	co_type->co_type_path[strlen(path)]=0;
 
 	fclose(fp);

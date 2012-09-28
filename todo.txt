@@ -110,3 +110,16 @@ SOLUTION:
 -players_leaving_world_tiles() also need to check that next world tile over doesn't have barrier where players would be entering.
 
 -Add input checking to all file parsers.
+	-check ret value of fscanf
+
+-Figure out why le/lead_face_1.creature causes crash (or at least triggers it).
+NOTES:
+	Its order in the object key has no apparent effect.
+	Keeping its name but replacing its content with lag_face has no effect.
+	Excluding le but replacing the content of lag_face_1.cr with le runs.
+	We know an overrun is happening at load time, because there's a memory corruption by the time of the first render.
+
+	-Try double checking all strncpys, reallocs, allocs.
+	-Check array behaviours, too.
+
+-correct all strcmp misuse in parsers.
