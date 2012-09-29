@@ -29,7 +29,7 @@ breakable_media_set* breakable_media_set_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&count)!=1)
 	{
-		fprintf("Couldn't parse number of STAND animation frames in breakable_media_set of path:  %s.\n",path);
+		fprintf(stderr,"Couldn't parse number of STAND animation frames in breakable_media_set of path:  %s.\n",path);
 		exit(1);
 	}
 
@@ -46,7 +46,7 @@ breakable_media_set* breakable_media_set_create(char *path)
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
 	if(fscanf(fp,"%d\n",&count)!=1)
 	{
-		fprintf("Couldn't parse number of BREAK animation frames in breakable_media_set of path:  %s.\n",path);
+		fprintf(stderr,"Couldn't parse number of BREAK animation frames in breakable_media_set of path:  %s.\n",path);
 		exit(1);
 	}
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */

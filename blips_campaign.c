@@ -23,6 +23,20 @@ printf("Opening file . . .\n");
 		exit(1);
 	}
 
+	/*** Status Bar Image ***/
+
+	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */
+	fgets(buffer,BUFFER_SIZE,fp);
+	buffer[strlen(buffer)-1]=0;  /* replace endline with null terminator */
+printf("Got status bar image path:  %s.\n",buffer);
+	if(!(bc->status_bar_image_path=(char*)malloc(sizeof(char)*BUFFER_SIZE)))
+	{
+		fprintf(stderr,"Couldn't allocate blips_campaign->status_bar_image_path.\n");
+		exit(1);
+	}
+	strncpy(bc->status_bar_image_path,buffer,BUFFER_SIZE);
+	bc->status_bar_image_path[BUFFER_SIZE-1]=0;
+
 	/*** Object Key ***/
 
 	fgets(buffer,BUFFER_SIZE,fp);  /* comment line */

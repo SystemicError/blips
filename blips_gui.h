@@ -106,6 +106,9 @@ typedef struct blips_gui
 	/* active background */
 	cairo_surface_t *active_background;
 
+	/* status bar background */
+	cairo_surface_t *status_bar_image;
+
 	/* active music */
 	char active_music_path[BUFFER_SIZE];
 
@@ -133,6 +136,7 @@ void blips_gui_render_screen(blips_gui *bgui);
 void blips_gui_render_bg(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 void blips_gui_render_tiles(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
+void blips_gui_render_status_bar(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface);
 
 void blips_gui_render_breakable(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,breakable_media_set *br_set,breakable *br);
 void blips_gui_render_collectible(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface,collectible_media_set *co_set,collectible *co);

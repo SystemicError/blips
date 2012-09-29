@@ -80,6 +80,7 @@ NOTES:
 	We know an overrun is happening at load time, because there's a memory corruption by the time of the first render.
 	We know it DOESN'T happen if the tile rendering is suppressed.
 SOLUTION:  Render() was rendering before active world tile in bgui was ever set!  Reordered the main_loop, solved.
++Write spawn_on_clear code.
 
 
 
@@ -101,7 +102,7 @@ SOLUTION:  Render() was rendering before active world tile in bgui was ever set!
 
 -Write blips_game_apply_ai_type_to_creature()
 	+move_goal
-	-aim_goal
+	+aim_goal
 	-fire_goal
 
 -Add sound playback.
@@ -113,6 +114,7 @@ SOLUTION:  Render() was rendering before active world tile in bgui was ever set!
 -Add field to collectible_type to indicate its effect argument (e.g. HEAL 10, MULTIPLY_MAX_HEALTH 1.2, MULTIPLY SPEED 1.1, CHANGE_PROJECTILE "ex_camp/stats/pr_types/ex_player_proj_2.projectile")
 
 -Add status bar code.
+	-And make it look good.
 
 -Add death animation separate from stun animation to creatures.
 
@@ -122,7 +124,6 @@ SOLUTION:  Render() was rendering before active world tile in bgui was ever set!
 
 -players_leaving_world_tiles() also need to check that next world tile over doesn't have barrier where players would be entering.
 
--Write spawn_on_clear code.
-	-Make sure that objects do not spawn if something in the way.
+-Make sure that objects do not spawn if something in the way.
 
 -Make sure fgets is returning non-null at relevant points!

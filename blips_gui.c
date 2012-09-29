@@ -47,7 +47,7 @@ blips_gui* blips_gui_create(blips_game *bgame)
 printf("Initializing audio . . .\n");
 	if(SDL_Init(SDL_INIT_AUDIO)<0)
 	{
-		fprintf(stderr,"Couldn't initialize audio.\n");
+		fprintf(stderr,"Couldn't initialize audio; disabled.\n");
 		exit(1);
 	}
 	if(Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,2,1024)<0)
@@ -158,6 +158,7 @@ void blips_gui_main_loop(blips_gui *bgui)
 	}
 	for(i=0;i<bgui->game->campaign->num_players;i++)
 		inputs[i]=blips_input_state_create();
+
 	while(!quit)
 	{
 		/* check if world tile has changed */
@@ -263,6 +264,27 @@ printf("Reading tile: %s.\n",path);
 	/*** Background Images ***/
 
 	blips_gui_load_background_images(bgui);
+
+	/*** Status Bar Image ***/
+
+	bgui->status_bar_image=cairo_image_surface_create_from_png(bgui->game->campaign->status_bar_image_path);
+
+		/* error check */
+	switch(cairo_surface_status(bgui->status_bar_image))
+	{
+		case CAIRO_STATUS_NO_MEMORY:
+			fprintf(stderr,"Error loading status bar image (no memory available):  %s\n",bgui->game->campaign->status_bar_image_path);
+			exit(1);
+		break;
+		case CAIRO_STATUS_FILE_NOT_FOUND:
+			fprintf(stderr,"Error loading status bar image (file not found):  %s\n",bgui->game->campaign->status_bar_image_path);
+			exit(1);
+		break;
+		case CAIRO_STATUS_READ_ERROR:
+			fprintf(stderr,"Error loading status bar image (read error):  %s\n",bgui->game->campaign->status_bar_image_path);
+			exit(1);
+		break;
+	}
 
 	/* finally, set the active world tile string to 0 so it will update next cycle */
 	bgui->active_world_tile_path[0]=0;
@@ -448,6 +470,7 @@ void blips_gui_render_screen(blips_gui *bgui)
 	blips_gui_render_bg(bgui,cr,surface);
 	blips_gui_render_tiles(bgui,cr,surface);
 	blips_gui_render_objects(bgui,cr,surface);
+	blips_gui_render_status_bar(bgui,cr,surface);
 
 	cairo_surface_destroy(surface);
 	cairo_destroy(cr);
@@ -564,6 +587,36 @@ void blips_gui_render_objects(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surfa
 		blips_gui_render_projectile(bgui,cr,surface,
 					    (projectile_media_set*)ptr,
 					     bgui->game->projectiles[i]);
+	}
+
+	return;
+}
+
+void blips_gui_render_status_bar(blips_gui *bgui,cairo_t *cr,cairo_surface_t *surface)
+{
+	int i;
+	int xpos,ypos;
+
+	xpos=0;
+	ypos=BLIPS_TILE_SIZE*BLIPS_TILE_ROWS;
+
+	/* render background */
+
+	cairo_set_source_surface(cr,bgui->status_bar_image,xpos,ypos);
+
+	cairo_paint(cr);
+
+	/* render health bars */
+
+	for(i=0;i<bgui->game->campaign->num_players;i++)
+	{
+		cairo_set_source_rgb(cr,
+				     1.0,
+				     0.0,
+				     0.0);
+		cairo_rectangle(cr,xpos+5,ypos+i*16+2,bgui->game->players[i]->current_health*8,12);
+		cairo_fill(cr);
+		cairo_stroke(cr);
 	}
 
 	return;

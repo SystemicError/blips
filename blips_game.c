@@ -1572,7 +1572,6 @@ void ai_directives_aim_lag_face(blips_game *bgame,creature *cr,creature *enemy_c
 }
 void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_cr)
 {
-/*UNFINISHED*/
 	/* possible locations of fired projectile are a cone in hyperspace,
 	 * and projected location of enemy is a hyperline.  Aim where they
 	 * intersect. */
@@ -1582,6 +1581,7 @@ void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_
 	double a,b,c;  /* some constants for brevity */
 	int i;
 	double f,fprime;
+	double tolerance;
 	projectile_type *pr_type;  /* our projectile type */
 
 	string_map_string_to_pointer(bgame->pr_types_map,cr->type->pr_type_path,(void**)&pr_type);
@@ -1603,8 +1603,11 @@ void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_
 	c=rel_x*rel_x+rel_y*rel_y;
 
 	time=0;
+	tolerance=.01;
 
-	for(i=0;i<100;i++)
+	f=a*time*time+b*time+c;
+
+	for(i=0;i<100000 && abs(f)>tolerance;i++)
 	{
 		f=a*time*time+b*time+c;
 		fprime=b+2*a;
@@ -1612,7 +1615,7 @@ void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_
 			time=time-f/fprime;
 	}
 
-	if(time>0 && time<10000000)
+	if(abs(f)<=tolerance)
 		cr->aim_orientation=atan2(rel_y+vel_y*time,rel_x+vel_x*time);
 	else
 		ai_directives_aim_face(bgame,cr,enemy_cr);
@@ -1644,7 +1647,13 @@ void ai_directives_fire_sight_first(blips_game *bgame,creature *cr,creature *ene
 
 void ai_directives_fire_spurt(blips_game *bgame,creature *cr,creature *enemy_cr)
 {
-/*UNFINISHED*/
+	if(cr->fire_cycle_state==0)
+		if(rand()%2)
+			cr->fire_cycle_state=cr->type->fire_delay-1;
+		else
+			cr->fire_cycle_state=3*cr->type->fire_delay-1;
+	else
+		cr->fire_cycle_state--;
 	return;
 }
 

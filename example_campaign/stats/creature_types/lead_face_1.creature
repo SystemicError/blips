@@ -1,9 +1,9 @@
 Max Health:
 20
 Projectile Type:
-example_campaign/stats/projectile_types/example_1.projectile
+example_campaign/stats/projectile_types/example_2.projectile
 Move Speed:
-5
+0
 Fire Delay:
 8
 Stun Delay:
