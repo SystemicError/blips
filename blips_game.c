@@ -1602,20 +1602,20 @@ void ai_directives_aim_lead_face(blips_game *bgame,creature *cr,creature *enemy_
 	b=2*(rel_x*vel_x+rel_y*vel_y);
 	c=rel_x*rel_x+rel_y*rel_y;
 
-	time=0;
-	tolerance=.01;
+	time=100;
+	tolerance=.1;
 
 	f=a*time*time+b*time+c;
 
 	for(i=0;i<100000 && abs(f)>tolerance;i++)
 	{
 		f=a*time*time+b*time+c;
-		fprime=b+2*a;
+		fprime=b+2*a*time;
 		if(fprime)
 			time=time-f/fprime;
 	}
 
-	if(abs(f)<=tolerance)
+	if(abs(f)<=tolerance || time<0)
 		cr->aim_orientation=atan2(rel_y+vel_y*time,rel_x+vel_x*time);
 	else
 		ai_directives_aim_face(bgame,cr,enemy_cr);

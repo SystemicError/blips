@@ -103,7 +103,8 @@ SOLUTION:  Render() was rendering before active world tile in bgui was ever set!
 -Write blips_game_apply_ai_type_to_creature()
 	+move_goal
 	+aim_goal
-	-fire_goal
+	-fire_goal  TEST SPURT
+	-Add aim directive "shotgun," which randomly offsets from face.
 
 -Add sound playback.
 
