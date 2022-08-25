@@ -1,5 +1,5 @@
 blips : main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o
-	gcc -g -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo
+	gcc -g -o blips main.o blips_gui.o blips_game.o blips_campaign.o blips_input_state.o breakable_media_set.o collectible_media_set.o creature_media_set.o projectile_media_set.o ai_type.o breakable_type.o collectible_type.o creature_type.o projectile_type.o world_tile.o maze.o sprite_animation.o breakable.o collectible.o creature.o projectile.o string_map.o `sdl-config --cflags --libs` `pkg-config --libs cairo` -lSDL_image -lSDL_mixer -lcairo -lm
 breakable.o : breakable.h breakable.c
 	gcc -g -c breakable.c
 collectible.o : collectible.h collectible.c

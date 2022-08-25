@@ -151,6 +151,8 @@ void blips_gui_main_loop(blips_gui *bgui)
 	int i, quit;
 	quit=0;
 
+	struct timespec requested, remaining;
+
 	if(!(inputs=(blips_input_state**)malloc(sizeof(blips_input_state*)*bgui->game->campaign->num_players)))
 	{
 		fprintf(stderr,"Couldn't allocate inputs in blips_gui_main_loop().\n");
@@ -171,6 +173,11 @@ void blips_gui_main_loop(blips_gui *bgui)
 		/* listen for stuff */
 		while(SDL_PollEvent(&event))
 			quit=blips_gui_fetch_inputs(bgui,&event,inputs);
+
+		/* Wait a fixed amount */
+		requested.tv_sec = 0;
+		requested.tv_nsec = 40000000;
+		nanosleep(&requested, &remaining);
 
 		/* iterate the game */
 		blips_game_step(bgui->game,inputs);
